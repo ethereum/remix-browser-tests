@@ -209,7 +209,7 @@ export const RemixUiStaticAnalyser = (props: RemixUiStaticAnalyserProps) => {
           })
           // Slither Analysis
           if (slitherEnabled) {
-            props.analysisModule.call('solidity-logic', 'getCompilerState').then((compilerState) => {
+            props.analysisModule.call('solidity', 'getCompilerState').then((compilerState) => {
               const { currentVersion, optimize, evmVersion } = compilerState
               props.analysisModule.call('terminal', 'log', { type: 'info', value: '[Slither Analysis]: Running...' })
               props.analysisModule.call('slither', 'analyse', state.file, { currentVersion, optimize, evmVersion }).then((result) => {

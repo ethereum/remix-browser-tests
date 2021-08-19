@@ -787,13 +787,8 @@
           "builder": "@nrwl/linter:lint",
           "options": {
             "linter": "eslint",
-            "tsConfig": [
-              "libs/remix-core-plugin/tsconfig.lib.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!libs/remix-core-plugin/**/*"
-            ]
+            "tsConfig": ["libs/remix-core-plugin/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/remix-core-plugin/**/*"]
           }
         },
         "build": {
@@ -857,6 +852,76 @@
             "linter": "eslint",
             "tsConfig": ["libs/remix-ui/renderer/tsconfig.lib.json"],
             "exclude": ["**/node_modules/**", "!libs/remix-ui/renderer/**/*"]
+          }
+        }
+      }
+    },
+    "solidity-compiler": {
+      "root": "apps/solidity-compiler",
+      "sourceRoot": "apps/solidity-compiler/src",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/web:build",
+          "options": {
+            "outputPath": "dist/apps/solidity-compiler",
+            "index": "apps/solidity-compiler/src/index.html",
+            "main": "apps/solidity-compiler/src/main.tsx",
+            "polyfills": "apps/solidity-compiler/src/polyfills.ts",
+            "tsConfig": "apps/solidity-compiler/tsconfig.app.json",
+            "assets": [
+              "apps/solidity-compiler/src/favicon.ico",
+              "apps/solidity-compiler/src/assets",
+              "apps/solidity-compiler/src/index.html"
+            ],
+            "styles": ["apps/solidity-compiler/src/styles.css"],
+            "scripts": [],
+            "webpackConfig": "apps/solidity-compiler/webpack.config.js",
+            "maxWorkers": 2
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/solidity-compiler/src/environments/environment.ts",
+                  "with": "apps/solidity-compiler/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "solidity-compiler:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "solidity-compiler:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["apps/solidity-compiler/tsconfig.app.json"],
+            "exclude": ["**/node_modules/**", "!apps/solidity-compiler/**/*"]
           }
         }
       }

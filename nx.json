@@ -97,7 +97,7 @@
       "tags": []
     },
     "remix-ui-settings": {
-       "tags": []
+      "tags": []
     },
     "remix-ui-static-analyser": {
       "tags": []
@@ -115,6 +115,9 @@
       "tags": []
     },
     "remix-ui-renderer": {
+      "tags": []
+    },
+    "solidity-compiler": {
       "tags": []
     }
   }

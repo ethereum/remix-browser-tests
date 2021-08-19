@@ -425,13 +425,7 @@ Please make a backup of your contracts and start using http://remix.ethereum.org
   }
 
   // CONTENT VIEWS & DEFAULT PLUGINS
-  const compileTab = new CompileTab(
-    editor,
-    registry.get('config').api,
-    registry.get('fileproviders/browser').api,
-    registry.get('filemanager').api,
-    contentImport
-  )
+  const compileTab = new CompileTab()
   const run = new RunTab(
     blockchain,
     registry.get('config').api,
@@ -456,7 +450,6 @@ Please make a backup of your contracts and start using http://remix.ethereum.org
 
   engine.register([
     compileTab,
-    compileTab.compileTabLogic,
     run,
     debug,
     analysis,

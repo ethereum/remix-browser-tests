@@ -2,7 +2,7 @@
 import React from 'react' // eslint-disable-line
 import ReactDOM from 'react-dom'
 import { SolidityCompiler, CompileTab as CompileTabLogic, parseContracts } from '@remix-ui/solidity-compiler' // eslint-disable-line
-import { compile } from '@remix-project/remix-solidity'
+import { CompilerApiMixin } from '@remixproject/solidity-compiler-plugin'
 import { ViewPlugin } from '@remixproject/engine-web'
 import * as packageJson from '../../../../../package.json'
 
@@ -12,6 +12,8 @@ const yo = require('yo-yo')
 var QueryParams = require('../../lib/query-params')
 const addTooltip = require('../ui/tooltip')
 const globalRegistry = require('../../global/registry')
+
+const css = require('./styles/compile-tab-styles')
 
 const profile = {
   name: 'solidity',
@@ -23,58 +25,26 @@ const profile = {
   location: 'sidePanel',
   documentation: 'https://remix-ide.readthedocs.io/en/latest/solidity_editor.html',
   version: packageJson.version,
-  methods: ['getCompilationResult', 'compile', 'compileWithParameters', 'setCompilerConfig', 'compileFile']
+  methods: ['getCompilationResult', 'compile', 'compileWithParameters', 'setCompilerConfig', 'compileFile', 'getCompilerState']
 }
 
 // EditorApi:
 // - events: ['compilationFinished'],
 // - methods: ['getCompilationResult']
 
-class CompileTab extends ViewPlugin {
-  constructor (editor, config, fileProvider, fileManager, contentImport) {
+class CompileTab extends CompilerApiMixin(ViewPlugin) {
+  constructor () {
     super(profile)
-    this.events = new EventEmitter()
-    this._view = {
-      el: null,
-      warnCompilationSlow: null,
-      errorContainer: null,
-      contractEl: null
-    }
-    this.contentImport = contentImport
-    this.queryParams = new QueryParams()
-    this.fileProvider = fileProvider
-    // dependencies
-    this.editor = editor
-    this.config = config
-    this.fileManager = fileManager
-    this.contractsDetails = {}
-    this.data = {
-      eventHandlers: {},
-      loading: false
-    }
-    this.compileTabLogic = new CompileTabLogic(this, this.contentImport)
-    this.compiler = this.compileTabLogic.compiler
-    this.compileTabLogic.init()
-    this.contractMap = {}
-    this.isHardHatProject = false
-    this.compileErrors = {}
-    this.compiledFileName = ''
-    this.selectedVersion = ''
-    this.configurationSettings = null
-
-    this.el = document.createElement('div')
-    this.el.setAttribute('id', 'compileTabView')
+    this.initCompilerApi()
   }
 
-  resetResults () {
-    this.currentFile = ''
-    this.contractsDetails = {}
-    this.emit('statusChanged', { key: 'none' })
-    this.renderComponent()
+  renderComponent () {
+    ReactDOM.render(
+      <SolidityCompiler plugin={this}/>
+      , this.el)
   }
 
-  setCompileErrors (data) {
-    this.compileErrors = data
+  onCurrentFileChanged () {
     this.renderComponent()
   }
 
@@ -191,6 +161,10 @@ class CompileTab extends ViewPlugin {
     })
   }
 
+  onResetResults () {
+    this.renderComponent()
+  }
+
   setHardHatCompilation (value) {
     this.hhCompilation = value
   }
@@ -199,46 +173,35 @@ class CompileTab extends ViewPlugin {
     this.selectedVersion = version
   }
 
-  getCompilationResult () {
-    return this.compileTabLogic.compiler.state.lastCompilationResult
+  onSetWorkspace () {
+    this.renderComponent()
   }
 
-  addExternalFile (fileName, content) {
-    this.fileProvider.addExternal(fileName, content)
+  onNoFileSelected () {
+    this.renderComponent()
   }
 
-  /**
-   * compile using @arg fileName.
-   * The module UI will be updated accordingly to the new compilation result.
-   * This function is used by remix-plugin compiler API.
-   * @param {string} fileName to compile
-   */
-  compile (fileName) {
-    addTooltip(yo`<div><b>${this.currentRequest.from}</b> is requiring to compile <b>${fileName}</b></div>`)
-    return this.compileTabLogic.compileFile(fileName)
+  onCompilationFinished () {
+    this.renderComponent()
   }
 
-  /**
-   * compile using @arg compilationTargets and @arg settings
-   * The module UI will *not* be updated, the compilation result is returned
-   * This function is used by remix-plugin compiler API.
-   * @param {object} map of source files.
-   * @param {object} settings {evmVersion, optimize, runs, version, language}
-   */
+  render () {
+    if (this.el) return this.el
+    this.el = yo`
+      <div class="${css.debuggerTabView}" id="compileTabView">
+        <div id="compiler" class="${css.compiler}"></div>
+      </div>`
+    this.renderComponent()
+
+    return this.el
+  }
+
   async compileWithParameters (compilationTargets, settings) {
-    settings.version = settings.version || this.selectedVersion
-    const res = await compile(compilationTargets, settings)
-    return res
+    return await super.compileWithParameters(compilationTargets, settings)
   }
 
-  // This function is used for passing the compiler configuration to 'remix-tests'
-  getCurrentCompilerConfig () {
-    return {
-      currentVersion: this.selectedVersion,
-      evmVersion: this.compileTabLogic.evmVersion,
-      optimize: this.compileTabLogic.optimize,
-      runs: this.compileTabLogic.runs
-    }
+  getCompilationResult () {
+    return super.getCompilationResult()
   }
 
   /**
@@ -247,88 +210,23 @@ class CompileTab extends ViewPlugin {
    * @param {object} settings {evmVersion, optimize, runs, version, language}
    */
   setCompilerConfig (settings) {
-    this.configurationSettings = settings
+    super.setCompilerConfig(settings)
     this.renderComponent()
     // @todo(#2875) should use loading compiler return value to check whether the compiler is loaded instead of "setInterval"
     addTooltip(yo`<div><b>${this.currentRequest.from}</b> is updating the <b>Solidity compiler configuration</b>.<pre class="text-left">${JSON.stringify(settings, null, '\t')}</pre></div>`)
   }
 
-  // TODO : Add success alert when compilation succeed
-  contractCompiledSuccess () {
-    return yo`<div></div>`
+  compile (fileName) {
+    addTooltip(yo`<div><b>${this.currentRequest.from}</b> is requiring to compile <b>${fileName}</b></div>`)
+    super.compile(fileName)
   }
 
-  // TODO : Add error alert when compilation failed
-  contractCompiledError () {
-    return yo`<div></div>`
-  }
-
-  /************
-   * METHODS
-   */
-
-  selectContract (contractName) {
-    this.selectedContract = contractName
-  }
-
-  render () {
-    this.renderComponent()
-    return this.el
-  }
-
-  renderComponent () {
-    ReactDOM.render(
-      <SolidityCompiler plugin={this}/>
-      , this.el)
-  }
-
-  getParameters () {
-    return this.queryParams.get()
-  }
-
-  setParameters (params) {
-    this.queryParams.update(params)
-  }
-
-  getConfiguration (name) {
-    return this.config.get(name)
-  }
-
-  setConfiguration (name, value) {
-    this.config.set(name, value)
-  }
-
-  fileProviderOf (fileName) {
-    return this.fileManager.fileProviderOf(fileName)
-  }
-
-  getFileManagerMode () {
-    return this.fileManager.mode
-  }
-
-  fileExists (fileName) {
-    return this.call('fileManager', 'exists', fileName)
-  }
-
-  writeFile (fileName, content) {
-    return this.call('fileManager', 'writeFile', fileName, content)
-  }
-
-  readFile (fileName) {
-    return this.call('fileManager', 'readFile', fileName)
-  }
-
-  saveCurrentFile () {
-    return this.fileManager.saveCurrentFile()
-  }
-
-  open (fileName) {
-    return this.call('fileManager', 'open', fileName)
+  compileFile (event) {
+    return super.compileFile(event)
   }
 
   onActivation () {
-    this.call('manager', 'activatePlugin', 'solidity-logic')
-    this.listenToEvents()
+    super.onActivation()
     this.call('filePanel', 'registerContextMenuItem', {
       id: 'solidity',
       name: 'compileFile',
@@ -338,26 +236,6 @@ class CompileTab extends ViewPlugin {
       path: [],
       pattern: []
     })
-  }
-
-  compileFile (event) {
-    if (event.path.length > 0) {
-      this.compileTabLogic.compileFile(event.path[0])
-    }
-  }
-
-  onDeactivation () {
-    this.editor.event.unregister('contentChanged')
-    this.editor.event.unregister('sessionSwitched')
-    this.editor.event.unregister('contentChanged', this.data.eventHandlers.onContentChanged)
-    this.compiler.event.unregister('loadingCompiler', this.data.eventHandlers.onLoadingCompiler)
-    this.compiler.event.unregister('compilerLoaded', this.data.eventHandlers.onCompilerLoaded)
-    this.compileTabLogic.event.removeListener('startingCompilation', this.data.eventHandlers.onStartingCompilation)
-    this.fileManager.events.removeListener('currentFileChanged', this.data.eventHandlers.onCurrentFileChanged)
-    this.fileManager.events.removeListener('noFileSelected', this.data.eventHandlers.onNoFileSelected)
-    this.compiler.event.unregister('compilationFinished', this.data.eventHandlers.onCompilationFinished)
-    globalRegistry.get('themeModule').api.events.removeListener('themeChanged', this.data.eventHandlers.onThemeChanged)
-    this.call('manager', 'deactivatePlugin', 'solidity-logic')
   }
 }
 
