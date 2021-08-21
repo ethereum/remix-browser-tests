@@ -71,12 +71,13 @@ module.exports = {
   'Should load using URL compiler params': function (browser: NightwatchBrowser) {
     browser
       .pause(5000)
-      .url('http://127.0.0.1:8080/#optimize=true&runs=300&evmVersion=istanbul&version=soljson-v0.7.4+commit.3f05b770.js')
+      .url('http://127.0.0.1:8080/#optimize=true&runs=300&evmVersion=istanbul&version=soljson-v0.7.4+commit.3f05b770.js&language=Yul')
       .refresh()
       .pause(5000)
       .clickLaunchIcon('solidity')
       .assert.containsText('#versionSelector option[data-id="selected"]', '0.7.4+commit.3f05b770')
       .assert.containsText('#evmVersionSelector option[data-id="selected"]', 'istanbul')
+      .assert.containsText('#compilierLanguageSelector option[data-id="selected"]', 'Yul')
       .verify.elementPresent('#optimize:checked')
       .verify.attributeEquals('#runs', 'value', '300')
   },

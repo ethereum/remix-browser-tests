@@ -15,6 +15,7 @@ export class CompileTab extends Plugin {
   public optimize
   public runs
   public evmVersion: string
+  public language: string
   public compilerImport
   public event
 
@@ -41,6 +42,13 @@ export class CompileTab extends Plugin {
     }
     this.api.setParameters({ evmVersion: this.evmVersion })
     this.compiler.set('evmVersion', this.evmVersion)
+
+    this.language = this.api.getParameters().language
+    if(this.language === 'undefined' || this.language === 'null' || !this.language) {
+      this.language = null
+    }
+    this.api.setParameters({ 'language': this.language })
+    this.compiler.set('language', this.language)
   }
 
   setOptimize (newOptimizeValue) {
@@ -70,6 +78,8 @@ export class CompileTab extends Plugin {
    * @params lang {'Solidity' | 'Yul'} ...
    */
   setLanguage (lang) {
+    this.language = lang;
+    this.api.setParameters({ language: lang })
     this.compiler.set('language', lang)
   }
 
