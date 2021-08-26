@@ -7,6 +7,7 @@ const _paq = window._paq = window._paq || []
 
 const themes = [
   { name: 'Dark', quality: 'dark', url: 'assets/css/themes/remix-dark_tvx1s2.css' },
+  { name: 'HackerOwl', quality: 'dark', url: 'assets/css/themes/remix-night_owl.css' },
   { name: 'Light', quality: 'light', url: 'assets/css/themes/remix-light_powaqg.css' },
   { name: 'Midcentury', quality: 'light', url: 'assets/css/themes/remix-midcentury_hrzph3.css' },
   { name: 'Black', quality: 'dark', url: 'assets/css/themes/remix-black_undtds.css' },
