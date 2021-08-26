@@ -80,7 +80,7 @@ module.exports = {
 
   'Test NPM Import (with unpkg.com)': function (browser: NightwatchBrowser) {
     browser
-      .setSolidityCompilerVersion('soljson-v0.8.4+commit.c7e474f2.js')
+      .setSolidityCompilerVersion('soljson-v0.8.7+commit.e28d00a7.js')
       .clickLaunchIcon('filePanel')
       .click('li[data-id="treeViewLitreeViewItemREADME.txt"')
       .addFile('Untitled9.sol', sources[8]['Untitled9.sol'])

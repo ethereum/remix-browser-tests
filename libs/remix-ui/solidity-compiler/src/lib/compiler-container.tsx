@@ -28,7 +28,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
     allversions: [],
     customVersions: [],
     selectedVersion: null,
-    defaultVersion: 'soljson-v0.8.4+commit.c7e474f2.js', // this default version is defined: in makeMockCompiler (for browser test)
+    defaultVersion: 'soljson-v0.8.7+commit.e28d00a7.js', // this default version is defined: in makeMockCompiler (for browser test)
     selectedLanguage: '',
     runs: '',
     compiledFileName: '',
@@ -70,13 +70,14 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
         const runs = params.runs
         const evmVersion = params.evmVersion
         const language = params.language
+        const autoCompile = params.autoCompile === 'false' ? false : params.autoCompile === 'true' ? true : null
 
         return {
           ...prevState,
           hideWarnings: api.getConfiguration('hideWarnings') || false,
-          autoCompile: api.getConfiguration('autoCompile') || false,
+          autoCompile: typeof autoCompile === 'boolean' ? autoCompile : api.getConfiguration('autoCompile') || false,
           includeNightlies: api.getConfiguration('includeNightlies') || false,
-          optimise: (optimize !== null) && (optimize !== undefined) ? optimize : api.getConfiguration('optimise') || false,
+          optimise: typeof optimize === 'boolean' ? optimize : api.getConfiguration('optimise') || false,
           runs: (runs !== null) && (runs !== 'null') && (runs !== undefined) && (runs !== 'undefined') ? runs : 200,
           evmVersion: (evmVersion !== null) && (evmVersion !== 'null') && (evmVersion !== undefined) && (evmVersion !== 'undefined') ? evmVersion : 'default',
           language: (language !== null) && (language !== 'null') && (language !== undefined) && (language !== 'undefined') ? language : 'Solidity'
@@ -409,6 +410,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
     const checked = e.target.checked
 
     api.setConfiguration('autoCompile', checked)
+    checked && compile()
     setState(prevState => {
       return { ...prevState, autoCompile: checked }
     })
@@ -536,6 +538,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
             <label className="remixui_compilerLabel form-check-label" htmlFor="evmVersionSelector">EVM Version</label>
             <select value={state.evmVersion} onChange={(e) => handleEvmVersionChange(e.target.value)} className="custom-select" id="evmVersionSelector">
               <option data-id={state.evmVersion === 'default' ? 'selected' : ''} value="default">compiler default</option>
+              <option data-id={state.evmVersion === 'london' ? 'selected' : ''} value="london">london</option>
               <option data-id={state.evmVersion === 'berlin' ? 'selected' : ''} value="berlin">berlin</option>
               <option data-id={state.evmVersion === 'muirGlacier' ? 'selected' : ''} value="muirGlacier">muirGlacier</option>
               <option data-id={state.evmVersion === 'istanbul' ? 'selected' : ''} value="istanbul">istanbul</option>

@@ -13,17 +13,18 @@ class FileProvider {
     this.type = name
     this.providerExternalsStorage = new Storage('providerExternals:')
     this.externalFolders = [this.type + '/swarm', this.type + '/ipfs', this.type + '/github', this.type + '/gists', this.type + '/https']
+    this.reverseKey = this.type + '-reverse-'
   }
 
   addNormalizedName (path, url) {
     this.providerExternalsStorage.set(this.type + '/' + path, url)
-    this.providerExternalsStorage.set('reverse-' + url, this.type + '/' + path)
+    this.providerExternalsStorage.set(this.reverseKey + url, this.type + '/' + path)
   }
 
   removeNormalizedName (path) {
     const value = this.providerExternalsStorage.get(path)
     this.providerExternalsStorage.remove(path)
-    this.providerExternalsStorage.remove('reverse-' + value)
+    this.providerExternalsStorage.remove(this.reverseKey + value)
   }
 
   normalizedNameExists (path) {
@@ -35,7 +36,12 @@ class FileProvider {
   }
 
   getPathFromUrl (url) {
-    return this.providerExternalsStorage.get('reverse-' + url)
+    return this.providerExternalsStorage.get(this.reverseKey + url)
+  }
+
+  getUrlFromPath (path) {
+    if (!path.startsWith(this.type)) path = this.type + '/' + path
+    return this.providerExternalsStorage.get(path)
   }
 
   isExternalFolder (path) {

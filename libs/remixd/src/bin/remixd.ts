@@ -6,7 +6,7 @@ import * as servicesList from '../serviceList'
 import * as WS from 'ws' // eslint-disable-line
 import { getDomain, absolutePath } from '../utils'
 import Axios from 'axios'
-import * as fs from 'fs-extra'
+import { writeJSON, existsSync } from 'fs-extra'
 import * as path from 'path'
 import * as program from 'commander'
 
@@ -83,7 +83,7 @@ function errorHandler (error: any, service: string) {
     console.log('\x1b[33m%s\x1b[0m', '[WARN] You may now only use IDE at ' + program.remixIde + ' to connect to that instance')
   }
 
-  if (program.sharedFolder) {
+  if (program.sharedFolder && existsSync(absolutePath('./', program.sharedFolder))) {
     console.log('\x1b[33m%s\x1b[0m', '[WARN] Any application that runs on your computer can potentially read from and write to all files in the directory.')
     console.log('\x1b[33m%s\x1b[0m', '[WARN] Symbolic links are not forwarded to Remix IDE\n')
     try {
@@ -102,7 +102,7 @@ function errorHandler (error: any, service: string) {
       })
       // Run hardhat service if a hardhat project is shared as folder
       const hardhatConfigFilePath = absolutePath('./', program.sharedFolder) + '/hardhat.config.js'
-      const isHardhatProject = fs.existsSync(hardhatConfigFilePath)
+      const isHardhatProject = existsSync(hardhatConfigFilePath)
       if (isHardhatProject) {
         startService('hardhat', (ws: WS, sharedFolderClient: servicesList.Sharedfolder, error: Error) => {
           if (error) {
@@ -151,7 +151,7 @@ function errorHandler (error: any, service: string) {
       const { data } = await Axios.get(gistUrl)
 
       try {
-        await fs.writeJSON(path.resolve(path.join(__dirname, '..', 'origins.json')), { data })
+        await writeJSON(path.resolve(path.join(__dirname, '..', 'origins.json')), { data })
       } catch (e) {
         console.error(e)
       }

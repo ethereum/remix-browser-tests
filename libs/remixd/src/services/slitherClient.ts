@@ -137,7 +137,6 @@ export class SlitherClient extends PluginClient {
       const outputFile: string = 'remix-slitherReport_' + Math.floor(Date.now() / 1000) + '.json'
       const cmd: string = `slither ${filePath} ${solcArgs} ${solcRemaps} --json ${outputFile}`
       console.log('\x1b[32m%s\x1b[0m', '[Slither Analysis]: Running Slither...')
-      console.log(cmd)
       // Added `stdio: 'ignore'` as for contract with NPM imports analysis which is exported in 'stderr'
       // get too big and hangs the process. We process analysis from the report file only
       const child = spawn(cmd, { cwd: this.currentSharedFolder, shell: true, stdio: 'ignore' })

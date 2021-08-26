@@ -14,7 +14,7 @@ const TestTabLogic = require('./testTab/testTab')
 const profile = {
   name: 'solidityUnitTesting',
   displayName: 'Solidity unit testing',
-  methods: ['testFromPath', 'testFromSource'],
+  methods: ['testFromPath', 'testFromSource', 'setTestFolderPath'],
   events: [],
   icon: 'assets/img/unitTesting.webp',
   description: 'Fast tool to generate unit tests for your contracts',
@@ -51,6 +51,21 @@ module.exports = class TestTab extends ViewPlugin {
   onActivationInternal () {
     this.testTabLogic = new TestTabLogic(this.fileManager)
     this.listenToEvents()
+    this.call('filePanel', 'registerContextMenuItem', {
+      id: 'solidityUnitTesting',
+      name: 'setTestFolderPath',
+      label: 'Set path for Unit Testing',
+      type: ['folder'],
+      extension: [],
+      path: [],
+      pattern: []
+    })
+  }
+
+  async setTestFolderPath (event) {
+    if (event.path.length > 0) {
+      await this.setCurrentPath(event.path[0])
+    }
   }
 
   onDeactivation () {
@@ -77,10 +92,7 @@ module.exports = class TestTab extends ViewPlugin {
     })
 
     this.on('filePanel', 'setWorkspace', async () => {
-      this.testTabLogic.setCurrentPath(this.defaultPath)
-      this.inputPath.value = this.defaultPath
-      this.updateDirList(this.defaultPath)
-      await this.updateForNewCurrent()
+      this.setCurrentPath(this.defaultPath)
     })
 
     this.fileManager.events.on('noFileSelected', () => {
@@ -403,6 +415,17 @@ module.exports = class TestTab extends ViewPlugin {
   async testFromPath (path) {
     const fileContent = await this.fileManager.readFile(path)
     return this.testFromSource(fileContent, path)
+  }
+
+  /**
+   * Changes the current path of Unit Testing Plugin
+   * @param path - the path from where UT plugin takes _test.sol files to run
+   */
+  async setCurrentPath (path) {
+    this.testTabLogic.setCurrentPath(path)
+    this.inputPath.value = path
+    this.updateDirList(path)
+    await this.updateForNewCurrent()
   }
 
   /*

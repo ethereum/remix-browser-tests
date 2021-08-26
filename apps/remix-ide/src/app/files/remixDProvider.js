@@ -87,14 +87,6 @@ module.exports = class RemixDProvider extends FileProvider {
       })
   }
 
-  getNormalizedName (path) {
-    return path
-  }
-
-  getPathFromUrl (path) {
-    return path
-  }
-
   get (path, cb) {
     if (!this._isReady) return cb && cb('provider not ready')
     var unprefixedpath = this.removePrefix(path)

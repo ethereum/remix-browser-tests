@@ -340,10 +340,16 @@ class CompileTab extends ViewPlugin {
     })
   }
 
-  compileFile (event) {
+  // Returns if the compilation was successfull
+  async compileFile (event) {
     if (event.path.length > 0) {
-      this.compileTabLogic.compileFile(event.path[0])
+      try {
+        return await this.compileTabLogic.compileFile(event.path[0])
+      } catch (error) {
+        return false
+      }
     }
+    return false
   }
 
   onDeactivation () {

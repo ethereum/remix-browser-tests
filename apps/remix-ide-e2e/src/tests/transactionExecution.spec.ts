@@ -264,7 +264,7 @@ contract C {
     'customError.sol': {
       content: `// SPDX-License-Identifier: GPL-3.0
 
-      pragma solidity ^0.8.4;
+      pragma solidity ^0.8.7;
       
       /// error description
       /// @param a param1

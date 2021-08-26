@@ -38,6 +38,13 @@ class DGitProvider extends Plugin {
       protocol: 'https',
       ipfsurl: 'https://ipfs.io/ipfs/'
     }
+    this.remixIPFS = {
+      host: 'ipfs.remixproject.org',
+      port: 443,
+      protocol: 'https',
+      ipfsurl: 'https://ipfs.remixproject.org/ipfs/'
+    }
+    this.ipfsSources = [this.remixIPFS, this.globalIPFSConfig, this.ipfsconfig]
   }
 
   async getGitConfig () {
@@ -287,36 +294,58 @@ class DGitProvider extends Plugin {
     }
   };
 
-  async pull (cmd) {
-    const permission = await this.askUserPermission('pull', 'Import multiple files into your workspaces.')
-    console.log(this.ipfsconfig)
-    if (!permission) return false
-    const cid = cmd.cid
-    if (!cmd.local) {
-      this.ipfs = IpfsHttpClient(this.globalIPFSConfig)
-    } else {
-      if (!this.checkIpfsConfig()) return false
+  async importIPFSFiles (config, cid, workspace) {
+    const ipfs = IpfsHttpClient(config)
+    let result = false
+    try {
+      const data = ipfs.get(cid, { timeout: 10000 })
+      for await (const file of data) {
+        if (file.path) result = true
+        file.path = file.path.replace(cid, '')
+        if (!file.content) {
+          continue
+        }
+        const content = []
+        for await (const chunk of file.content) {
+          content.push(chunk)
+        }
+        const dir = path.dirname(file.path)
+        try {
+          this.createDirectories(`${workspace.absolutePath}/${dir}`)
+        } catch (e) {}
+        try {
+          window.remixFileSystem.writeFileSync(`${workspace.absolutePath}/${file.path}`, Buffer.concat(content) || new Uint8Array())
+        } catch (e) {}
+      }
+    } catch (e) {
     }
-    await this.call('filePanel', 'createWorkspace', `workspace_${Date.now()}`, false)
-    const workspace = await this.call('filePanel', 'getCurrentWorkspace')
-    for await (const file of this.ipfs.get(cid)) {
-      file.path = file.path.replace(cid, '')
-      if (!file.content) {
+    return result
+  }
+
+  calculateLocalStorage () {
+    var _lsTotal = 0
+    var _xLen; var _x
+    for (_x in localStorage) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (!localStorage.hasOwnProperty(_x)) {
         continue
       }
-      const content = []
-      for await (const chunk of file.content) {
-        content.push(chunk)
-      }
-      const dir = path.dirname(file.path)
-      try {
-        this.createDirectories(`${workspace.absolutePath}/${dir}`)
-      } catch (e) {}
-      try {
-        window.remixFileSystem.writeFileSync(`${workspace.absolutePath}/${file.path}`, Buffer.concat(content) || new Uint8Array())
-      } catch (e) {}
-    }
-    this.call('fileManager', 'refresh')
+      _xLen = ((localStorage[_x].length + _x.length) * 2)
+      _lsTotal += _xLen
+    };
+    return (_lsTotal / 1024).toFixed(2)
+  }
+
+  async pull (cmd) {
+    const permission = await this.askUserPermission('pull', 'Import multiple files into your workspaces.')
+    if (!permission) return false
+    if (this.calculateLocalStorage() > 10000) throw new Error('Local browser storage is full.')
+    const cid = cmd.cid
+    await this.call('filePanel', 'createWorkspace', `workspace_${Date.now()}`, false)
+    const workspace = await this.call('filePanel', 'getCurrentWorkspace')
+    const result = await this.importIPFSFiles(this.remixIPFS, cid, workspace) || await this.importIPFSFiles(this.ipfsconfig, cid, workspace) || await this.importIPFSFiles(this.globalIPFSConfig, cid, workspace)
+    await this.call('fileManager', 'refresh')
+    if (!result) throw new Error(`Cannot pull files from IPFS at ${cid}`)
   }
 
   async getItem (name) {

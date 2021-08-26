@@ -2,7 +2,6 @@
 import { Plugin } from '@remixproject/engine'
 import { RemixURLResolver } from '@remix-project/remix-url-resolver'
 const remixTests = require('@remix-project/remix-tests')
-const async = require('async')
 
 const profile = {
   name: 'contentImport',
@@ -88,21 +87,23 @@ export class CompilerImports extends Plugin {
     }
   }
 
-  importExternal (url, targetPath, cb) {
-    this.import(url,
-      // TODO: handle this event
-      (loadingMsg) => { this.emit('message', loadingMsg) },
-      async (error, content, cleanUrl, type, url) => {
-        if (error) return cb(error)
-        try {
-          const provider = await this.call('fileManager', 'getProviderOf', null)
-          const path = targetPath || type + '/' + cleanUrl
-          if (provider) provider.addExternal('.deps/' + path, content, url)
-        } catch (err) {
-
-        }
-        cb(null, content)
-      }, null)
+  importExternal (url, targetPath) {
+    return new Promise((resolve, reject) => {
+      this.import(url,
+        // TODO: handle this event
+        (loadingMsg) => { this.emit('message', loadingMsg) },
+        async (error, content, cleanUrl, type, url) => {
+          if (error) return reject(error)
+          try {
+            const provider = await this.call('fileManager', 'getProviderOf', null)
+            const path = targetPath || type + '/' + cleanUrl
+            if (provider) provider.addExternal('.deps/' + path, content, url)
+          } catch (err) {
+            console.error(err)
+          }
+          resolve(content)
+        }, null)
+    })
   }
 
   /**
@@ -115,66 +116,58 @@ export class CompilerImports extends Plugin {
     * @param {String} targetPath - (optional) internal path where the content should be saved to
     * @returns {Promise} - string content
     */
-  resolveAndSave (url, targetPath) {
-    return new Promise((resolve, reject) => {
-      if (url.indexOf('remix_tests.sol') !== -1) resolve(remixTests.assertLibCode)
-      this.call('fileManager', 'getProviderOf', url).then((provider) => {
-        if (provider) {
-          if (provider.type === 'localhost' && !provider.isConnected()) {
-            return reject(new Error(`file provider ${provider.type} not available while trying to resolve ${url}`))
-          }
-          provider.exists(url).then(exist => {
-            /*
-              if the path is absolute and the file does not exist, we can stop here
-              Doesn't make sense to try to resolve "localhost/node_modules/localhost/node_modules/<path>" and we'll end in an infinite loop.
-            */
-            if (!exist && url.startsWith('browser/')) return reject(new Error(`not found ${url}`))
-            if (!exist && url.startsWith('localhost/')) return reject(new Error(`not found ${url}`))
+  async resolveAndSave (url, targetPath) {
+    if (url.indexOf('remix_tests.sol') !== -1) return remixTests.assertLibCode
+    try {
+      const provider = await this.call('fileManager', 'getProviderOf', url)
+      if (provider) {
+        if (provider.type === 'localhost' && !provider.isConnected()) {
+          throw new Error(`file provider ${provider.type} not available while trying to resolve ${url}`)
+        }
+        const exist = await provider.exists(url)
+        /*
+          if the path is absolute and the file does not exist, we can stop here
+          Doesn't make sense to try to resolve "localhost/node_modules/localhost/node_modules/<path>" and we'll end in an infinite loop.
+        */
+        if (!exist && url.startsWith('browser/')) throw new Error(`not found ${url}`)
+        if (!exist && url.startsWith('localhost/')) throw new Error(`not found ${url}`)
 
-            if (exist) {
-              return provider.get(url, (error, content) => {
-                if (error) return reject(error)
-                resolve(content)
-              })
-            }
-
-            // try to resolve localhost modules (aka truffle imports) - e.g from the node_modules folder
-            this.call('fileManager', 'getProviderByName', 'localhost').then((localhostProvider) => {
-              if (localhostProvider.isConnected()) {
-                var splitted = /([^/]+)\/(.*)$/g.exec(url)
-                return async.tryEach([
-                  (cb) => { this.resolveAndSave('localhost/installed_contracts/' + url, null).then((result) => cb(null, result)).catch((error) => cb(error.message)) },
-                  // eslint-disable-next-line standard/no-callback-literal
-                  (cb) => { if (!splitted) { cb('URL not parseable: ' + url) } else { this.resolveAndSave('localhost/installed_contracts/' + splitted[1] + '/contracts/' + splitted[2], null).then((result) => cb(null, result)).catch((error) => cb(error.message)) } },
-                  (cb) => { this.resolveAndSave('localhost/node_modules/' + url, null).then((result) => cb(null, result)).catch((error) => cb(error.message)) },
-                  // eslint-disable-next-line standard/no-callback-literal
-                  (cb) => { if (!splitted) { cb('URL not parseable: ' + url) } else { this.resolveAndSave('localhost/node_modules/' + splitted[1] + '/contracts/' + splitted[2], null).then((result) => cb(null, result)).catch((error) => cb(error.message)) } }],
-                (error, result) => {
-                  if (error) {
-                    return this.importExternal(url, targetPath, (error, content) => {
-                      if (error) return reject(error)
-                      resolve(content)
-                    })
-                  }
-                  resolve(result)
-                })
-              }
-              this.importExternal(url, targetPath, (error, content) => {
+        if (exist) {
+          const content = await (() => {
+            return new Promise((resolve, reject) => {
+              provider.get(url, (error, content) => {
                 if (error) return reject(error)
                 resolve(content)
               })
             })
-          }).catch(error => {
-            return reject(error)
-          })
+          })()
+          return content
+        } else {
+          const localhostProvider = await this.call('fileManager', 'getProviderByName', 'localhost')
+          if (localhostProvider.isConnected()) {
+            const splitted = /([^/]+)\/(.*)$/g.exec(url)
+
+            const possiblePaths = ['localhost/installed_contracts/' + url]
+            if (splitted) possiblePaths.push('localhost/installed_contracts/' + splitted[1] + '/contracts/' + splitted[2])
+            possiblePaths.push('localhost/node_modules/' + url)
+            if (splitted) possiblePaths.push('localhost/node_modules/' + splitted[1] + '/contracts/' + splitted[2])
+
+            for (const path of possiblePaths) {
+              try {
+                const content = await this.resolveAndSave(path, null)
+                if (content) {
+                  localhostProvider.addNormalizedName(path.replace('localhost/', ''), url)
+                  return content
+                }
+              } catch (e) {}
+            }
+            return await this.importExternal(url, targetPath)
+          }
+          return await this.importExternal(url, targetPath)
         }
-      }).catch(() => {
-        // fallback to just resolving the file, it won't be saved in file manager
-        return this.importExternal(url, targetPath, (error, content) => {
-          if (error) return reject(error)
-          resolve(content)
-        })
-      })
-    })
+      }
+    } catch (e) {
+      throw new Error(`not found ${url}`)
+    }
   }
 }

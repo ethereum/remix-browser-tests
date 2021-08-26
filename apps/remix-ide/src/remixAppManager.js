@@ -9,7 +9,7 @@ const _paq = window._paq = window._paq || []
 const requiredModules = [ // services + layout views + system views
   'manager', 'compilerArtefacts', 'compilerMetadata', 'contextualListener', 'editor', 'offsetToLineColumnConverter', 'network', 'theme',
   'fileManager', 'contentImport', 'blockchain', 'web3Provider', 'scriptRunner', 'fetchAndCompile', 'mainPanel', 'hiddenPanel', 'sidePanel', 'menuicons',
-  'filePanel', 'terminal', 'settings', 'pluginManager', 'tabs', 'udapp', 'dGitProvider']
+  'filePanel', 'terminal', 'settings', 'pluginManager', 'tabs', 'udapp', 'dGitProvider', 'solidity-logic']
 
 const dependentModules = ['git', 'hardhat'] // module which shouldn't be manually activated (e.g git is activated by remixd)
 
@@ -131,6 +131,29 @@ export class RemixAppManager extends PluginManager {
     }
     return plugins.map(plugin => {
       return new IframePlugin(plugin)
+    })
+  }
+
+  async registerContextMenuItems () {
+    await this.call('filePanel', 'registerContextMenuItem', {
+      id: 'flattener',
+      name: 'flattenFileCustomAction',
+      label: 'Flatten',
+      type: [],
+      extension: ['.sol'],
+      path: [],
+      pattern: [],
+      sticky: true
+    })
+    await this.call('filePanel', 'registerContextMenuItem', {
+      id: 'optimism-compiler',
+      name: 'compileCustomAction',
+      label: 'Compile with Optimism',
+      type: [],
+      extension: ['.sol'],
+      path: [],
+      pattern: [],
+      sticky: true
     })
   }
 }

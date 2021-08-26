@@ -34,6 +34,13 @@ const sources = [
   },
   {
     'test_import_node_modules_with_github_import.sol': { content: 'import "openzeppelin-solidity/contracts/sample.sol";' }
+  },
+  {
+    'test_static_analysis_with_remixd_and_hardhat.sol': {
+      content: `
+      import "hardhat/console.sol";
+      contract test5 { function get () public returns (uint) { return 8; }}`
+    }
   }
 ]
 
@@ -70,6 +77,21 @@ module.exports = {
       .clickLaunchIcon('solidity')
       .setSolidityCompilerVersion('soljson-v0.8.0+commit.c7dfd78e.js') // open-zeppelin moved to pragma ^0.8.0
       .testContracts('test_import_node_modules_with_github_import.sol', sources[4]['test_import_node_modules_with_github_import.sol'], ['ERC20', 'test11'])
+  },
+  'Static Analysis run with remixd': function (browser) {
+    browser.testContracts('test_static_analysis_with_remixd_and_hardhat.sol', sources[5]['test_static_analysis_with_remixd_and_hardhat.sol'], ['test5'])
+      .clickLaunchIcon('solidityStaticAnalysis')
+      .click('#staticanalysisButton button')
+      .waitForElementPresent('#staticanalysisresult .warning', 2000, true, function () {
+        browser
+          .click('[data-id="staticAnalysisModuleMiscellaneous1"')
+          .waitForElementPresent('.highlightLine15', 60000)
+          .getEditorValue((content) => {
+            browser.assert.ok(content.indexOf(
+              'function _sendLogPayload(bytes memory payload) private view {') !== -1,
+            'code has not been loaded')
+          })
+      })
   },
 
   'Run git status': '' + function (browser) {

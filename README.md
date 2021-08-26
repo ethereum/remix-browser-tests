@@ -50,6 +50,18 @@ Run `nx serve` and open `http://127.0.0.1:8080` in your browser.
 Then open your `text editor` and start developing.
 The browser will automatically refresh when files are saved.
 
+## Production Build
+To generate react production builds for remix-project.
+```bash
+npm run build:production
+```
+build can be found in `remix-project/dist/apps/remix-ide` directory.
+
+```bash
+npm run serve:production
+```
+production build will be served by default to `http://localhost:8080/` or `http://127.0.0.1:8080/`
+
 ## Docker:
 
 Prerequisites: 

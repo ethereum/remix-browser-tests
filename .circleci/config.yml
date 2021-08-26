@@ -232,14 +232,14 @@ jobs:
     environment:
       - COMMIT_AUTHOR_EMAIL: "yann@ethereum.org"
       - COMMIT_AUTHOR: "Circle CI"
-      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/runtime.js dist/apps/remix-ide/vendor.js dist/apps/remix-ide/favicon.ico"
+      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/favicon.ico"
     working_directory: ~/remix-project
 
     steps:
       - checkout
       - run: npm install
       - run: npm run downloadsolc_assets
-      - run: npx nx build remix-ide --with-deps
+      - run: npm run build:production
       - run: 
           name: Deploy
           command: |
@@ -260,7 +260,7 @@ jobs:
     environment:
       - COMMIT_AUTHOR_EMAIL: "yann@ethereum.org"
       - COMMIT_AUTHOR: "Circle CI"
-      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/runtime.js dist/apps/remix-ide/vendor.js dist/apps/remix-ide/favicon.ico"
+      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/favicon.ico"
     working_directory: ~/remix-project
 
     steps:
@@ -268,7 +268,7 @@ jobs:
       - setup_remote_docker
       - run: npm install
       - run: npm run downloadsolc_assets
-      - run: npx nx build remix-ide --with-deps
+      - run: npm run build:production
       - run: ./apps/remix-ide/ci/copy_resources.sh     
       - run: ./apps/remix-ide/ci/publishIpfs
       - run: ./apps/remix-ide/ci/build_and_publish_docker_images.sh
@@ -286,14 +286,14 @@ jobs:
     environment:
       - COMMIT_AUTHOR_EMAIL: "yann@ethereum.org"
       - COMMIT_AUTHOR: "Circle CI"
-      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/runtime.js dist/apps/remix-ide/vendor.js dist/apps/remix-ide/favicon.ico"
+      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/favicon.ico"
     working_directory: ~/remix-project
 
     steps:
       - checkout
       - run: npm install
       - run: npm run downloadsolc_assets
-      - run: npx nx build remix-ide --with-deps
+      - run: npm run build:production
       - run: 
           name: Deploy
           command: |
@@ -314,7 +314,7 @@ jobs:
     environment:
       - COMMIT_AUTHOR_EMAIL: "yann@ethereum.org"
       - COMMIT_AUTHOR: "Circle CI"
-      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/runtime.js dist/apps/remix-ide/vendor.js dist/apps/remix-ide/favicon.ico"
+      - FILES_TO_PACKAGE: "dist/apps/remix-ide/assets dist/apps/remix-ide/index.html dist/apps/remix-ide/main.js dist/apps/remix-ide/polyfills.js dist/apps/remix-ide/favicon.ico"
     working_directory: ~/remix-project
 
     steps:
@@ -322,7 +322,7 @@ jobs:
       - run: npm install
       - run: npm run build:libs
       - run: npm run downloadsolc_assets
-      - run: npm run build
+      - run: npm run build:production
       - run: 
           name: Deploy
           command: |
