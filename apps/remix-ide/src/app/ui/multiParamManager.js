@@ -6,6 +6,25 @@ var copyToClipboard = require('./copy-to-clipboard')
 var remixLib = require('@remix-project/remix-lib')
 var txFormat = remixLib.execution.txFormat
 
+function stringToBytes32(str) {
+  const bytes = new TextEncoder().encode(str)
+  if(bytes.length > 32) {
+    // TODO find a better way to report the error
+    alert(`String too long '${str}'`)
+    return "'${str}'"
+  }
+
+  const hex = [...bytes, ...Array(32).fill(0)]
+    .slice(0, 32)
+    .map((c) => `00${c.toString(16)}`.slice(-2))
+    .join('')
+  return `"0x${hex}"`
+}
+
+function preprocessVal(str) {
+  return str.replace(/'([^']+)?'/g, (s, a) => stringToBytes32(a)) // replace strings denoted as bytes32 in the contract
+}
+
 class MultiParamManager {
   /**
     *
@@ -56,8 +75,7 @@ class MultiParamManager {
       if (ret !== '') ret += ','
       var elVal = valArray[j].value
       valArrayTest.push(elVal)
-      elVal = elVal.replace(/(^|,\s+|,)(\d+)(\s+,|,|$)/g, '$1"$2"$3') // replace non quoted number by quoted number
-      elVal = elVal.replace(/(^|,\s+|,)(0[xX][0-9a-fA-F]+)(\s+,|,|$)/g, '$1"$2"$3') // replace non quoted hex string by quoted hex string
+      elVal = preprocessVal(elVal)
       try {
         JSON.parse(elVal)
       } catch (e) {
@@ -84,8 +102,7 @@ class MultiParamManager {
   makeMultiVal () {
     var inputString = this.basicInputField.value
     if (inputString) {
-      inputString = inputString.replace(/(^|,\s+|,)(\d+)(\s+,|,|$)/g, '$1"$2"$3') // replace non quoted number by quoted number
-      inputString = inputString.replace(/(^|,\s+|,)(0[xX][0-9a-fA-F]+)(\s+,|,|$)/g, '$1"$2"$3') // replace non quoted hex string by quoted hex string
+      inputString = preprocessVal(inputString)
       var inputJSON = JSON.parse('[' + inputString + ']')
       var multiInputs = this.multiFields.querySelectorAll('input')
       for (var k = 0; k < multiInputs.length; k++) {
@@ -122,7 +139,7 @@ class MultiParamManager {
     this.basicInputField.setAttribute('data-id', this.inputs)
 
     var onClick = () => {
-      this.clickCallBack(this.funABI.inputs, this.basicInputField.value)
+      this.clickCallBack(this.funABI.inputs, preprocessVal(this.basicInputField.value))
     }
     const width = this.isDeploy ? '' : 'w-50'
     const funcButton = yo`<button onclick=${() => onClick()} class="${css.instanceButton} ${width} btn btn-sm" data-id="multiParamManagerFuncButton">${title}</button>`
