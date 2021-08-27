@@ -6,6 +6,7 @@ import { canUseWorker, baseURLBin, baseURLWasm, urlFromVersion, pathToURL, promi
 import { compilerReducer, compilerInitialState } from './reducers/compiler'
 import { resetEditorMode, listenToEvents } from './actions/compiler'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap' // eslint-disable-line
+import { getValidLanguage } from '../../../../remix-lib/src/helpers/compilerHelper'
 
 import './css/style.css'
 
@@ -69,6 +70,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
         const optimize = params.optimize === 'false' ? false : params.optimize === 'true' ? true : null
         const runs = params.runs
         const evmVersion = params.evmVersion
+        const language = getValidLanguage(params.language)
         const autoCompile = params.autoCompile === 'false' ? false : params.autoCompile === 'true' ? true : null
 
         return {
@@ -78,7 +80,8 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
           includeNightlies: api.getConfiguration('includeNightlies') || false,
           optimise: typeof optimize === 'boolean' ? optimize : api.getConfiguration('optimise') || false,
           runs: (runs !== null) && (runs !== 'null') && (runs !== undefined) && (runs !== 'undefined') ? runs : 200,
-          evmVersion: (evmVersion !== null) && (evmVersion !== 'null') && (evmVersion !== undefined) && (evmVersion !== 'undefined') ? evmVersion : 'default'
+          evmVersion: (evmVersion !== null) && (evmVersion !== 'null') && (evmVersion !== undefined) && (evmVersion !== 'undefined') ? evmVersion : 'default',
+          language: (language !== null) ? language : 'Solidity'
         }
       })
     }
@@ -528,8 +531,8 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
           <div className="mb-2">
             <label className="remixui_compilerLabel form-check-label" htmlFor="compilierLanguageSelector">Language</label>
             <select onChange={(e) => handleLanguageChange(e.target.value)} value={state.language} className="custom-select" id="compilierLanguageSelector" title="Available since v0.5.7">
-              <option value='Solidity'>Solidity</option>
-              <option value='Yul'>Yul</option>
+              <option data-id={state.language === 'Solidity' ? 'selected' : ''} value='Solidity'>Solidity</option>
+              <option data-id={state.language === 'Yul' ? 'selected' : ''} value='Yul'>Yul</option>
             </select>
           </div>
           <div className="mb-2">
