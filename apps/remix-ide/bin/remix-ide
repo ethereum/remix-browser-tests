@@ -10,7 +10,7 @@ var server = httpServer.createServer({
 var folder = process.argv.length > 2 ? process.argv[2] : process.cwd()
 
 server.listen(8080, '127.0.0.1', function () {})
-var router = new remixd.Router(65520, remixd.services.sharedFolder, { remixIdeUrl: 'http://localhost:8080' }, (webSocket) => {
+var router = new remixd.Websocket(65520, remixd.services.sharedFolder, { remixIdeUrl: 'http://localhost:8080' }, (webSocket) => {
   remixd.services.sharedFolder.setWebSocket(webSocket)
   remixd.services.sharedFolder.setupNotifications(folder)
   remixd.services.sharedFolder.sharedFolder(folder, false)

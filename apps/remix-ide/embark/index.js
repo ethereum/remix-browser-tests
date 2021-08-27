@@ -39,7 +39,7 @@ module.exports = (embark) => {
   })
 
   // setup remixd shared folder service
-  const sharedFolderRouter = new remixd.Router(65520, sharedFolderService, { remixIdeUrl }, (webSocket) => {
+  const sharedFolderRouter = new remixd.Websocket(65520, sharedFolderService, { remixIdeUrl }, (webSocket) => {
     sharedFolderService.setWebSocket(webSocket)
     sharedFolderService.setupNotifications(sharedFolder)
     sharedFolderService.sharedFolder(sharedFolder, readOnly)
