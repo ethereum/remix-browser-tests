@@ -58,7 +58,7 @@ class SettingsUI {
     // preventing not numeric keys
     // preventing 000 case
     if (!helper.isNumeric(e.key) ||
-      (e.key === '0' && !parseInt(this.el.querySelector('#value').value) && this.el.querySelector('#value').value.length > 0)) {
+      (e.key === '0' && !parseFloat(this.el.querySelector('#value').value) && this.el.querySelector('#value').value.length > 0)) {
       e.preventDefault()
       e.stopImmediatePropagation()
     }
