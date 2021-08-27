@@ -5,18 +5,63 @@ import * as packageJson from '../../../../../package.json'
 import yo from 'yo-yo'
 const _paq = window._paq = window._paq || []
 
-const themes = [
-  { name: 'Dark', quality: 'dark', url: 'assets/css/themes/remix-dark_tvx1s2.css' },
-  { name: 'Light', quality: 'light', url: 'assets/css/themes/remix-light_powaqg.css' },
-  { name: 'Midcentury', quality: 'light', url: 'assets/css/themes/remix-midcentury_hrzph3.css' },
-  { name: 'Black', quality: 'dark', url: 'assets/css/themes/remix-black_undtds.css' },
-  { name: 'Candy', quality: 'light', url: 'assets/css/themes/remix-candy_ikhg4m.css' },
+const common = {
+  breakpoints: {
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200
+  },
+  fontFamily: '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+  space: 8
+}
 
-  { name: 'Cerulean', quality: 'light', url: 'assets/css/themes/bootstrap-cerulean.min.css' },
-  { name: 'Flatly', quality: 'light', url: 'assets/css/themes/bootstrap-flatly.min.css' },
-  { name: 'Spacelab', quality: 'light', url: 'assets/css/themes/bootstrap-spacelab.min.css' },
-  { name: 'Cyborg', quality: 'dark', url: 'assets/css/themes/bootstrap-cyborg.min.css' }
-]
+const themes = [{
+  url: 'https://res.cloudinary.com/lianahus/raw/upload/v1597918237/remix-themes/PR365/remix-light_powaqg.css',
+  quality: 'light',
+  name: 'Light',
+  colors: {
+    surface: '#fff',
+    background: '#eef1f6',
+    foreground: '#2e3145',
+    primary: '#007aa6',
+    primaryContrast: '#fff',
+    secondary: '#a8b3bc',
+    secondaryContrast: '#fff',
+    success: '#32ba89',
+    successContrast: '#fff',
+    warn: '#c97539',
+    warnContrast: '#212529',
+    error: '#b84040',
+    errorContrast: '#fff',
+    disabled: '#e9ecef',
+    disabledContrast: '#6c757d'
+  },
+  ...common
+}, {
+  url: 'https://res.cloudinary.com/lianahus/raw/upload/v1597918237/remix-themes/PR365/remix-dark_tvx1s2.css',
+  quality: 'dark',
+  name: 'Dark',
+  colors: {
+    surface: '#2a2c3f',
+    background: '#222336',
+    foreground: '#a2a3bd',
+    primary: '#007aa6',
+    primaryContrast: '#fff',
+    secondary: '#a8b3bc',
+    secondaryContrast: '#fff',
+    success: '#32ba89',
+    successContrast: '#fff',
+    warn: '#c97539',
+    warnContrast: '#212529',
+    error: '#b84040',
+    errorContrast: '#fff',
+    disabled: '#282a3d',
+    disabledContrast: '#55566c'
+  },
+  ...common
+}]
 
 const profile = {
   name: 'theme',
@@ -34,7 +79,6 @@ export class ThemeModule extends Plugin {
       config: registry.get('config').api
     }
     this.themes = themes.reduce((acc, theme) => {
-      theme.url = window.location.origin + window.location.pathname + theme.url
       return { ...acc, [theme.name]: theme }
     }, {})
     let queryTheme = (new QueryParams()).get().theme
