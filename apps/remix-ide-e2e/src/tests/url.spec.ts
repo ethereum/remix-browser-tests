@@ -71,7 +71,7 @@ module.exports = {
   'Should load using URL compiler params': function (browser: NightwatchBrowser) {
     browser
       .pause(5000)
-      .url('http://127.0.0.1:8080/#optimize=true&runs=300&autoCompile=true&evmVersion=istanbul&version=soljson-v0.7.4+commit.3f05b770.js')
+      .url('http://127.0.0.1:8080/#optimize=true&runs=300&autoCompile=true&evmVersion=istanbul&version=soljson-v0.7.4+commit.3f05b770.js&language=Yul')
       .refresh()
       .pause(5000)
       .clickLaunchIcon('solidity')

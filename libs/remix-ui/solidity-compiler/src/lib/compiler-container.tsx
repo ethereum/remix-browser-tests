@@ -6,6 +6,7 @@ import { canUseWorker, baseURLBin, baseURLWasm, urlFromVersion, pathToURL, promi
 import { compilerReducer, compilerInitialState } from './reducers/compiler'
 import { resetEditorMode, listenToEvents } from './actions/compiler'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap' // eslint-disable-line
+import { getValidLanguage } from '../../../../remix-lib/src/helpers/compilerHelper'
 
 import './css/style.css'
 
@@ -69,7 +70,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
         const optimize = params.optimize === 'false' ? false : params.optimize === 'true' ? true : null
         const runs = params.runs
         const evmVersion = params.evmVersion
-        const language = params.language
+        const language = getValidLanguage(params.language)
         const autoCompile = params.autoCompile === 'false' ? false : params.autoCompile === 'true' ? true : null
 
         return {
@@ -80,7 +81,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
           optimise: typeof optimize === 'boolean' ? optimize : api.getConfiguration('optimise') || false,
           runs: (runs !== null) && (runs !== 'null') && (runs !== undefined) && (runs !== 'undefined') ? runs : 200,
           evmVersion: (evmVersion !== null) && (evmVersion !== 'null') && (evmVersion !== undefined) && (evmVersion !== 'undefined') ? evmVersion : 'default',
-          language: (language !== null) && (language !== 'null') && (language !== undefined) && (language !== 'undefined') ? language : 'Solidity'
+          language: (language !== null) ? language : 'Solidity'
         }
       })
     }

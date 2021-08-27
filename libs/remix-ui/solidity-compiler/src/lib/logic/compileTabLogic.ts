@@ -1,4 +1,5 @@
 import { Plugin } from '@remixproject/engine'
+import { getValidLanguage } from '../../../../../remix-lib/src/helpers/compilerHelper'
 
 const packageJson = require('../../../../../../package.json')
 const Compiler = require('@remix-project/remix-solidity').Compiler
@@ -43,12 +44,10 @@ export class CompileTab extends Plugin {
     this.api.setParameters({ evmVersion: this.evmVersion })
     this.compiler.set('evmVersion', this.evmVersion)
 
-    this.language = this.api.getParameters().language
-    if(this.language === 'undefined' || this.language === 'null' || !this.language) {
-      this.language = null
+    this.language = getValidLanguage(this.api.getParameters().language)
+    if (this.language != null) {
+      this.compiler.set('language', this.language)
     }
-    this.api.setParameters({ 'language': this.language })
-    this.compiler.set('language', this.language)
   }
 
   setOptimize (newOptimizeValue) {
@@ -78,7 +77,7 @@ export class CompileTab extends Plugin {
    * @params lang {'Solidity' | 'Yul'} ...
    */
   setLanguage (lang) {
-    this.language = lang;
+    this.language = lang
     this.api.setParameters({ language: lang })
     this.compiler.set('language', lang)
   }
