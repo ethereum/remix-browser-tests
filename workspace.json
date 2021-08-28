@@ -778,6 +778,22 @@
         }
       }
     },
+    "remix-ui-terminal": {
+      "root": "libs/remix-ui/terminal",
+      "sourceRoot": "libs/remix-ui/terminal/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["libs/remix-ui/terminal/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/remix-ui/terminal/**/*"]
+          }
+        }
+      }
+    },
     "remix-ui-plugin-manager": {
       "root": "libs/remix-ui/plugin-manager",
       "sourceRoot": "libs/remix-ui/plugin-manager/src",

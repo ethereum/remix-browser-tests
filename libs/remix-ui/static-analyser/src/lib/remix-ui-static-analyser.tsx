@@ -186,7 +186,7 @@ export const RemixUiStaticAnalyser = (props: RemixUiStaticAnalyserProps) => {
                 row = location.start.line
                 column = location.start.column
                 locationString = row + 1 + ':' + column + ':'
-                fileName = Object.keys(lastCompilationResult.sources)[file]
+                fileName = Object.keys(lastCompilationResult.contracts)[file]
               }
               warningCount++
               const msg = message(item.name, item.warning, item.more, fileName, locationString)

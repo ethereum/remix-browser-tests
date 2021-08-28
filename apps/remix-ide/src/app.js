@@ -288,6 +288,8 @@ Please make a backup of your contracts and start using http://remix.ethereum.org
 
   // -------------------Terminal----------------------------------------
 
+  // move this up for *** level so as to access it in the terminal
+  makeUdapp(blockchain, compilersArtefacts, (domEl) => terminal.logHtml(domEl))
   const terminal = new Terminal(
     { appManager, blockchain },
     {
@@ -299,10 +301,12 @@ Please make a backup of your contracts and start using http://remix.ethereum.org
         newpos = (newpos < height - limitDown) ? newpos : height - limitDown
         return height - newpos
       }
-    }
+    },
+    { config: registry.get('config').api },
+    registry
   )
-  makeUdapp(blockchain, compilersArtefacts, (domEl) => terminal.logHtml(domEl))
 
+  // previous *** level for makeUdapp method
   const contextualListener = new ContextualListener({ editor })
 
   engine.register([

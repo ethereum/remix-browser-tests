@@ -50,6 +50,7 @@ module.exports = {
 
   'Toggles Terminal': function (browser: NightwatchBrowser) {
     browser.waitForElementVisible('div[data-id="terminalContainer"]')
+      .pause(5000)
       .assert.visible('div[data-id="terminalContainerDisplay"]')
       .click('i[data-id="terminalToggleIcon"]')
       .checkElementStyle('div[data-id="terminalToggleMenu"]', 'height', '35px')

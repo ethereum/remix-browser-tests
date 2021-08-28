@@ -77,6 +77,7 @@ function checkDeployShouldFail (browser: NightwatchBrowser, callback: VoidFuncti
     .clickLaunchIcon('udapp')
     .selectContract('test') // deploy lib
     .createContract('')
+    .pause(60000)
     .getText('div[class^="terminal"]', (value) => {
       console.log('value: ', value)
     })

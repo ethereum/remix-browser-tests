@@ -31,7 +31,7 @@ export class MainPanel extends AbstractPanel {
 
   render () {
     return yo`
-      <div class=${css.pluginsContainer} data-id="mainPanelPluginsContainer">
+      <div class=${css.pluginsContainer} data-id="mainPanelPluginsContainer" id='mainPanelPluginsContainer-id'>
         ${this.view}
       </div>`
   }

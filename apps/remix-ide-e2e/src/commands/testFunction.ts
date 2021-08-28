@@ -25,7 +25,6 @@ class TestFunction extends EventEmitter {
         browser.waitForElementVisible(`[data-id="block_tx${txHash}"]`, 60000)
           .click(`[data-id="block_tx${txHash}"]`)
           .waitForElementVisible(`*[data-id="txLoggerTable${txHash}"]`, 60000)
-          .pause(10000)
         // fetch and format transaction logs as key => pair object
           .elements('css selector', `*[data-shared="key_${txHash}"]`, (res) => {
             Array.isArray(res.value) && res.value.forEach(function (jsonWebElement) {
@@ -58,7 +57,6 @@ class TestFunction extends EventEmitter {
       .perform(() => {
         Object.keys(expectedValue).forEach(key => {
           let equal = false
-
           try {
             const receivedValue = JSON.parse(logs[key])
 

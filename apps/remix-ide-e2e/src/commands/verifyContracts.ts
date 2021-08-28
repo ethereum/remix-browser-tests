@@ -17,6 +17,7 @@ function verifyContracts (browser: NightwatchBrowser, compiledContractNames: str
   browser
     .clickLaunchIcon('solidity')
     .pause(opts.wait)
+    .pause(5000)
     .waitForElementPresent('*[data-id="compiledContracts"] option', 60000)
     .perform((done) => {
       if (opts.version) {

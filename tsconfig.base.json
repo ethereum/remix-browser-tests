@@ -41,8 +41,9 @@
       "@remix-project/core-plugin": ["libs/remix-core-plugin/src/index.ts"],
       "@remix-ui/solidity-compiler": ["libs/remix-ui/solidity-compiler/src/index.ts"],
       "@remix-ui/publish-to-storage": ["libs/remix-ui/publish-to-storage/src/index.ts"],
+      "@remix-ui/renderer": ["libs/remix-ui/renderer/src/index.ts"],
+      "@remix-ui/terminal": ["libs/remix-ui/terminal/src/index.ts"],
       "@remix-ui/plugin-manager": ["libs/remix-ui/plugin-manager/src/index.ts"],
-      "@remix-ui/renderer": ["libs/remix-ui/renderer/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

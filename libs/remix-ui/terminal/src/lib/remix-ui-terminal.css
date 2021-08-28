@@ -1,0 +1,418 @@
+
+element.style {
+ height: 323px !important;
+}
+#terminalCliInput{
+  width: 95%;
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  color: #a2a3b4;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: hidden;
+}
+#terminalCliInput:focus {
+  outline: none;
+}
+
+.border-primary {
+  border-color: #007aa6!important;
+}
+.border {
+  border: 1px solid #3f4455!important;
+}
+
+/* seleted option should reflect the theme color */
+.selectedOptions {
+  background-color: #222336;
+}
+
+.panel              {
+    position          : relative;
+    display           : flex;
+    flex-direction    : column;
+    font-size         : 12px;
+    min-height        : 3em;
+  }
+  .bar                {
+    display           : flex;
+    z-index           : 2;
+  }
+  .menu               {
+    position             : relative;
+    display              : flex;
+    align-items          : center;
+    width                : 100%;
+    max-height           : 35px;
+    min-height           : 35px;
+  }
+  .toggleTerminal              {
+    cursor            : pointer;
+  }
+  .toggleTerminal:hover              {
+    color             : var(--secondary);
+  }
+  .terminal_container   {
+    display             : flex;
+    flex-direction      : column;
+    height              : 100%;
+    overflow-y          : auto;
+    font-family         : monospace;
+    margin              : 0px;
+    background-repeat   : no-repeat;
+    background-position : center 15%;
+    background-size     : auto calc(75% -  1.7em);
+  }
+  .terminal    {
+    position          : relative;
+    display           : flex;
+    flex-direction    : column;
+    height            : 100%;
+  }
+  .journal            {
+    margin-top        : auto;
+    font-family       : monospace;
+  }
+  .block              {
+    word-break        : break-word;
+    white-space       : pre-wrap;
+    line-height       : 2ch;
+    padding           : 1ch;
+    margin-top        : 2ch;
+  }
+  .block > pre        {
+    max-height        : 200px;
+  }
+  .cli                {
+    line-height       : 1.7em;
+    font-family       : monospace;
+    padding           : .4em;
+    color             : var(--primary);
+  }
+  .prompt             {
+    margin-right      : 0.5em;
+    font-family       : monospace;
+    font-weight       : bold;
+    font-size         : 14px;
+    color             : lightgray;
+  }
+  .input              {
+    word-break        : break-word;
+    outline           : none;
+    font-family       : monospace;
+  }
+  .search {
+    display           : flex;
+    align-items       : center;
+    width             : 330px;
+    padding-left      : 20px;
+    height            : 100%;
+    padding-top       : 1px;
+    padding-bottom    : 1px;
+  }
+  .filter                       {
+    height                      : 80%;
+    white-space                 : nowrap;
+    overflow                    : hidden;
+    text-overflow               : ellipsis;
+  }
+  .searchIcon                   {
+    width                       : 25px;
+    border-top-left-radius      : 3px;
+    border-bottom-left-radius   : 3px;
+    display                     : flex;
+    align-items                 : center;
+    justify-content             : center;
+    margin-right                : 5px;
+  }
+  .listen         {
+    margin-right  : 30px;
+    min-width     : 40px;
+    height        : 13px;
+    display       : flex;
+    align-items   : center;
+  }
+  .listenLabel {
+    min-width: 50px;
+  }
+  .verticalLine {
+    border-left       : 1px solid var(--secondary);
+    height            : 65%;
+  }
+  .dragbarHorizontal  {
+    position          : absolute;
+    top               : 0;
+    height            : 0.2em;
+    right             : 0;
+    left              : 0;
+    cursor            : row-resize;
+    z-index           : 999;
+  }
+  
+  .console {
+    cursor           : pointer;
+  }
+
+  .dragbarHorizontal:hover  {
+    background-color: #007AA6;
+    border:2px solid #007AA6; 
+  }
+  .listenOnNetwork {
+    min-height: auto;
+  }
+  .ghostbar           {
+    position          : absolute;
+    height            : 6px;
+    opacity           : 0.5;
+    cursor            : row-resize;
+    z-index           : 9999;
+    left              : 0;
+    right             : 0;
+  }
+
+
+  .divider-hitbox {
+    color: white;
+    cursor: row-resize;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .ul {margin-left: 0; padding-left: 20px;}
+
+  .popup             {
+    position         : absolute;
+    text-align       : left;
+    width            : 95%;
+    font-family      : monospace;
+    background-color : var(--secondary);
+    overflow         : auto;
+    padding-bottom   : 13px;
+    z-index          : 80;
+    bottom           : 1em;
+    border-width     : 4px;
+    left             : 2em;
+  }
+
+  .autoCompleteItem {
+    padding          : 4px;
+    border-radius    : 2px;
+  }
+
+  .popup a {
+    cursor           : pointer;
+  }
+
+  .listHandlerShow   {
+    display          : block;
+  }
+
+  .listHandlerHide   {
+    display          : none;
+  }
+
+  .listHandlerButtonShow {
+    position         : fixed;
+    width            : 46%;
+  }
+
+  .pageNumberAlignment {
+    font-size        : 10px;
+    float            : right;
+  }
+
+  .modalContent {
+    position         : absolute;
+    margin-left      : 20%;
+    margin-bottom    : 32px;
+    bottom           : 0px;
+    padding          : 0;
+    line-height      : 18px;
+    font-size        : 12px;
+    width            : 40%;
+    box-shadow       : 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 0.4s;
+    animation-name   : animatetop;
+    animation-duration: 0.4s
+  }
+
+  @-webkit-keyframes animatetop {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+  }
+
+  @keyframes animatetop {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+  }
+
+
+
+
+  /* tx logger css*/
+
+  .log {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    cursor: pointer;
+  }
+  .log:hover {
+    opacity: 0.8;
+  }
+  .arrow {
+    color: var(--text-info);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    margin-left: 10px;
+  }
+  .arrow:hover {
+    color: var(--secondary);
+  }
+  .txStatus {
+    display: flex;
+    font-size: 20px;
+    margin-right: 20px;
+    float: left;
+  }
+  .succeeded {
+    color: var(--success);
+  }
+  .failed {
+    color: var(--danger);
+  }
+  .notavailable {
+  }
+  .call {
+    font-size: 7px;
+    border-radius: 50%;
+    min-width: 20px;
+    min-height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-info);
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .txItem {
+    color: var(--text-info);
+    margin-right: 5px;
+    float: left;
+  }
+  .txItemTitle {
+    font-weight: bold;
+  }
+  .tx {
+    color: var(--text-info);
+    font-weight: bold;
+    float: left;
+    margin-right: 10px;
+  }
+  .txTable,
+  .tr,
+  .td {
+    border-collapse: collapse;
+    font-size: 10px;
+    color: var(--text-info);
+    border: 1px solid var(--text-info);
+    transition: max-height 0.3s, padding 0.3s;
+  }
+  table .active {
+    transition: max-height 0.6s, padding 0.6s;
+  }
+  #txTable {
+    margin-top: 1%;
+    margin-bottom: 5%;
+    align-self: center;
+    width: 85%;
+  }
+  .tr, .td {
+    padding: 4px;
+    vertical-align: baseline;
+  }
+  .td:first-child {
+    min-width: 30%;
+    width: 30%;
+    align-items: baseline;
+    font-weight: bold;
+  }
+  .tableTitle {
+    width: 25%;
+  }
+  .buttons {
+    display: flex;
+    margin-left: auto;
+  }
+  .debug {
+    white-space: nowrap;
+  }
+  .debug:hover {
+    opacity: 0.8;
+  }
+
+
+  /* Style the accordion section */
+.accordion__section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  border: none;
+  outline: none;
+  transition: background-color 0.6s ease;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+/* .accordion:hover,
+.active {
+  background-color: #ccc;
+} */
+
+/* Style the accordion content title */
+.accordion__title {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Style the accordion chevron icon */
+.accordion__icon {
+  margin-left: auto;
+  transition: transform 0.6s ease;
+}
+
+/* Style to rotate icon when state is active */
+.rotate {
+  transform: rotate(90deg);
+}
+
+/* Style the accordion content panel. Note: hidden by default */
+.accordion__content {
+  background-color: white;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+}
+
+/* Style the accordion content text */
+.accordion__text {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 18px;
+}
+
