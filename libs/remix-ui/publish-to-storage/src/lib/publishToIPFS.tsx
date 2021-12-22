@@ -1,13 +1,27 @@
-import IpfsClient from 'ipfs-mini'
-
-const ipfsNodes = [
-  new IpfsClient({ host: 'ipfs.remixproject.org', port: 443, protocol: 'https' }),
-  new IpfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }),
-  new IpfsClient({ host: '127.0.0.1', port: 5001, protocol: 'http' })
-]
+import IpfsClient from 'ipfs-http-client'
+import axios from 'axios'
+import { ethers } from 'ethers'
 
 export const publishToIPFS = async (contract, api) => {
-  // gather list of files to publish
+  // 1. Create web3 authed header
+  const pair = ethers.Wallet.createRandom()
+  const sig = await pair.signMessage(pair.address)
+  const authHeaderRaw = `eth-${pair.address}:${sig}`
+  const authHeader = Buffer.from(authHeaderRaw).toString('base64')
+
+  // 2. Init IPFS endpoint
+  const ipfsNodes = [
+    new IpfsClient({
+      url: 'https://crustipfs.xyz/api/v0',
+      headers: {
+        authorization: 'Basic ' + authHeader
+      }
+    }), // IPFS Web3 Authed Gateway
+    new IpfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' }),
+    new IpfsClient({ host: '127.0.0.1', port: 5001, protocol: 'http' })
+  ]
+
+  // 3. Gather list of files to publish
   const sources = []
   let metadata
   const item = { content: null, hash: null }
@@ -52,13 +66,14 @@ export const publishToIPFS = async (contract, api) => {
       console.log(error)
     })
   }))
-  // publish the list of sources in order, fail if any failed
+
+  // 4. Publish the list of sources in order, fail if any failed
   await Promise.all(sources.map(async (item) => {
     try {
-      const result = await ipfsVerifiedPublish(item.content, item.hash)
-
+      const result = await ipfsVerifiedPublish(ipfsNodes, item.content, item.hash)
       try {
         item.hash = result.url.match('dweb:/ipfs/(.+)')[1]
+        await pinToCrust(authHeader, item.hash)
       } catch (e) {
         item.hash = '<Metadata inconsistency> - ' + item.fileName
       }
@@ -71,10 +86,10 @@ export const publishToIPFS = async (contract, api) => {
   const metadataContent = JSON.stringify(metadata)
 
   try {
-    const result = await ipfsVerifiedPublish(metadataContent, '')
-
+    const result = await ipfsVerifiedPublish(ipfsNodes, metadataContent, '')
     try {
       contract.metadataHash = result.url.match('dweb:/ipfs/(.+)')[1]
+      await pinToCrust(authHeader, contract.metadataHash)
     } catch (e) {
       contract.metadataHash = '<Metadata inconsistency> - metadata.json'
     }
@@ -93,23 +108,36 @@ export const publishToIPFS = async (contract, api) => {
   return { uploaded, item }
 }
 
-const ipfsVerifiedPublish = async (content, expectedHash) => {
+const ipfsVerifiedPublish = async (ipfsNodes, content, expectedHash) => {
   try {
-    const results = await severalGatewaysPush(content)
-
-    if (expectedHash && results !== expectedHash) {
-      return { message: 'hash mismatch between solidity bytecode and uploaded content.', url: 'dweb:/ipfs/' + results, hash: results }
+    const results: any = await severalGatewaysPush(ipfsNodes, content)
+    const cidResult = results.cid.toV0().toString()
+    if (expectedHash && cidResult !== expectedHash) {
+      return { message: 'hash mismatch between solidity bytecode and uploaded content.', url: 'dweb:/ipfs/' + cidResult, hash: cidResult }
     } else {
-      return { message: 'ok', url: 'dweb:/ipfs/' + results, hash: results }
+      return { message: 'ok', url: 'dweb:/ipfs/' + cidResult, hash: cidResult }
     }
   } catch (error) {
     throw new Error(error)
   }
 }
 
-const severalGatewaysPush = (content) => {
+const severalGatewaysPush = (ipfsNodes, content) => {
   const invert = p => new Promise((resolve, reject) => p.then(reject).catch(resolve)) // Invert res and rej
   const promises = ipfsNodes.map((node) => invert(node.add(content)))
 
   return invert(Promise.all(promises))
+}
+
+const pinToCrust = async (authHeader, cid) => {
+  const rst = await axios.post(
+    'https://pin.crustcode.com/psa/pins',
+    { cid: cid },
+    {
+      headers: {
+        authorization: 'Bearer ' + authHeader
+      }
+    })
+
+  console.log(rst)
 }
