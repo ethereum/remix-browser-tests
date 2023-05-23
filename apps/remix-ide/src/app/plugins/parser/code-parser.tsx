@@ -258,6 +258,7 @@ export class CodeParser extends Plugin {
             nodesByContract.imports = {}
             nodesByContract.contracts = {}
             this.astWalker.walkFull(source.ast, async (node) => {
+                //console.log(node)
                 if (node.nodeType === 'ContractDefinition') {
                     const flatNodes = this._flatNodeList(node, fileName, false, compilationResult)
                     node.gasEstimate = this._getContractGasEstimate(node, node.name, fileName, compilationResult)
@@ -294,6 +295,9 @@ export class CodeParser extends Plugin {
                     nodesByContract.contracts[node.name].baseNodes = baseNodes
                     nodesByContract.contracts[node.name].baseNodesWithBaseContractScope = baseNodesWithBaseContractScope
                     nodesByContract.contracts[node.name].contractScopeNodes = this._flatNodeList(node, fileName, true, compilationResult)
+                    if(node.contractKind == 'interface'){
+                        console.log(nodesByContract.contracts[node.name])
+                    }
                 }
                 if (node.nodeType === 'ImportDirective') {
 

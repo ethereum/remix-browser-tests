@@ -261,6 +261,7 @@ export class RemixCompletionProvider implements monacoTypes.languages.Completion
                 if (node.nodeType === 'ContractDefinition') {
                     contractNode = node
                     const contractNodes = fileNodes.contracts[node.name]
+                    nodes = [...Object.values(fileNodes.contracts).map((c) =>  (c as any).contractDefinition), ...nodes]
                     nodes = [...Object.values(contractNodes.contractScopeNodes), ...nodes]
                     nodes = [...Object.values(contractNodes.baseNodesWithBaseContractScope), ...nodes]
                     nodes = [...Object.values(fileNodes.imports), ...nodes]
