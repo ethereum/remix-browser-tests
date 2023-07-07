@@ -6,6 +6,7 @@ parameters:
     default: false
 orbs:
   browser-tools: circleci/browser-tools@1.4.1
+  win: circleci/windows@5.0 # The Windows orb gives you everything you need to start using the Windows executor.
 jobs:
   build:
     docker:
@@ -76,6 +77,210 @@ jobs:
             root: .
             paths:
               - "persist"
+
+  build-remixd-windows:
+    executor:
+      name: win/default # executor type
+      size: medium # can be medium, large, xlarge, 2xlarge
+      shell: bash.exe
+    working_directory: ~/remix-project
+    steps:
+      - checkout
+      - restore_cache:
+          key: node-20-windows-v3
+      - run: 
+          command: |
+            nvm install 20.0.0
+            nvm use 20.0.0
+            node -v
+            npx -v
+            npm install --global yarn http-server
+            yarn -v
+      - save_cache:
+          key: node-20-windows-v3
+          paths:
+            - /ProgramData/nvm/v20.0.0
+
+      - restore_cache:
+          keys:
+            - remixd-windows-deps-{{ checksum "apps/remixd-app/yarn.lock" }}
+      - run: 
+          command: |
+              cd apps/remixd-app/
+              yarn
+              yarn package
+              yarn selenium-install
+      - save_cache:
+          key: remixd-windows-deps-{{ checksum "apps/remixd-app/yarn.lock" }}
+          paths:
+            - apps/remixd-app/node_modules
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "apps/remixd-app/out"
+            
+  test-remixd-ui-win:
+    executor:
+      name: win/default # executor type
+      size: medium # can be medium, large, xlarge, 2xlarge
+      shell: bash.exe
+    working_directory: ~/remix-project
+    steps:
+      - restore_cache:
+          key: node-20-windows-v3
+      - run: 
+          command: |
+            nvm install 20.0.0
+            nvm use 20.0.0
+            node -v
+      - checkout
+      - attach_workspace:
+          at: . # this is the out folder of the remixd app + remix IDE
+      - run: unzip ./persist/dist.zip # this is the IDE build
+      - restore_cache:
+          keys:
+            - remixd-windows-deps-{{ checksum "apps/remixd-app/yarn.lock" }}
+      - run: 
+          command: |
+              cd apps/remixd-app/
+              yarn selenium-start
+          background: true
+      - run:
+          command: |
+              http-server dist/apps/remix-ide
+          background: true
+      - run: 
+          command: |
+              cd apps/remixd-app/
+              yarn test:browser:edge & yarn test:app:windows
+      - store_test_results:
+          path: ./apps/remixd-app/reports/tests
+      - store_artifacts:
+          path: ./apps/remixd-app/reports/screenshots
+
+  build-remixd-ui-mac:
+    macos:
+      xcode: 14.2.0
+    resource_class:
+        macos.x86.medium.gen2
+    working_directory: ~/remix-project
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - remixd-deps-mac-{{ checksum "apps/remixd-app/yarn.lock" }}
+      - run: cd apps/remixd-app && yarn
+      - save_cache:
+          key: remixd-deps-mac-{{ checksum "apps/remixd-app/yarn.lock" }}
+          paths:
+            - apps/remixd-app/node_modules
+      - run: 
+          command: |
+            cd apps/remixd-app
+            yarn package
+      - persist_to_workspace:
+            root: .
+            paths:
+              - "apps/remixd-app/out"
+
+
+  test-remixd-ui-mac:
+    macos:
+      xcode: 14.2.0
+    resource_class:
+        macos.x86.medium.gen2
+    working_directory: ~/remix-project
+    steps:
+      - checkout
+      - attach_workspace:
+          at: . # this is the out folder of the remixd app + remix IDE
+      - restore_cache:
+          keys:
+            - remixd-deps-mac-{{ checksum "apps/remixd-app/yarn.lock" }}
+      - run: cd apps/remixd-app && yarn && yarn selenium-install
+      - save_cache:
+          key: remixd-deps-mac-{{ checksum "apps/remixd-app/yarn.lock" }}
+          paths:
+            - apps/remixd-app/node_modules
+      - run: unzip ./persist/dist.zip # this is the IDE build
+      - browser-tools/install-browser-tools:
+          install-firefox: false
+          install-chrome: true
+          install-geckodriver: false
+          install-chromedriver: true
+      - run:
+          name: Start Selenium
+          command: cd apps/remixd-app && yarn run selenium-start
+          background: true
+      - run:
+          name: Start IDE
+          command: cd dist/apps/remix-ide && npx http-server .
+          background: true
+      - run: 
+          command: |
+            cd apps/remixd-app
+            yarn test:app:macos & yarn test:browser:chrome
+  
+
+  build-remixd-ui-linux:
+      docker:
+      - image: cimg/node:20.0.0-browsers
+      resource_class:
+        xlarge
+      working_directory: ~/remix-project
+      steps:
+        - checkout
+        - restore_cache:
+            keys:
+              - remixd-linux-deps-{{ checksum "apps/remixd-app/yarn.lock" }}
+        - run: cd apps/remixd-app && yarn
+        - save_cache:
+            key: remixd-linux-deps-{{ checksum "apps/remixd-app/yarn.lock" }}
+            paths:
+              - apps/remixd-app/node_modules
+        - run: sudo apt update && sudo apt install rpm dpkg fakeroot
+        - run: cd apps/remixd-app && yarn package
+        - persist_to_workspace:
+              root: .
+              paths:
+                - "apps/remixd-app/out"
+
+  test-remixd-ui-linux:
+      docker:
+      - image: cimg/node:20.0.0-browsers
+      resource_class:
+        xlarge
+      working_directory: ~/remix-project
+      steps:
+        - checkout
+        - attach_workspace:
+            at: . # this is the out folder of the remixd app + remix IDE
+        - restore_cache:
+            keys:
+              - remixd-linux-deps-{{ checksum "apps/remixd-app/yarn.lock" }}
+        - run: cd apps/remixd-app && yarn && yarn selenium-install
+        - save_cache:
+            key: remixd-linux-deps-{{ checksum "apps/remixd-app/yarn.lock" }}
+            paths:
+              - apps/remixd-app/node_modules
+        - run: unzip ./persist/dist.zip # this is the IDE build
+        - browser-tools/install-browser-tools:
+            install-firefox: false
+            install-chrome: true
+            install-geckodriver: false
+            install-chromedriver: true
+        - run:
+            name: Start Selenium
+            command: cd apps/remixd-app && yarn run selenium-start
+            background: true
+        - run:
+            name: Start IDE
+            command: cd dist/apps/remix-ide && npx http-server .
+            background: true
+        - run: 
+            command: |
+              cd apps/remixd-app
+              yarn test:app:linux & yarn test:browser:chrome
 
   lint:
     docker:
@@ -286,6 +491,7 @@ workflows:
   build_all:
     unless: << pipeline.parameters.run_flaky_tests >>
     jobs:
+
       - build
       - build-plugin:
           matrix:
@@ -308,6 +514,24 @@ workflows:
             exclude: 
               - plugin: plugin_api
                 parallelism: 1
+      
+      - build-remixd-windows
+      - build-remixd-ui-mac
+      - build-remixd-ui-linux
+      - test-remixd-ui-win:
+          requires:
+            - build
+            - build-remixd-windows
+
+      - test-remixd-ui-mac:
+          requires:
+            - build
+            - build-remixd-ui-mac
+
+      - test-remixd-ui-linux:
+          requires:
+            - build
+            - build-remixd-ui-linux
 
       - remix-ide-browser:
           requires:
@@ -324,6 +548,8 @@ workflows:
             - remix-libs
             - remix-ide-browser
             - plugins
+            - test-remixd-ui-linux
+            - test-remixd-ui-mac
             
       - predeploy:
           filters:

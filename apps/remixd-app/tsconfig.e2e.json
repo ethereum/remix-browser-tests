@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["test/**/*.ts", "test/**/*.js", "../remix-ide-e2e/src/commands"]
+}

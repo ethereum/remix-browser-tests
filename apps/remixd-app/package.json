@@ -1,0 +1,63 @@
+{
+  "name": "remixconnect",
+  "productName": "remixconnect",
+  "version": "1.0.0",
+  "description": "Remix Connect to Remix IDE",
+  "main": ".webpack/main",
+  "scripts": {
+    "start": "electron-forge start",
+    "start:e2e": "electron-forge start -- --folder=test/contracts --e2e",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "selenium-install": "selenium-standalone install --drivers.chromiumedge.version=112.0.1722.39 --drivers.chrome.version=112.0.5615.28 --drivers.chrome.baseURL=https://chromedriver.storage.googleapis.com",
+    "selenium-start": "selenium-standalone start --config=./selenium.config.js",
+    "build:e2e": "tsc -p tsconfig.e2e.json",
+    "test:app:macos": "yarn run build:e2e && nightwatch --config dist/remixd-app/test/nightwatch.app.js --env=macos",
+    "test:app:linux": "yarn run build:e2e && nightwatch --config dist/remixd-app/test/nightwatch.app.js --env=linux",
+    "test:app:windows": "yarn run build:e2e && nightwatch --config dist/remixd-app/test/nightwatch.app.js --env=windows",
+    "test:browser:chrome": "yarn run build:e2e && nightwatch --config dist/remixd-app/test/nightwatch.browser.js --env=chrome",
+    "test:browser:edge": "yarn run build:e2e && nightwatch --config dist/remixd-app/test/nightwatch.browser.js --env=edge"
+  },
+  "keywords": [],
+  "author": {
+    "name": "filip mertens",
+    "email": "filip.mertens@ethereum.org"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.1.0",
+    "@electron-forge/maker-deb": "^6.1.0",
+    "@electron-forge/maker-rpm": "^6.1.0",
+    "@electron-forge/maker-squirrel": "^6.1.0",
+    "@electron-forge/maker-zip": "^6.1.0",
+    "@electron-forge/plugin-webpack": "^6.1.0",
+    "@types/nightwatch": "^2.3.23",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "@vercel/webpack-asset-relocator-loader": "1.7.3",
+    "css-loader": "^6.0.0",
+    "deep-equal": "^2.2.1",
+    "electron": "^24.3.1",
+    "eslint": "^8.0.1",
+    "eslint-plugin-import": "^2.25.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.13",
+    "http-server": "^14.1.1",
+    "nightwatch": "2.3",
+    "node-loader": "^2.0.0",
+    "selenium-standalone": "^8.3.0",
+    "style-loader": "^3.0.0",
+    "ts-loader": "^9.2.2",
+    "ts-node": "^10.0.0",
+    "typescript": "~4.5.4"
+  },
+  "dependencies": {
+    "@remix-project/remixd": "^0.6.14",
+    "bootstrap": "^5.2.3",
+    "electron-squirrel-startup": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

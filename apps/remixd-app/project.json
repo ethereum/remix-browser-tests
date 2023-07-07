@@ -1,0 +1,69 @@
+{
+  "name": "remixd-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/doc-viewer/src",
+  "projectType": "application",
+  "implicitDependencies": [
+  ],
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "install"
+      ],
+      "options": {
+        "commands": [
+          "cd apps/remixd-app && yarn run electron-forge start"
+        ],
+        "parallel": false
+      }
+    },
+    "make": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "install"
+      ],
+      "options": {
+        "commands": [
+          "cd apps/remixd-app && yarn run electron-forge make"
+        ],
+        "parallel": false
+      }
+    },
+    "package": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "install"
+      ],
+      "options": {
+        "commands": [
+          "cd apps/remixd-app && yarn run electron-forge package"
+        ],
+        "parallel": false
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "dependsOn": [
+        "install"
+      ],
+      "options": {
+        "commands": [
+          "cd apps/remixd-app && yarn run electron-forge publish"
+        ],
+        "parallel": false
+      }
+    },
+    
+    
+    "install": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "cd apps/remixd-app && yarn"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}
