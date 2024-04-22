@@ -39,7 +39,7 @@ module.exports = {
       // .perform((done) => { if (runtimeBrowser === 'chrome') { browser.openFile('gists') } done() })
       .waitForElementVisible(`[data-id="treeViewLitreeViewItemREADME.txt"]`)
 
-      .openFile(`README.txt`)
+      //.openFile(`README.txt`)
       // Remix publish to gist
       /* .click('*[data-id="fileExplorerNewFilepublishToGist"]')
          .pause(2000)

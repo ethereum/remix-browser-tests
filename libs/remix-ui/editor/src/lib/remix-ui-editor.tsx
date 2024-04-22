@@ -747,12 +747,14 @@ export const EditorUI = (props: EditorUIProps) => {
       label: intl.formatMessage({id: 'editor.explainFunctionSol'}),
       contextMenuOrder: 1, // choose the order
       contextMenuGroupId: 'sol-gtp', // create a new grouping
-      keybindings: [],
+      keybindings: [
+        // eslint-disable-next-line no-bitwise
+        monacoRef.current.KeyMod.Shift | monacoRef.current.KeyMod.Alt | monacoRef.current.KeyCode.KeyE,
+      ],
       run: async () => {
         const file = await props.plugin.call('fileManager', 'getCurrentFile')
         const content = await props.plugin.call('fileManager', 'readFile', file)
         const selectedCode = editor.getModel().getValueInRange(editor.getSelection())
-
         await props.plugin.call('solcoder', 'code_explaining', selectedCode)
         _paq.push(['trackEvent', 'ai', 'solcoder', 'explainFunction'])
       },

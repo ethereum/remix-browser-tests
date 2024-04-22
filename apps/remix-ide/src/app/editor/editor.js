@@ -95,6 +95,9 @@ class Editor extends Plugin {
           this._onChange(this.currentFile)
         }
       }
+      this.ref.setSelection = (startLine, startColumn, endLine, endColumn) => {
+        this.setSelection(startLine, startColumn, endLine, endColumn)
+      }
       this.ref.gotoLine = (line, column) => this.gotoLine(line, column || 0)
       this.ref.getCursorPosition = () => this.getCursorPosition()
       this.ref.addDecoration = (marker, filePath, typeOfDecoration) => this.addDecoration(marker, filePath, typeOfDecoration)
@@ -438,6 +441,20 @@ class Editor extends Plugin {
     this.emit('focus')
     console.log(startLineNumber, startColumn, endLineNumber, endColumn)
     this.emit('revealRange', startLineNumber, startColumn, endLineNumber, endColumn)
+  }
+
+  /**
+   * Selects the range in the editor.
+   * @param {number} startLineNumber
+   * @param {number} startColumn
+   * @param {number} endLineNumber
+   * @param {number} endColumn
+   */
+  setSelection (startLineNumber, startColumn, endLineNumber, endColumn) {
+    if (!this.activated) return
+    this.emit('focus')
+    console.log(startLineNumber, startColumn, endLineNumber, endColumn)
+    this.emit('setSelection', startLineNumber, startColumn, endLineNumber, endColumn)
   }
 
   /**

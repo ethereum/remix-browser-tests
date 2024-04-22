@@ -25,8 +25,8 @@ export class SolCoder extends Plugin {
   completion_url: string
   constructor() {
     super(profile)
-    this.api_url = "https://solcoder.remixproject.org"
-    this.completion_url = "https://completion.remixproject.org"
+    this.api_url =  process && process.env && process.env['NX_API_URL']? `${process.env['NX_API_URL']}solcoder/`: "https://solcoder.remixproject.org"
+    this.completion_url = process && process.env && process.env['NX_API_URL']? `${process.env['NX_API_URL']}completion/`: "https://completion.remixproject.org"
   }
 
   async code_generation(prompt): Promise<any> {
@@ -86,7 +86,7 @@ export class SolCoder extends Plugin {
 
   }
 
-  async code_explaining(prompt): Promise<any> {
+  async code_explaining(prompt, context:string=""): Promise<any> {
     this.emit("aiInfering")
     this.call('layout', 'maximizeTerminal')
     let result
@@ -98,7 +98,7 @@ export class SolCoder extends Plugin {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({"data":[prompt, "code_explaining", false,2000,0.9,0.8,50]}),
+          body: JSON.stringify({"data":[prompt, "code_explaining", false,2000,0.9,0.8,50, context]}),
         })
       ).json()
       if (result) {

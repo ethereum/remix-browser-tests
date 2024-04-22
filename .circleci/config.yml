@@ -29,9 +29,9 @@ jobs:
           name: Build
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              NX_BIN_URL=http://127.0.0.1:8080/assets/js/soljson NX_WASM_URL=http://127.0.0.1:8080/assets/js/soljson NX_NPM_URL=http://127.0.0.1:9090/ yarn build:production
+              NX_API_URL=http://localhost:1024/ NX_BIN_URL=http://127.0.0.1:8080/assets/js/soljson NX_WASM_URL=http://127.0.0.1:8080/assets/js/soljson NX_NPM_URL=http://127.0.0.1:9090/ yarn build:production
             else
-              NX_BIN_URL=http://127.0.0.1:8080/assets/js/soljson NX_WASM_URL=http://127.0.0.1:8080/assets/js/soljson NX_NPM_URL=http://127.0.0.1:9090/ yarn build
+              NX_API_URL=http://localhost:1024/ NX_BIN_URL=http://127.0.0.1:8080/assets/js/soljson NX_WASM_URL=http://127.0.0.1:8080/assets/js/soljson NX_NPM_URL=http://127.0.0.1:9090/ yarn build
             fi
       - run: yarn run build:e2e
       
@@ -77,6 +77,30 @@ jobs:
           root: .
           paths:
             - "persist"
+
+  test-endpoints:
+    machine:
+        image: ubuntu-2004:current
+    resource_class:
+        xlarge
+    working_directory: ~/remix-project
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: |
+             cd apps/remix-endpoints 
+             yarn && yarn build
+      - run:
+          name: run tests
+          command: |
+             cd apps/remix-endpoints 
+             (yarn start:test &> background.log &) && sleep 5 && yarn test
+      - run:
+          name: server log
+          command: |
+             cd apps/remix-endpoints 
+             cat background.log
 
   build-plugin:
       docker:
@@ -360,6 +384,11 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - run: cd apps/remix-endpoints && yarn && yarn build
+      - run: 
+          name: run endpoints
+          command: cd apps/remix-endpoints && yarn start:test
+          background: true
       - run: unzip ./persist/dist.zip
       - run: yarn install --cwd ./apps/remix-ide-e2e --modules-folder ../../node_modules || yarn install --cwd ./apps/remix-ide-e2e --modules-folder ../../node_modules
       - run: mkdir node_modules/hardhat && wget https://unpkg.com/hardhat/console.sol -O node_modules/hardhat/console.sol
@@ -499,6 +528,7 @@ workflows:
           filters:
             branches:
               only: ['master', /.*desktop.*/]
+      - test-endpoints
       - build-remixdesktop-mac:
           requires:
             - build-desktop

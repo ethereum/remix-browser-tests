@@ -34,6 +34,7 @@ declare module 'nightwatch' {
     renamePath(path: string, newFileName: string, renamedPath: string): NightwatchBrowser
     rightClickCustom(cssSelector: string): NightwatchBrowser
     scrollToLine(line: number): NightwatchBrowser
+    setSelection(startLine: number, startColumn: number, endLine: number, endColumn: number): NightwatchBrowser
     waitForElementContainsText(id: string, value: string, timeout?: number): NightwatchBrowser
     getModalBody(callback: (value: string, cb: VoidFunction) => void): NightwatchBrowser
     modalFooterCancelClick(id?: string): NightwatchBrowser

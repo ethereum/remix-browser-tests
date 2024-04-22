@@ -2,6 +2,16 @@
 
 set -e
 
+OPENAITEST=$( curl --connect-timeout 1 -k -m 5 -H 'Content-Type: application/json' \
+      -d '{"prompt":"Hello, my name is John and I am a"}' \
+      -X POST \
+     https://127.0.0.1:1025/openai-gpt/)
+
+if [[ $OPENAITEST == *"Mockapi"* ]]; then
+    echo "up"
+else
+    echo "down"
+fi
 
 
 BUILD_ID=${CIRCLE_BUILD_NUM:-${TRAVIS_JOB_NUMBER}}

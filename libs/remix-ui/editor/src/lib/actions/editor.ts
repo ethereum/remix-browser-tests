@@ -77,6 +77,17 @@ export const reducerActions = (models = initialState, action: Action) => {
     }
     return models
   }
+  case 'SET_SELECTION': {
+    if (!editor) return models
+    const selection: monacoTypes.ISelection = {
+      selectionStartLineNumber: action.payload.startLineNumber,
+      selectionStartColumn: action.payload.startColumn,
+      positionLineNumber: action.payload.endLineNumber,
+      positionColumn: action.payload.endColumn
+    }
+    editor.setSelection(selection)
+    return models
+  }
   case 'FOCUS': {
     if (!editor) return models
     editor.focus()
@@ -141,6 +152,20 @@ export const reducerListener = (plugin, dispatch, monaco, editor, events) => {
   plugin.on('editor', 'revealRange', (startLineNumber, startColumn, endLineNumber, endColumn) => {
     dispatch({
       type: 'REVEAL_RANGE',
+      payload: {
+        startLineNumber,
+        startColumn,
+        endLineNumber,
+        endColumn
+      },
+      monaco,
+      editor
+    })
+  })
+
+  plugin.on('editor', 'setSelection', (startLineNumber, startColumn, endLineNumber, endColumn) => {
+    dispatch({
+      type: 'SET_SELECTION',
       payload: {
         startLineNumber,
         startColumn,
