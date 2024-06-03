@@ -15,7 +15,7 @@ const profile = {
   name: 'solcoder',
   displayName: 'solcoder',
   description: 'solcoder',
-  methods: ['code_generation', 'code_completion', "solidity_answer", "code_explaining", "code_insertion"],
+  methods: ['code_generation', 'code_completion', "solidity_answer", "code_explaining", "code_insertion", "contract_generation"],
   events: [],
   maintainedBy: 'Remix',
 }
@@ -201,6 +201,42 @@ export class SolCoder extends Plugin {
             0.5,
             0.92,
             50
+          ]}),
+        })
+      ).json()
+
+      if ("error" in result){
+        return result
+      }
+      return result.data
+
+    } catch (e) {
+      this.call('terminal', 'log', { type: 'aitypewriterwarning', value: `Unable to get a response ${e.message}` })
+      return
+    } finally {
+      this.emit("aiInferingDone")
+    }
+  }
+
+  async contract_generation(prompt): Promise<any> {
+    this.emit("aiInfering")
+    let result
+    try {
+      result = await(
+        await fetch(this.api_url, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ "data":[
+            prompt, // string  in 'context_code' Textbox component
+            "contract_generation",
+            false, // boolean  in 'stream_result' Checkbox component
+            2000, // number (numeric value between 0 and 2000) in 'max_new_tokens' Slider component
+            0.9, // number (numeric value between 0.01 and 1) in 'temperature' Slider component
+            0.90, // number (numeric value between 0 and 1) in 'top_p' Slider component
+            50, // number (numeric value between 1 and 200) in 'top_k' Slider component
           ]}),
         })
       ).json()

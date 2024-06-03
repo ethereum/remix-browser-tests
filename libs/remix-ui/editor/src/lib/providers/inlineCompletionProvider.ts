@@ -14,10 +14,12 @@ export class RemixInLineCompletionProvider implements monacoTypes.languages.Inli
   props: EditorUIProps
   monaco: any
   completionEnabled: boolean
+  isGeneratingContract: boolean
   constructor(props: any, monaco: any) {
     this.props = props
     this.monaco = monaco
     this.completionEnabled = true
+    this.isGeneratingContract = false
   }
 
   async provideInlineCompletions(model: monacoTypes.editor.ITextModel, position: monacoTypes.Position, context: monacoTypes.languages.InlineCompletionContext, token: monacoTypes.CancellationToken): Promise<monacoTypes.languages.InlineCompletions<monacoTypes.languages.InlineCompletion>> {
@@ -44,6 +46,28 @@ export class RemixInLineCompletionProvider implements monacoTypes.languages.Inli
       endColumn: getTextAtLine(model.getLineCount()).length + 1,
     });
 
+    if (this.isSolidityComment(word) &&
+        word.includes("sol-gen") &&
+        this.isGeneratingContract===false &&
+        word.split('\n')[word.split('\n').length-1].trim()===""){
+
+      this.isGeneratingContract = true
+      console.log("new contract generation")
+      const output = await this.props.plugin.call('solcoder', 'contract_generation', word)
+      _paq.push(['trackEvent', 'ai', 'solcoder', 'contract_generation'])
+      const handleCompletionTimer = new CompletionTimer(5000, () => { this.isGeneratingContract = false });
+      handleCompletionTimer.start()
+
+      const item: monacoTypes.languages.InlineCompletion = {
+        insertText: output[0]
+      };
+
+      return {
+        items: [item],
+        enableForwardStability: true
+      }
+    }
+
     if (!word.endsWith(' ') &&
       !word.endsWith('.') &&
       !word.endsWith('(')) {
@@ -60,6 +84,7 @@ export class RemixInLineCompletionProvider implements monacoTypes.languages.Inli
     try {
       const split = word.split('\n')
       if (split.length < 2) return
+
       const ask = split[split.length - 2].trimStart()
       if (split[split.length - 1].trim() === '' && ask.startsWith('///')) {
         // use the code generation model, only take max 1000 word as context
@@ -156,6 +181,20 @@ export class RemixInLineCompletionProvider implements monacoTypes.languages.Inli
     } catch (err) {
       return
     }
+  }
+
+  isSolidityComment(text: string): boolean {
+    const joinedText = text.trim().replace(/\n\s*/g, ' ');
+
+    const singleLineComment = /^\/\/.*$/;
+    const multiLineComment = /^\/\*[\s\S]*\*\/$/;
+    const singleLineNatSpec = /^\/\/\/.*$/;
+    const multiLineNatSpec = /^\/\*\*[\s\S]*\*\/$/;
+
+    return singleLineComment.test(joinedText) ||
+           multiLineComment.test(joinedText) ||
+           singleLineNatSpec.test(joinedText) ||
+           multiLineNatSpec.test(joinedText);
   }
 
   process_completion(data: any) {
