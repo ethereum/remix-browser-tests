@@ -18,14 +18,17 @@ export function SettingsUI(props: SettingsProps) {
         personalMode={props.personalMode}
         selectExEnv={props.selectExEnv}
         accounts={props.accounts}
+        smartAccounts={props.smartAccounts}
         setAccount={props.setAccount}
         createNewBlockchainAccount={props.createNewBlockchainAccount}
+        createNewSmartAccount={props.createNewSmartAccount}
         setPassphrase={props.setPassphrase}
         setMatchPassphrase={props.setMatchPassphrase}
         tooltip={props.tooltip}
         modal={props.modal}
         signMessageWithAddress={props.signMessageWithAddress}
         passphrase={props.passphrase}
+        networkName={props.networkName}
       />
       <GasLimitUI gasLimit={props.gasLimit} setGasFee={props.setGasFee} />
       <ValueUI setUnit={props.setUnit} sendValue={props.sendValue} sendUnit={props.sendUnit} setSendValue={props.setSendValue} />

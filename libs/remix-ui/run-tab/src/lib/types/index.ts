@@ -45,6 +45,9 @@ export interface RunTabState {
     error: string,
     selectedAccount: string
   },
+  smartAccounts: {
+    addresses: Record<string, any>[]
+  },
   sendValue: string,
   sendUnit: 'ether' | 'finney' | 'gwei' | 'wei',
   gasLimit: number,
@@ -140,6 +143,9 @@ export interface SettingsProps {
     isSuccessful: boolean,
     error: string
   },
+  smartAccounts: {
+    addresses: Record<string, any>[]
+  },
   setAccount: (account: string) => void,
   setUnit: (unit: 'ether' | 'finney' | 'gwei' | 'wei') => void,
   sendValue: string,
@@ -156,6 +162,7 @@ export interface SettingsProps {
   },
   setExecutionContext: (executionContext: { context: string, fork: string }) => void,
   createNewBlockchainAccount: (cbMessage: JSX.Element) => void,
+  createNewSmartAccount: () => void,
   setPassphrase: (passphrase: string) => void,
   setMatchPassphrase: (passphrase: string) => void,
   modal: (title: string, message: string | JSX.Element, okLabel: string, okFn: () => void, cancelLabel?: string, cancelFn?: () => void, okBtnClass?: string, cancelBtnClass?: string) => void,
@@ -189,15 +196,20 @@ export interface AccountProps {
     isSuccessful: boolean,
     error: string
   },
+  smartAccounts: {
+    addresses: Record<string, any>[]
+  },
   setAccount: (account: string) => void,
   personalMode: boolean,
   createNewBlockchainAccount: (cbMessage: JSX.Element) => void,
+  createNewSmartAccount: () => void,
   setPassphrase: (passphrase: string) => void,
   setMatchPassphrase: (passphrase: string) => void,
   tooltip: (toasterMsg: string) => void,
   modal: (title: string, message: string | JSX.Element, okLabel: string, okFn: () => void, cancelLabel?: string, cancelFn?: () => void, okBtnClass?: string, cancelBtnClass?: string) => void,
   signMessageWithAddress: (account: string, message: string, modalContent: (hash: string, data: string) => JSX.Element, passphrase?: string) => void,
   passphrase: string
+  networkName: string
 }
 
 export interface GasPriceProps {

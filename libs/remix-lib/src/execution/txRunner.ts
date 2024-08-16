@@ -3,6 +3,7 @@ import { EventManager } from '../eventManager'
 
 export type Transaction = {
   from: string,
+  fromSmartAccount: boolean,
   to: string,
   value: string,
   data: string,

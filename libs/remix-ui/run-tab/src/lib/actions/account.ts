@@ -1,8 +1,19 @@
+/* global ethereum */
+
 import { shortenAddress } from "@remix-ui/helper"
 import { RunTab } from "../types/run-tab"
 import { clearInstances, setAccount, setExecEnv } from "./actions"
 import { displayNotification, fetchAccountsListFailed, fetchAccountsListRequest, fetchAccountsListSuccess, setMatchPassphrase, setPassphrase } from "./payload"
 import { toChecksumAddress } from '@ethereumjs/util'
+import { createPublicClient, createWalletClient, http, custom, PublicClient } from "viem"
+import { sepolia } from 'viem/chains'
+import { V06 } from "userop"
+
+declare global {
+  interface Window {
+    ethereum?: any
+  }
+}
 
 export const updateAccountBalances = async (plugin: RunTab, dispatch: React.Dispatch<any>) => {
   const accounts = plugin.REACT_API.accounts.loadedAccounts
@@ -19,7 +30,12 @@ export const fillAccountsList = async (plugin: RunTab, dispatch: React.Dispatch<
   try {
     dispatch(fetchAccountsListRequest())
     try {
+      const provider = plugin.blockchain.getProvider()
       let accounts = await plugin.blockchain.getAccounts()
+      if (provider && provider.startsWith('injected') && accounts?.length) {
+        await loadSmartAccounts(plugin, accounts[0])
+        if (plugin.REACT_API.smartAccounts.addresses.length) accounts.push(...plugin.REACT_API.smartAccounts.addresses)
+      }
       if (!accounts) accounts = []
 
       const loadedAccounts = {}
@@ -28,7 +44,6 @@ export const fillAccountsList = async (plugin: RunTab, dispatch: React.Dispatch<
         const balance = await plugin.blockchain.getBalanceInEther(account)
         loadedAccounts[account] = shortenAddress(account, balance)
       }
-      const provider = plugin.blockchain.getProvider()
 
       if (provider && provider.startsWith('injected')) {
         const selectedAddress = plugin.blockchain.getInjectedWeb3Address()
@@ -84,6 +99,69 @@ export const createNewBlockchainAccount = async (plugin: RunTab, dispatch: React
       await fillAccountsList(plugin, dispatch)
     }
   )
+}
+
+export const createSmartAccount = async (plugin: RunTab, dispatch: React.Dispatch<any>) => {
+  const bundlerEndpoint = "https://public.stackup.sh/api/v1/node/ethereum-sepolia"
+  const localStorageKey = 'smartAccounts'
+
+  const ethClient: any = createPublicClient({
+    chain: sepolia,
+    transport: http(bundlerEndpoint)
+  })
+
+  const walletClient: any = createWalletClient({
+    chain: sepolia,
+    transport: custom(window.ethereum)
+  })
+
+  const addresses = await walletClient.getAddresses()
+
+  const smartAccount = new V06.Account.Instance({
+    ...V06.Account.Common.SimpleAccount.base(ethClient, walletClient),
+  })
+  await smartAccount.setSalt(BigInt(plugin.REACT_API.smartAccounts.addresses.length))
+  const sender = await smartAccount.getSender()
+  plugin.REACT_API.smartAccounts.addresses.push(sender)
+
+  // Save smart accounts w.r.t. primary address of WalletClient
+  const smartAccountsStr = localStorage.getItem(localStorageKey)
+  const smartAccountsObj = JSON.parse(smartAccountsStr)
+  smartAccountsObj[plugin.REACT_API.chainId][addresses[0]].push(sender)
+  localStorage.setItem(localStorageKey, JSON.stringify(smartAccountsObj))
+
+  plugin.call('notification', 'toast', `smart account created with address ${sender}`)
+
+  await fillAccountsList(plugin, dispatch)
+}
+
+export const loadSmartAccounts = async (plugin, primaryAddress) => {
+  const { chainId } = plugin.REACT_API
+  const localStorageKey = 'smartAccounts'
+
+  const smartAccountsStr = localStorage.getItem(localStorageKey)
+  if (smartAccountsStr) {
+    const smartAccountsObj = JSON.parse(smartAccountsStr)
+    if (smartAccountsObj[chainId]) {
+      if (smartAccountsObj[chainId][primaryAddress]) {
+        for (const obj of smartAccountsObj[chainId][primaryAddress]) {
+          plugin.REACT_API.smartAccounts.addresses.push(obj)
+        }
+      } else {
+        smartAccountsObj[chainId][primaryAddress] = []
+        localStorage.setItem(localStorageKey, JSON.stringify(smartAccountsObj))
+      }
+    } else {
+      smartAccountsObj[chainId] = {}
+      smartAccountsObj[chainId][primaryAddress] = []
+      localStorage.setItem(localStorageKey, JSON.stringify(smartAccountsObj))
+    }
+  } else {
+    const objToStore = {}
+    objToStore[chainId] = {}
+    objToStore[chainId][primaryAddress] = []
+    localStorage.setItem(localStorageKey, JSON.stringify(objToStore))
+  }
 }
 
 export const signMessageWithAddress = (plugin: RunTab, dispatch: React.Dispatch<any>, account: string, message: string, modalContent: (hash: string, data: string) => JSX.Element, passphrase?: string) => {

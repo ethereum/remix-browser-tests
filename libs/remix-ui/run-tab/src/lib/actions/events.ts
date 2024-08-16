@@ -285,6 +285,10 @@ export const resetAndInit = (plugin: RunTab) => {
       } catch (e) {
         cb(e.message)
       }
+    },
+    isSmartAccount: (address) => {
+      if (plugin.REACT_API.smartAccounts && plugin.REACT_API.smartAccounts.addresses.includes(address)) return true
+      else return false
     }
   })
 }
