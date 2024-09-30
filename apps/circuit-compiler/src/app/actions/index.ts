@@ -169,7 +169,7 @@ function trackEvent(plugin, eventCategory, action, label) {
 }
 
 async function readFileAsUint8Array(plugin: CircomPluginClient, path: string): Promise<Uint8Array> {
-  const data = await plugin.call('fileManager', 'readFile', path, { encoding: null })
+  const data = await plugin.call('fileManager', 'readFile', path)
   return new Uint8Array(data.split(',').map(byte => parseInt(byte, 10)))
 }
 
