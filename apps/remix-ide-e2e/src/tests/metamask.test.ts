@@ -46,14 +46,13 @@ const tests = {
   'Should connect to Sepolia Test Network using MetaMask #group1': function (browser: NightwatchBrowser) {
     browser.waitForElementPresent('*[data-id="remixIdeSidePanel"]')
       .setupMetamask(passphrase, password)
-      .useCss().switchBrowserTab(0)
+      .useCss()
+      .switchBrowserTab(0)
       .refreshPage()
       .waitForElementVisible('*[data-id="remixIdeIconPanel"]', 10000)
       .click('*[data-id="landingPageStartSolidity"]')
       .clickLaunchIcon('udapp')
       .switchEnvironment('injected-MetaMask')
-      .waitForElementPresent('*[data-id="settingsNetworkEnv"]')
-      .assert.containsText('*[data-id="settingsNetworkEnv"]', 'Sepolia (11155111) network')
       .pause(5000)
       .switchBrowserWindow(extension_url, 'MetaMask', (browser) => {
         browser
@@ -65,6 +64,8 @@ const tests = {
           .click('*[data-testid="page-container-footer-next"]')
       })
       .switchBrowserTab(0) // back to remix
+      .waitForElementPresent('*[data-id="settingsNetworkEnv"]')
+      .assert.containsText('*[data-id="settingsNetworkEnv"]', 'Sepolia (11155111) network')
   },
 
   'Should add a contract file #group1': function (browser: NightwatchBrowser) {

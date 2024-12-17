@@ -171,6 +171,8 @@ export interface EnvironmentProps {
     error: string
   },
   setExecutionContext: (executionContext: { context: string }) => void
+  modal: (title: string, message: string | JSX.Element, okLabel: string, okFn: () => void, cancelLabel?: string, cancelFn?: () => void, okBtnClass?: string, cancelBtnClass?: string) => void,
+  config: any
 }
 
 export interface NetworkProps {

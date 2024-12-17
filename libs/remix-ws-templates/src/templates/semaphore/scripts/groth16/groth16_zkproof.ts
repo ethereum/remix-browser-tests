@@ -25,13 +25,13 @@ function hash(message: any): bigint {
 (async () => {
   try {
     // @ts-ignore
-    const r1csBuffer = await remix.call('fileManager', 'readFile', 'circuits/.bin/semaphore.r1cs', true);
+    const r1csBuffer = await remix.call('fileManager', 'readFile', 'circuits/.bin/semaphore.r1cs', { encoding: null });
     // @ts-ignore
     const r1cs = new Uint8Array(r1csBuffer);
     // @ts-ignore
     await remix.call('circuit-compiler', 'compile', 'circuits/semaphore.circom');
     // @ts-ignore
-    const wasmBuffer = await remix.call('fileManager', 'readFile', 'circuits/.bin/semaphore.wasm', true);
+    const wasmBuffer = await remix.call('fileManager', 'readFile', 'circuits/.bin/semaphore_js/semaphore.wasm', { encoding: null });
     // @ts-ignore
     const wasm = new Uint8Array(wasmBuffer);
 

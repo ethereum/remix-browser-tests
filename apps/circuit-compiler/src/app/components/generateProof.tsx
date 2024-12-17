@@ -27,7 +27,7 @@ export function GenerateProof () {
         className="btn btn-secondary btn-block d-block w-100 text-break mb-1 mt-1"
         onClick={() => generateProof(circuitApp.plugin, circuitApp.appState, circuitApp.dispatch)}
         disabled={(status === "compiling") || (status === "computing") || (status === "proving") || (status === "exporting")}
-        data-id="compute_witness_btn"
+        data-id="generateProofBtn"
       >
         <RenderIf condition={status === 'proving'}>
           <i className="fas fa-sync fa-spin mr-2" aria-hidden="true"></i>

@@ -15,7 +15,7 @@ const logger = {
     // @ts-ignore
     await remix.call('circuit-compiler', 'compile', 'circuits/calculate_hash.circom');
     // @ts-ignore
-    const wasmBuffer = await remix.call('fileManager', 'readFile', 'circuits/.bin/calculate_hash.wasm', { encoding: null });
+    const wasmBuffer = await remix.call('fileManager', 'readFile', 'circuits/.bin/calculate_hash_js/calculate_hash.wasm', { encoding: null });
     // @ts-ignore
     const wasm = new Uint8Array(wasmBuffer);
     const zkey_final = {

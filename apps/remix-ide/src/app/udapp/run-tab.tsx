@@ -9,8 +9,7 @@ import * as packageJson from '../../../../../package.json'
 import { EventManager } from '@remix-project/remix-lib'
 import type { Blockchain } from '../../blockchain/blockchain'
 import type { CompilerArtefacts } from '@remix-project/core-plugin'
-// import type { NetworkModule } from '../tabs/network-module'
-// import type FileProvider from '../files/fileProvider'
+import { SavedVMStateProvider } from '../providers/vm-provider'
 import { Recorder } from '../tabs/runTab/model/recorder'
 const _paq = (window._paq = window._paq || [])
 
@@ -178,7 +177,7 @@ export class RunTab extends ViewPlugin {
       'foundry-provider': ['assets/img/foundry.png']
     }
 
-    const addProvider = async (position, name, displayName, isInjected, isVM, fork = '', dataId = '', title = '', forkedVM = false) => {
+    const addProvider = async (position, name, displayName, isInjected, isVM, isSavedState, fork = '', dataId = '', title = '', forkedVM = false) => {
       await this.call('blockchain', 'addProvider', {
         position,
         options: {},
@@ -191,6 +190,7 @@ export class RunTab extends ViewPlugin {
         isInjected,
         isForkedVM: forkedVM,
         isVM,
+        isSavedState,
         title,
         init: async function () {
           const options = await udapp.call(name, 'init')
@@ -206,13 +206,13 @@ export class RunTab extends ViewPlugin {
     const addCustomInjectedProvider = async (position, event, name, displayName, networkId, urls, nativeCurrency?) => {
       // name = `${name} through ${event.detail.info.name}`
       await this.engine.register([new InjectedCustomProvider(event.detail.provider, name, displayName, networkId, urls, nativeCurrency)])
-      await addProvider(position, name, displayName + ' - ' + event.detail.info.name, true, false)
+      await addProvider(position, name, displayName + ' - ' + event.detail.info.name, true, false, false)
     }
     const registerInjectedProvider = async (event) => {
       const name = 'injected-' + event.detail.info.name
       const displayName = 'Injected Provider - ' + event.detail.info.name
       await this.engine.register([new InjectedProviderDefault(event.detail.provider, name)])
-      await addProvider(0, name, displayName, true, false)
+      await addProvider(0, name, displayName, true, false, false)
 
       if (event.detail.info.name === 'MetaMask') {
         await addCustomInjectedProvider(7, event, 'injected-metamask-optimism', 'L2 - Optimism', '0xa', ['https://mainnet.optimism.io'])
@@ -248,23 +248,63 @@ export class RunTab extends ViewPlugin {
 
     // VM
     const titleVM = 'Execution environment is local to Remix.  Data is only saved to browser memory and will vanish upon reload.'
-    await addProvider(1, 'vm-cancun', 'Remix VM (Cancun)', false, true, 'cancun', 'settingsVMCancunMode', titleVM)
-    await addProvider(50, 'vm-shanghai', 'Remix VM (Shanghai)', false, true, 'shanghai', 'settingsVMShanghaiMode', titleVM)
-    await addProvider(51, 'vm-paris', 'Remix VM (Paris)', false, true, 'paris', 'settingsVMParisMode', titleVM)
-    await addProvider(52, 'vm-london', 'Remix VM (London)', false, true, 'london', 'settingsVMLondonMode', titleVM)
-    await addProvider(53, 'vm-berlin', 'Remix VM (Berlin)', false, true, 'berlin', 'settingsVMBerlinMode', titleVM)
-    await addProvider(2, 'vm-mainnet-fork', 'Remix VM - Mainnet fork', false, true, 'cancun', 'settingsVMMainnetMode', titleVM, true)
-    await addProvider(3, 'vm-sepolia-fork', 'Remix VM - Sepolia fork', false, true, 'cancun', 'settingsVMSepoliaMode', titleVM, true)
-    await addProvider(4, 'vm-custom-fork', 'Remix VM - Custom fork', false, true, '', 'settingsVMCustomMode', titleVM, true)
+    await addProvider(1, 'vm-cancun', 'Remix VM (Cancun)', false, true, false, 'cancun', 'settingsVMCancunMode', titleVM)
+    await addProvider(50, 'vm-shanghai', 'Remix VM (Shanghai)', false, true, false, 'shanghai', 'settingsVMShanghaiMode', titleVM)
+    await addProvider(51, 'vm-paris', 'Remix VM (Paris)', false, true, false, 'paris', 'settingsVMParisMode', titleVM)
+    await addProvider(52, 'vm-london', 'Remix VM (London)', false, true, false, 'london', 'settingsVMLondonMode', titleVM)
+    await addProvider(53, 'vm-berlin', 'Remix VM (Berlin)', false, true, false, 'berlin', 'settingsVMBerlinMode', titleVM)
+    await addProvider(2, 'vm-mainnet-fork', 'Remix VM - Mainnet fork', false, true, false, 'cancun', 'settingsVMMainnetMode', titleVM, true)
+    await addProvider(3, 'vm-sepolia-fork', 'Remix VM - Sepolia fork', false, true, false, 'cancun', 'settingsVMSepoliaMode', titleVM, true)
+    await addProvider(4, 'vm-custom-fork', 'Remix VM - Custom fork', false, true, false, '', 'settingsVMCustomMode', titleVM, true)
+
+    // Saved VM States
+    const addSVSProvider = async(stateFilePath, pos) => {
+      let stateDetail = await this.call('fileManager', 'readFile', stateFilePath)
+      stateDetail = JSON.parse(stateDetail)
+      const providerName = 'vm-svs-' + stateDetail.stateName
+      descriptions[providerName] = JSON.stringify({
+        name: providerName,
+        latestBlock: stateDetail.latestBlockNumber,
+        timestamp: stateDetail.savingTimestamp
+      })
+      // Create and register provider plugin for saved states
+      const svsProvider = new SavedVMStateProvider({
+        name: providerName,
+        displayName: stateDetail.stateName,
+        kind: 'provider',
+        description: descriptions[providerName],
+        methods: ['sendAsync', 'init'],
+        version: packageJson.version
+      }, this.blockchain, stateDetail.forkName)
+      this.engine.register(svsProvider)
+      await addProvider(pos, providerName, stateDetail.stateName, false, false, true, stateDetail.forkName)
+    }
+
+    this.on('filePanel', 'workspaceInitializationCompleted', async () => {
+      const ssExists = await this.call('fileManager', 'exists', '.states/saved_states')
+      if (ssExists) {
+        const savedStatesDetails = await this.call('fileManager', 'readdir', '.states/saved_states')
+        const savedStatesFiles = Object.keys(savedStatesDetails)
+        let pos = 10
+        for (const filePath of savedStatesFiles) {
+          pos += 1
+          await addSVSProvider(filePath, pos)
+        }
+      }
+    })
+
+    this.on('udapp', 'vmStateSaved', async (stateName) => {
+      await addSVSProvider(`.states/saved_states/${stateName}.json`, 20)
+    })
 
     // wallet connect
-    await addProvider(6, 'walletconnect', 'WalletConnect', false, false)
+    await addProvider(6, 'walletconnect', 'WalletConnect', false, false, false)
 
     // external provider
-    await addProvider(10, 'basic-http-provider', 'Custom - External Http Provider', false, false)
-    await addProvider(20, 'hardhat-provider', 'Dev - Hardhat Provider', false, false)
-    await addProvider(21, 'ganache-provider', 'Dev - Ganache Provider', false, false)
-    await addProvider(22, 'foundry-provider', 'Dev - Foundry Provider', false, false)
+    await addProvider(10, 'basic-http-provider', 'Custom - External Http Provider', false, false, false)
+    await addProvider(20, 'hardhat-provider', 'Dev - Hardhat Provider', false, false, false)
+    await addProvider(21, 'ganache-provider', 'Dev - Ganache Provider', false, false, false)
+    await addProvider(22, 'foundry-provider', 'Dev - Foundry Provider', false, false, false)
 
     // register injected providers
 

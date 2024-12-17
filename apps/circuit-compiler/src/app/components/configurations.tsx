@@ -52,7 +52,7 @@ export function Configurations ({primeValue, setPrimeValue, versionValue}: Confi
                     <option value="vesta">vesta</option>
                   </>
                 </RenderIf>
-                <RenderIf condition={versionValue === '2.1.8'}>
+                <RenderIf condition={versionValue === '2.1.8' || versionValue === 'latest'}>
                   <>
                     <option value="bn128">bn128</option>
                     <option value="bls12381">bls12381</option>

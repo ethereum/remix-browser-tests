@@ -23,6 +23,8 @@ export interface ICircuitAppContext {
 
 export interface ActionPayloadTypes {
   SET_COMPILER_VERSION: string,
+  SET_VERSION_DOWNLOAD_LIST: string[],
+  REMOVE_VERSION_FROM_DOWNLOAD_LIST: string,
   SET_FILE_PATH: string,
   SET_COMPILER_STATUS: CompilerStatus,
   SET_PRIME_VALUE: PrimeValue,
@@ -54,6 +56,7 @@ export type Actions = {[A in keyof ActionPayloadTypes]: Action<A>}[keyof ActionP
 export interface AppState {
   version: string,
   versionList: typeof compiler_list.wasm_builds,
+  versionDownloadList: string[],
   filePath: string,
   filePathToId: Record<string, string>,
   status: CompilerStatus,

@@ -1,6 +1,6 @@
 import React from 'react' // eslint-disable-line
 import { ViewPlugin } from '@remixproject/engine-web'
-import { PluginViewWrapper } from '@remix-ui/helper'
+import { CustomTooltip, PluginViewWrapper } from '@remix-ui/helper'
 import { RemixUIGridView } from '@remix-ui/remix-ui-grid-view'
 import { RemixUIGridSection } from '@remix-ui/remix-ui-grid-section'
 import { RemixUIGridCell } from '@remix-ui/remix-ui-grid-cell'
@@ -25,7 +25,7 @@ const profile = {
   methods: []
 }
 
-type ProvidersSection = `Injected` | 'Remix VMs' | 'Externals' | 'Remix forked VMs'
+type ProvidersSection = `Injected` | 'Remix VMs' | 'Externals' | 'Remix forked VMs' | 'Saved VM States'
 
 export class EnvironmentExplorer extends ViewPlugin {
   providers: { [key in ProvidersSection]: Provider[] }
@@ -39,6 +39,7 @@ export class EnvironmentExplorer extends ViewPlugin {
     this.providers = {
       'Injected': [],
       'Remix VMs': [],
+      'Saved VM States': [],
       'Remix forked VMs': [],
       'Externals': []
     }
@@ -57,6 +58,8 @@ export class EnvironmentExplorer extends ViewPlugin {
       this.providers['Remix forked VMs'].push(provider)
     } else if (provider.isVM) {
       this.providers['Remix VMs'].push(provider)
+    } else if (provider.isSavedState) {
+      this.providers['Saved VM States'].push(provider)
     } else {
       this.providers['Externals'].push(provider)
     }
@@ -84,6 +87,7 @@ export class EnvironmentExplorer extends ViewPlugin {
     this.providers = {
       'Injected': [],
       'Remix VMs': [],
+      'Saved VM States': [],
       'Externals': [],
       'Remix forked VMs': []
     }
@@ -169,6 +173,48 @@ export class EnvironmentExplorer extends ViewPlugin {
               }}
             >
               <div>{provider.description}</div>
+            </RemixUIGridCell>
+          })}</RemixUIGridSection>
+        <RemixUIGridSection
+          plugin={this}
+          title='Deploy to an In-browser Saved VM State.'
+          hScrollable={false}
+        >{this.providers['Saved VM States'].map(provider => {
+            const { latestBlock, timestamp } = JSON.parse(provider.description)
+            return <RemixUIGridCell
+              plugin={this}
+              title={provider.displayName}
+              logos={provider.logos}
+              classList='EECellStyle'
+              searchKeywords={['Saved VM States', provider.name, provider.displayName, provider.title, provider.description]}
+              pinned={this.pinnedProviders.includes(provider.name)}
+              key={provider.name}
+              id={provider.name}
+              pinStateCallback={async (pinned: boolean) => {
+                if (pinned) {
+                  this.emit('providerPinned', provider.name, provider)
+                  this.call('notification', 'toast', `"${provider.displayName}" has been added to the Environment list of the Deploy & Run Transactions plugin.`)
+                  return true
+                }
+                const providerName = await this.call('blockchain', 'getProvider')
+                if (providerName !== provider.name) {
+                  this.emit('providerUnpinned', provider.name, provider)
+                  this.call('notification', 'toast', `"${provider.displayName}" has been removed from the Environment list of the Deploy & Run Transactions plugin.`)
+                  return true
+                } else {
+                  this.call('notification', 'toast', 'Cannot unpin the current selected provider')
+                  return false
+                }
+              }}
+            >
+              <div><b>Latest Block: </b>{parseInt(latestBlock)}</div>
+              <CustomTooltip
+                placement="auto"
+                tooltipId="overlay-tooltip-compile"
+                tooltipText={`Saved at: ${(new Date(timestamp)).toLocaleString()}`}
+              >
+                <div><b>Saved at: </b>{(new Date(timestamp)).toDateString()}</div>
+              </CustomTooltip>
             </RemixUIGridCell>
           })}</RemixUIGridSection>
         <RemixUIGridSection

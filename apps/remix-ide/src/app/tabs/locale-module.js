@@ -38,7 +38,7 @@ export class LocaleModule extends Plugin {
       config: Registry.getInstance().get('config') && Registry.getInstance().get('config').api
     }
     this.locales = {}
-    locales.map((locale) => {
+    locales.forEach((locale) => {
       this.locales[locale.code.toLocaleLowerCase()] = locale
     })
     this._paq = _paq

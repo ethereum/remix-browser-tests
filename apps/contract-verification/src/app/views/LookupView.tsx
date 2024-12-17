@@ -5,7 +5,6 @@ import type { LookupResponse, VerifierIdentifier } from '../types'
 import { VERIFIERS } from '../types'
 import { AppContext } from '../AppContext'
 import { CustomTooltip } from '@remix-ui/helper'
-import { getVerifier } from '../Verifiers'
 import { useNavigate } from 'react-router-dom'
 import { VerifyFormContext } from '../VerifyFormContext'
 import { useSourcifySupported } from '../hooks/useSourcifySupported'
@@ -25,7 +24,7 @@ export const LookupView = () => {
   const sourcifySupported = useSourcifySupported(selectedChain, chainSettings)
 
   const noVerifierEnabled = VERIFIERS.every((verifierId) => !validConfiguration(chainSettings, verifierId) || (verifierId === 'Sourcify' && !sourcifySupported))
-  const submitDisabled = !!contractAddressError || !contractAddress || !selectedChain || noVerifierEnabled
+  const submitDisabled = !!contractAddressError || !contractAddress || !selectedChain || noVerifierEnabled || Object.values(loadingVerifiers).some((loading) => loading)
 
   // Reset results when chain or contract changes
   useEffect(() => {
@@ -47,9 +46,7 @@ export const LookupView = () => {
       }
 
       setLoadingVerifiers((prev) => ({ ...prev, [verifierId]: true }))
-      const verifier = getVerifier(verifierId, chainSettings.verifiers[verifierId])
-      verifier
-        .lookup(contractAddress, selectedChain.chainId.toString())
+      clientInstance.lookup(verifierId, chainSettings, selectedChain.chainId.toString(), contractAddress)
         .then((result) => setLookupResult((prev) => ({ ...prev, [verifierId]: result })))
         .catch((err) =>
           setLookupResult((prev) => {
@@ -66,18 +63,11 @@ export const LookupView = () => {
   }
 
   const handleOpenInRemix = async (lookupResponse: LookupResponse) => {
-    for (const source of lookupResponse.sourceFiles ?? []) {
-      try {
-        await clientInstance.call('fileManager', 'setFile', source.path, source.content)
-      } catch (err) {
-        console.error(`Error while creating file ${source.path}: ${err.message}`)
-      }
-    }
     try {
-      await clientInstance.call('fileManager', 'open', lookupResponse.targetFilePath)
+      await clientInstance.saveToRemix(lookupResponse)
       await sendToMatomo('lookup', 'openInRemix On: ' + selectedChain)
     } catch (err) {
-      console.error(`Error focusing file ${lookupResponse.targetFilePath}: ${err.message}`)
+      console.error(`Error while trying to open in Remix: ${err.message}`)
     }
   }
 

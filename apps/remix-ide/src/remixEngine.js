@@ -30,6 +30,7 @@ export class RemixEngine extends Engine {
     if (name === 'remixAI') return { queueTimeout: 60000 * 20 }
     if (name === 'cookbookdev') return { queueTimeout: 60000 * 3 }
     if (name === 'contentImport') return { queueTimeout: 60000 * 3 }
+    if (name === 'circom') return { queueTimeout: 60000 * 4 }
     return { queueTimeout: 10000 }
   }
 

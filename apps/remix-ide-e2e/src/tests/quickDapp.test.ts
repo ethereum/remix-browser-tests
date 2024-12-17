@@ -40,8 +40,7 @@ const tests = {
       .click('*[data-id="landingPageStartSolidity"]')
       .clickLaunchIcon('udapp')
       .switchEnvironment('injected-MetaMask')
-      .waitForElementPresent('*[data-id="settingsNetworkEnv"]')
-      .assert.containsText('*[data-id="settingsNetworkEnv"]', 'Sepolia (11155111) network')
+
       .pause(5000)
       .switchBrowserWindow(extension_url, 'MetaMask', (browser) => {
         browser
@@ -54,6 +53,8 @@ const tests = {
           // .click('*[data-testid="popover-close"]')
       })
       .switchBrowserTab(0) // back to remix
+      .waitForElementPresent('*[data-id="settingsNetworkEnv"]')
+      .assert.containsText('*[data-id="settingsNetworkEnv"]', 'Sepolia (11155111) network')
   },
 
   'Should load quick-dapp plugin #group1': function (browser: NightwatchBrowser) {

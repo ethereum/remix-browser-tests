@@ -66,7 +66,7 @@ import { FoundryHandle } from './app/files/foundry-handle'
 import { FoundryHandleDesktop } from './app/plugins/electron/foundryPlugin'
 import { HardhatHandle } from './app/files/hardhat-handle'
 import { HardhatHandleDesktop } from './app/plugins/electron/hardhatPlugin'
-
+import { circomPlugin } from './app/plugins/electron/circomElectronPlugin'
 import { GitPlugin } from './app/plugins/git'
 import { Matomo } from './app/plugins/matomo'
 
@@ -419,6 +419,8 @@ class AppComponent {
       this.engine.register([xterm])
       const ripgrep = new ripgrepPlugin()
       this.engine.register([ripgrep])
+      const circom = new circomPlugin()
+      this.engine.register([circom])
       const appUpdater = new appUpdaterPlugin()
       this.engine.register([appUpdater])
       const remixAIDesktop = new remixAIDesktopPlugin()
@@ -565,7 +567,7 @@ class AppComponent {
     await this.appManager.activatePlugin(['solidity-script', 'remix-templates'])
 
     if (isElectron()) {
-      await this.appManager.activatePlugin(['isogit', 'electronconfig', 'electronTemplates', 'xterm', 'ripgrep', 'appUpdater', 'slither', 'foundry', 'hardhat']) // 'remixAID'
+      await this.appManager.activatePlugin(['isogit', 'electronconfig', 'electronTemplates', 'xterm', 'ripgrep', 'appUpdater', 'slither', 'foundry', 'hardhat', 'circom']) // 'remixAID'
     }
 
     this.appManager.on(

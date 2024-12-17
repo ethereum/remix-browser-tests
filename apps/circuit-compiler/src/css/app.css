@@ -84,3 +84,18 @@ body {
   bottom: 0;
   right: 0;
 }
+.custom-dropdown-items {
+    padding: 0.25rem 0.25rem;
+    border-radius: .25rem;
+    background: var(--custom-select);
+}
+.custom-dropdown-items a {
+    border-radius: .25rem;
+    text-transform: none;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.25rem;
+    width: auto;
+    color: var(--text);
+}

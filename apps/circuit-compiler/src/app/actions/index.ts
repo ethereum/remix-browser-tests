@@ -3,6 +3,7 @@ import type { CircomPluginClient } from "../services/circomPluginClient"
 import { ActionPayloadTypes, AppState, ICircuitAppContext } from "../types"
 import { GROTH16_VERIFIER, PLONK_VERIFIER } from './constant'
 import { extractNameFromKey, extractParentFromKey } from '@remix-ui/helper'
+import isElectron from 'is-electron'
 
 export const compileCircuit = async (plugin: CircomPluginClient, appState: AppState) => {
   if (appState.status !== "compiling") {
@@ -31,11 +32,11 @@ export const computeWitness = async (
     const input = JSON.stringify(witnessValues)
     const witness = await plugin.computeWitness(input)
 
-    if (appState.exportWtnsJson) {
-      const wtns = await snarkjs.wtns.exportJson(witness)
-      const wtnsJson = wtns.map(wtn => wtn.toString())
-      const fileName = extractNameFromKey(appState.filePath)
-      const writePath = `${extractParentFromKey(appState.filePath)}/.bin/${fileName.replace('.circom', '.wtn.json')}`
+      if (appState.exportWtnsJson) {
+        const wtns = await snarkjs.wtns.exportJson(witness)
+        const wtnsJson = wtns.map(wtn => wtn.toString())
+        const fileName = extractNameFromKey(appState.filePath)
+        const writePath = extractParentFromKey(appState.filePath) + `/.bin/${fileName.replace('.circom', '_js')}/${fileName.replace('.circom', '.wtn.json')}`
 
       await writeFile(plugin, writePath, JSON.stringify(wtnsJson, null, 2))
       trackEvent(plugin, 'computeWitness', 'wtns.exportJson', writePath)

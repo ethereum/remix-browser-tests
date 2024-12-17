@@ -42,10 +42,14 @@ export abstract class InjectedProvider extends Plugin implements IProvider {
     }
   }
 
-  askPermission(throwIfNoInjectedProvider) {
+  async askPermission(throwIfNoInjectedProvider) {
     const web3Provider = this.getInjectedProvider()
     if (typeof web3Provider !== 'undefined' && typeof web3Provider.request === 'function') {
-      web3Provider.request({ method: 'eth_requestAccounts' })
+      try {
+        await web3Provider.request({ method: 'eth_requestAccounts' })
+      } catch (error) {
+        throw new Error(this.notFound())
+      }
     } else if (throwIfNoInjectedProvider) {
       throw new Error(this.notFound())
     }
@@ -61,7 +65,12 @@ export abstract class InjectedProvider extends Plugin implements IProvider {
       this.call('notification', 'toast', this.notFound())
       throw new Error(this.notFound())
     } else {
-      this.askPermission(true)
+      try {
+        await this.askPermission(true)
+      } catch (error) {
+        this.call('notification', 'toast', 'Please make sure your Injected Provider is connected to Remix.')
+        throw new Error(this.notFound())
+      }
     }
     return {}
   }
