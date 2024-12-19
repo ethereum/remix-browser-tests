@@ -169,12 +169,12 @@ function trackEvent(plugin, eventCategory, action, label) {
   plugin._paq.push(['trackEvent', eventCategory, action, label])
 }
 
-async function readFileAsUint8Array(plugin: CircomPluginClient, path: string): Promise<Uint8Array> {
-  const data = await plugin.call('fileManager', 'readFile', path)
-  return new Uint8Array(data.split(',').map(byte => parseInt(byte, 10)))
-}
+async function readFileAsUint8Array(plugin: CircomPluginClient, path: string) {
+   // @ts-ignore
+  await plugin.call('fileManager', 'readFile', path)}
 
 async function writeFile(plugin: CircomPluginClient, path: string, content: string) {
+   // @ts-ignore
   await plugin.call('fileManager', 'writeFile', path, content)
 }
 
