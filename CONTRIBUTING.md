@@ -1,23 +1,36 @@
 # Contributing
 
-Everyone is very welcome to contribute on the codebase of Remix. Please join our [Discord](https://discord.gg/mh9hFCKkEq) in case of any queries.
+Everyone is welcome to contribute to Remix's codebase and please join our [Discord](https://discord.gg/mh9hFCKkEq).
 
 ## Development
-Remix libraries work closely with [Remix IDE](https://remix.ethereum.org). Each library has a readme to explain its application.
+Remix libraries work closely with [Remix IDE](https://remix.ethereum.org). Each library has a README to explain its application.
 
-When you add code in any library, please ensure you add related unit tests.
+When you add code to a library, please add related unit tests.
 
 ## Coding style
 
-Please conform to [standard](https://standardjs.com/) for code styles.
+Use [JavaScript Standard Style](https://standardjs.com/) for the coding style.
 
 ## Submitting Pull Requests
-Please follow GitHub's standard model of making changes & submitting pull request which is very well explained [here](https://guides.github.com/activities/forking/). Make sure your code works fine locally before submitting a pull request.
+Follow GitHub's standard model of making changes & submitting pull requests - explained [here](https://guides.github.com/activities/forking/). Please make sure your code works locally before submitting a pull request.
 
 ## Internationalization
-Remix now supports Internationalization. Everyone is welcome to contribute to this feature.
+Remix supports Internationalization.
 
-### How to make a string support intl?
+### How to contribute translations?
+Remix uses CrowdIn to manage translations.  Please DO NOT make a PR on GitHub with translation. To contribute, make an account on [CrowdIn](https://accounts.crowdin.com/register). 
+
+Remix has four projects on CrowdIn
+1. [RemixUI](https://crowdin.com/project/remix-ui/) - for translating Remix's User Interface
+2. [Remix Docs](https://crowdin.com/project/remix-translation)  - for translating Remix's [Documentation](https://remix-ide.readthedocs.io)
+3. [LearnEth](https://crowdin.com/project/remix-learneth) - for translating the tutorials in Remix's tutorial plugin called [Learneth](https://remix.ethereum.org/?#activate=solidity,solidityUnitTesting,LearnEth)
+4. [Remix Project Website](https://crowdin.com/project/361d7e8c3b07220fa22e9d5a901b0021) - for translating the info site about [Remix](https://remix-project.org/)
+
+There are many languages, for each project.  But if you do not see your desired language, send us a note on CrowdIn or in the Remix Discord.
+
+In addition to writing translations, you can also review other's work. 
+
+### How to make your plugin support string internationalization?
 First, put the string in the locale file located under `apps/remix-ide/src/app/tabs/locales/en`.
 Each json file corresponds to a module. If the module does not exist, then create a new json and import it in the `index.js`.
 Then you can replace the string with an intl component. The `id` prop will be the key of this string.
@@ -58,7 +71,7 @@ Then, create a `index.js` file like this,
 import panelJson from './panel.json';
 import enJson from '../en';
 
-// There may have some un-translated content. Always fill in the gaps with EN JSON.
+// There may have some untranslated content. Always fill in the gaps with EN JSON.
 // No need for a defaultMessage prop when render a FormattedMessage component.
 export default Object.assign({}, enJson, {
   ...panelJson,
@@ -80,11 +93,11 @@ You can find the language's `code, name, localeName` in this link
 https://github.com/ethereum/ethereum-org-website/blob/dev/i18n.config.json
 
 ### Whether or not to use `defaultMessage`?
-If you search `FormattedMessage` or `intl.formatMessage` in this project, you will notice that most of them only have a `id` prop, but a few of them have a `defaultMessage` prop.
+If you search `FormattedMessage` or `intl.formatMessage` in this project, you will notice that most only have a `id` prop, but a few of them have a `defaultMessage` prop.
 
 **Why?**
 
-Each non-english language will be filled in the gaps with english. Even though there may be some un-translated content, it will always use english as defaultMessage. That's why we don't need to provide a `defaultMessage` prop each time we render a `FormattedMessage` component.
+The gaps in an incomplete non-English language will be filled with English. The un-translated content will use English as defaultMessage. That's why we don't need to provide a `defaultMessage` prop each time we render a `FormattedMessage` component.
 
 But in some cases, the `id` prop may not be static. For example,
 ```jsx
@@ -92,22 +105,10 @@ But in some cases, the `id` prop may not be static. For example,
  <FormattedMessage id={plugin?.profile.name + '.displayName'} defaultMessage={plugin?.profile.displayName || plugin?.profile.name} />
 </h6>
 ```
-You can't be sure whether there is a match key in locale file or not. So it will be better to provide a `defaultMessage` prop.
 
-### Should I update the non-english locale json files?
-You probably will have this question when you are updating the english locale json files. 
+Because you can't be sure if there is a matched key in the locale file, it's better to provide a `defaultMessage` prop.
 
-Well, that depends.
+### Should I update the non-English locale json files?
+When you are updating an existing English locale json file, then you don't need to add any other languages, because CrowdIn will do it for you.
 
-If you update an old json file, then you don't need to update it in other languages, because crowdin will do it for you.
-
-But if you add a new json file, only English is needed.
-
-### How to contribute on translations?
-Remix is using crowdin to manage translations. If you want to contribute on that, you can do it on crowdin. Check the link below. 
-
-https://crowdin.com/project/remix-translation
-
-There are many languages, just get into your language, and you will see a folder named `Remix UI`, where you can do the translations. 
-
-Not only you can do the translations, you can also review it. If you agree or disagree with some translations, you can vote YES or NO. If you vote NO, you can comment to explain why you vote NO, and give your translation.
+But if you add a new json file, only then English is needed.

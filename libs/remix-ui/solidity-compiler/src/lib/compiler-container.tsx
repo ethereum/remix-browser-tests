@@ -927,7 +927,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
           </div>
           <div className={`flex-column 'd-flex'}`}>
             <div className="mb-2 ml-4">
-              <label className="remixui_compilerLabel form-check-label" htmlFor="compilierLanguageSelector">
+              <label className="remixui_compilerLabel form-check-label" htmlFor="compilerLanguageSelector">
                 <FormattedMessage id="solidity.language" />
               </label>
               <CustomTooltip
@@ -946,7 +946,7 @@ export const CompilerContainer = (props: CompilerContainerProps) => {
                     disabled={state.useFileConfiguration}
                     value={state.language}
                     className="custom-select"
-                    id="compilierLanguageSelector"
+                    id="compilerLanguageSelector"
                     style={{
                       pointerEvents: state.useFileConfiguration ? 'none' : 'auto'
                     }}

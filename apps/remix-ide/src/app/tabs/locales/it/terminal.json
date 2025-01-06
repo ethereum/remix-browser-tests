@@ -1,7 +1,8 @@
 {
-  "terminal.listen": "ascolta su tutte le transazioni",
+  "terminal.listen": "Ascolta su tutte le transazioni",
+  "terminal.listenVM": "Ascolta su tutte le transazioni è disabilitato per l'ambiente della VM",
   "terminal.listenTitle": "Se è selezionato, Remix ascolterà tutte le transazioni generate nell'environment attuale e non solo quelle create da te",
-  "terminal.search": "Cercare con hash o indirizzo della transazione",
+  "terminal.search": "Filtra con hash o indirizzo della transazione",
   "terminal.used": "usato",
   "terminal.debug": "Debug",
   "terminal.welcomeText1": "Benvenuto a",
@@ -11,10 +12,10 @@
   "terminal.welcomeText5": "Esegui gli script JavaScript",
   "terminal.welcomeText6": "Immettere uno script direttamente nell'interfaccia della riga di comando",
   "terminal.welcomeText7": "Seleziona un file Javascript nel file explorer ed esegui `remix.execute()` o `remix.exeCurrent()` nell'interfaccia Command Line (Terminale)",
-  "terminal.welcomeText8": "Fare clic con il tasto destro su un file JavaScript nell'esplora file e quindi fare clic su `Run`",
+  "terminal.welcomeText8": "Clicca con il destro su un file JavaScript in Esplora File, quindi clicca su `Esegui`",
   "terminal.welcomeText9": "Le seguenti librerie sono accessibili",
   "terminal.welcomeText10": "Digitare il nome della libreria per vedere i comandi disponibili",
-  "terminal.text1": "Questo tipo di comando è stato deprecato e non è più funzionante. Si prega di eseguire remix.help() per elencare i comandi disponibili.",
+  "terminal.text1": "Questo tipo di comando è stato deprecato e non è più operativo. Ti preghiamo di eseguire remix.help() per elencare tutti i comandi disponibili.",
   "terminal.hideTerminal": "Nascondi Terminale",
   "terminal.showTerminal": "Mostra Terminale",
   "terminal.clearConsole": "Pulisci console",
@@ -38,7 +39,8 @@
   "terminal.executionCost": "costo di esecuzione",
   "terminal.input": "input",
   "terminal.decodedInput": "input decodificato",
+  "terminal.output": "output",
   "terminal.decodedOutput": "output decodificato",
-  "terminal.rawlogs": "log grezzi",
+  "terminal.rawlogs": "registri grezzi",
   "terminal.logs": "Log"
 }

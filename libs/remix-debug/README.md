@@ -92,7 +92,7 @@ Some of the class details are as:
 
 **BreakpointManager**
 
-`constructor({ traceManager, callTree, solidityProxy, locationToRowConverter })` : create new instance
+`constructor({ traceManager, callTree, solidityProxy, locationToRowConverter })` : create a new instance
 
 `jumpNextBreakpoint(defaultToLimit)` : start looking for the next breakpoint
 
@@ -112,7 +112,7 @@ Some of the class details are as:
 
 **StorageViewer**
 
-`constructor (_context, _storageResolver, _traceManager)` : create new instance
+`constructor (_context, _storageResolver, _traceManager)` : create a new instance
 
 `storageRange(defaultToLimit)` : return the storage for the current context (address and vm trace index)
 
@@ -130,7 +130,7 @@ Some of the class details are as:
 
 **StorageResolver**
 
-`constructor (options)` : create new instance
+`constructor (options)` : create a new instance
 
 `storageRange(tx, stepIndex, address, callback)` : return the storage for the current context (address and vm trace index)
 

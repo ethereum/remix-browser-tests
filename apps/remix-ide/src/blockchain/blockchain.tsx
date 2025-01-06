@@ -23,7 +23,7 @@ const profile = {
   name: 'blockchain',
   displayName: 'Blockchain',
   description: 'Blockchain - Logic',
-  methods: ['getCode', 'getTransactionReceipt', 'addProvider', 'removeProvider', 'getCurrentFork', 'getAccounts', 'web3VM', 'web3', 'getProvider', 'getCurrentNetworkStatus', 'getAllProviders', 'getPinnedProviders'],
+  methods: ['getCode', 'getTransactionReceipt', 'addProvider', 'removeProvider', 'getCurrentFork', 'getAccounts', 'web3VM', 'web3', 'getProvider', 'getCurrentProvider', 'getCurrentNetworkStatus', 'getAllProviders', 'getPinnedProviders'],
   version: packageJson.version
 }
 
@@ -55,7 +55,7 @@ export type Provider = {
   description?: string
   isInjected: boolean
   isVM: boolean
-  isSavedState: boolean
+  isForkedState: boolean
   isForkedVM: boolean
   title: string
   init: () => Promise<void>
@@ -146,6 +146,18 @@ export class Blockchain extends Plugin {
       this.pinnedProviders.push(name)
       this.call('config', 'setAppParameter', 'settings/pinned-providers', JSON.stringify(this.pinnedProviders))
       _paq.push(['trackEvent', 'blockchain', 'providerPinned', name])
+      this.emit('providersChanged')
+    })
+    // used to pin and select newly created forked state provider
+    this.on('udapp', 'forkStateProviderAdded', (providerName) => {
+      const name = `vm-fs-${providerName}`
+      this.emit('shouldAddProvidertoUdapp', name, this.getProviderObjByName(name))
+      this.pinnedProviders.push(name)
+      this.call('config', 'setAppParameter', 'settings/pinned-providers', JSON.stringify(this.pinnedProviders))
+      _paq.push(['trackEvent', 'blockchain', 'providerPinned', name])
+      this.emit('providersChanged')
+      this.changeExecutionContext({ context: name }, null, null, null)
+      this.call('notification', 'toast', `VM state '${providerName}' forked and selected as current envionment.`)
     })
 
     this.on('environmentExplorer', 'providerUnpinned', (name, provider) => {
@@ -154,6 +166,7 @@ export class Blockchain extends Plugin {
       this.pinnedProviders.splice(index, 1)
       this.call('config', 'setAppParameter', 'settings/pinned-providers', JSON.stringify(this.pinnedProviders))
       _paq.push(['trackEvent', 'blockchain', 'providerUnpinned', name])
+      this.emit('providersChanged')
     })
 
     this.call('config', 'getAppParameter', 'settings/pinned-providers').then((providers) => {
@@ -566,6 +579,11 @@ export class Blockchain extends Plugin {
     return this.executionContext.getProvider()
   }
 
+  getProviderObjByName(name) {
+    const allProviders = this.getAllProviders()
+    return allProviders[name]
+  }
+
   getInjectedWeb3Address() {
     return this.executionContext.getSelectedAddress()
   }
@@ -665,10 +683,12 @@ export class Blockchain extends Plugin {
   addProvider(provider: Provider) {
     if (this.pinnedProviders.includes(provider.name)) this.emit('shouldAddProvidertoUdapp', provider.name, provider)
     this.executionContext.addProvider(provider)
+    this.emit('providersChanged')
   }
 
   removeProvider(name) {
     this.executionContext.removeProvider(name)
+    this.emit('providersChanged')
   }
 
   getAllProviders() {
@@ -696,11 +716,11 @@ export class Blockchain extends Plugin {
         const stateDb = await this.call('fileManager', 'readFile', `.states/${context}/state.json`)
         await this.getCurrentProvider().resetEnvironment(stateDb)
       } else {
-        // check if saved VM state is used as provider
-        const stateName = context.replace('vm-svs-', '')
-        const contextExists = await this.call('fileManager', 'exists', `.states/saved_states/${stateName}.json`)
+        // check if forked VM state is used as provider
+        const stateName = context.replace('vm-fs-', '')
+        const contextExists = await this.call('fileManager', 'exists', `.states/forked_states/${stateName}.json`)
         if (contextExists) {
-          const stateDb = await this.call('fileManager', 'readFile', `.states/saved_states/${stateName}.json`)
+          const stateDb = await this.call('fileManager', 'readFile', `.states/forked_states/${stateName}.json`)
           await this.getCurrentProvider().resetEnvironment(stateDb)
         } else await this.getCurrentProvider().resetEnvironment()
       }
@@ -958,11 +978,12 @@ export class Blockchain extends Plugin {
           try {
             let state = await this.executionContext.getStateDetails()
             const provider = this.executionContext.getProvider()
-            if (provider.startsWith('vm-svs-')) {
-              const stateName = provider.replace('vm-svs-', '')
-              const stateFileExists = this.call('fileManager', 'exists', `.states/saved_states/${stateName}.json`)
+            // Check if provider is forked VM state
+            if (provider.startsWith('vm-fs-')) {
+              const stateName = provider.replace('vm-fs-', '')
+              const stateFileExists = this.call('fileManager', 'exists', `.states/forked_states/${stateName}.json`)
               if (stateFileExists) {
-                let stateDetails = await this.call('fileManager', 'readFile', `.states/saved_states/${stateName}.json`)
+                let stateDetails = await this.call('fileManager', 'readFile', `.states/forked_states/${stateName}.json`)
                 stateDetails = JSON.parse(stateDetails)
                 state = JSON.parse(state)
                 state['stateName'] = stateDetails.stateName
@@ -970,7 +991,7 @@ export class Blockchain extends Plugin {
                 state['savingTimestamp'] = stateDetails.savingTimestamp
                 state = JSON.stringify(state, null, 2)
               }
-              this.call('fileManager', 'writeFile', `.states/saved_states/${stateName}.json`, state)
+              this.call('fileManager', 'writeFile', `.states/forked_states/${stateName}.json`, state)
             }
             else this.call('fileManager', 'writeFile', `.states/${provider}/state.json`, state)
           } catch (e) {

@@ -56,7 +56,7 @@ export class EventManager {
 
   /*
     * trigger event.
-    * Every listener have their associated function executed
+    * Every listener has their associated function executed
     *
     * @param {String} eventName  - the event name
     * @param {Array}j - argument that will be passed to the executed function.

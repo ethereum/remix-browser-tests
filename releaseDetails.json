@@ -1,11 +1,11 @@
 {
-    "version": "v0.57.0",
+    "version": "v0.59.0",
     "title": "RELEASE HIGHLIGHTS",
-    "highlight1": "RemixAI, the new Web3 AI Assistant",
-    "highlight2": "New Script Configuration plugin",
-    "highlight3": "Routescan added to the Contract Verification plugin",
+    "highlight1": "Fork & delete VM state",
+    "highlight2": "Syntax highlighting for Noir(.nr) files",
+    "highlight3": "",
     "highlight4": "",
     "more": "Read More",
-    "moreLink": "https://medium.com/remix-ide/remix-release-v0-57-0-3c550f26f2d0?source=friends_link&sk=d713cd9ea5840454d8e8c03dbfb86f93"
+    "moreLink": "https://medium.com/remix-ide/remix-release-v0-59-0-306881e41984?source=friends_link&sk=be2390827519bf2d7530f013021160b9"
   }
   

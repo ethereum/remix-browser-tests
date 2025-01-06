@@ -123,7 +123,7 @@ export function checkError (execResult, compiledContracts) {
                   } catch (e) {
                     console.error(e.message)
                   }
-                  // we check in the 'userdoc' if there's an user documentation for this error
+                  // we check in the 'userdoc' if there's a user documentation for this error
                   try {
                     const userdoc = (contract.userdoc.errors && contract.userdoc.errors[functionSignature][0]) || {}
                     if (userdoc && (userdoc as any).notice) customError += ' : ' + (userdoc as any).notice // we append the user doc if any

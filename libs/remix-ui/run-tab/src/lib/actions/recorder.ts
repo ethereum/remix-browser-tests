@@ -37,7 +37,7 @@ export const storeScenario = async (plugin: RunTab, dispatch: React.Dispatch<any
 }
 
 const runScenario = (liveMode: boolean, plugin: RunTab, dispatch: React.Dispatch<any>, file: string, gasEstimationPrompt: (msg: string) => JSX.Element, passphrasePrompt: (msg: string) => JSX.Element, confirmDialogContent: MainnetPrompt) => {
-  if (!file) return dispatch(displayNotification('Alert', 'Unable to run scenerio, no specified scenario file', 'OK', null))
+  if (!file) return dispatch(displayNotification('Alert', 'Unable to run scenario, no specified scenario file', 'OK', null))
 
   plugin.fileManager.readFile(file).then((json) => {
     // TODO: there is still a UI dependency to remove here, it's still too coupled at this point to remove easily

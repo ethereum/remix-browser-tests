@@ -60,7 +60,7 @@ export class InferenceManager implements ICompletions {
 
   static getInstance(modelDir:string){
     if (!InferenceManager.instance) {
-      // check if ther is a process already running
+      // check if there is a process already running
       if (!modelDir) {
         console.error('model directory is required to create InferenceManager instance')
         return null
@@ -149,14 +149,14 @@ export class InferenceManager implements ICompletions {
     } else {
       // Server is running with successful request
       // console.log('Inference server is running')
-      // console.log('completion is runnig', state.data?.completion)
-      // console.log('general is runnig', state.data?.general)
+      // console.log('completion is running', state.data?.completion)
+      // console.log('general is running', state.data?.general)
     }
     // this._handleResources()
   }
 
   async _handleResources(logger:boolean=false) {
-    // check resrource usage
+    // check resource usage
     const options = { headers: { 'Content-Type': 'application/json', } }
     const res = await axios.get(this.inferenceURL+"/sys", options)
 
@@ -176,7 +176,7 @@ export class InferenceManager implements ICompletions {
         }
         if (model.modelReqs.GPURequired) {
           if (gpu_available.length < 1) {
-            if (logger)console.warn('GPU requiredfor desktop inference but not available')
+            if (logger)console.warn('GPU required for desktop inference but not available')
           }
         }
       }

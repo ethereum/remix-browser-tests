@@ -1,7 +1,14 @@
 {
   "remixUiTabs.tooltipText1": "Esegui script (CTRL + SHIFT + S)",
   "remixUiTabs.tooltipText2": "Compila CTRL + S",
-  "remixUiTabs.tooltipText3": "Seleziona il file .sol o .yul da compilare o un file .ts o .js ed eseguilo",
-  "remixUiTabs.zoomOut": "Rimpicciolisci",
+  "remixUiTabs.tooltipText3": "Seleziona un file .sol o .yul da compilare O un file .ts o .js da eseguire",
+  "remixUiTabs.tooltipText4": "Per spiegare un contratto, scegli un file .sol, .vy o .circom",
+  "remixUiTabs.tooltipText5": "Spiega il/i contratto/i nel file attuale [BETA]",
+  "remixUiTabs.tooltipText6": "Abilita RemixAI Copilot [BETA]",
+  "remixUiTabs.tooltipText7": "Disabilita RemixAI Copilot [BETA]",
+  "remixUiTabs.tooltipText8": "Documentazione sugli strumenti di RemixAI",
+  "remixUiTabs.tooltipText9": "Configura le dipendenze dello scripting",
+  "remixUiTabs.tooltipTextDisabledCopilot": "Per utilizzare RemixAI Copilot, scegli un file .sol",
+  "remixUiTabs.zoomOut": "Riduci",
   "remixUiTabs.zoomIn": "Ingrandisci"
 }

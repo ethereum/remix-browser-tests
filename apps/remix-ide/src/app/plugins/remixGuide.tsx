@@ -112,13 +112,14 @@ export class RemixGuidePlugin extends ViewPlugin {
           title={Data.title}
           description={Data.description}
         >
-          { Data.sections.map(section => {
+          { Data.sections.map((section, index) => {
             return <RemixUIGridSection
               plugin={this}
               title={section.title}
               hScrollable={true}
+              key={index}
             >
-              { section.cells.map(cell => {
+              { section.cells.map((cell, index) => {
                 return <RemixUIGridCell
                   plugin={this}
                   title={cell.title}
@@ -128,7 +129,7 @@ export class RemixGuidePlugin extends ViewPlugin {
                   expandViewEl={
                     cell.expandViewElement
                   }
-                  key={cell.title}
+                  key={cell.title || index}
                   id={cell.title}
                   handleExpand={() => {
                     this.showVideo = true

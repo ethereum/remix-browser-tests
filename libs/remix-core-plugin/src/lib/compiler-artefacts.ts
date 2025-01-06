@@ -68,7 +68,7 @@ export class CompilerArtefacts extends Plugin {
 
   /**
    * Get compilation output for contracts compiled during a session of Remix IDE
-   * @returns compilatin output
+   * @returns compilation output
    */
   getAllContractDatas() {
     return this.filterAllContractDatas(() => true)
@@ -76,7 +76,7 @@ export class CompilerArtefacts extends Plugin {
 
   /**
    * filter compilation output for contracts compiled during a session of Remix IDE
-   * @returns compilatin output
+   * @returns compilation output
    */
   filterAllContractDatas(filter) {
     const contractsData = {}

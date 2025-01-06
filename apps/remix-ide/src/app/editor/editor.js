@@ -5,7 +5,6 @@ import { EditorUI } from '@remix-ui/editor' // eslint-disable-line
 import { Plugin } from '@remixproject/engine'
 import * as packageJson from '../../../../../package.json'
 import { PluginViewWrapper } from '@remix-ui/helper'
-import { commitChange } from '@remix-ui/git'
 
 const EventManager = require('../../lib/events')
 

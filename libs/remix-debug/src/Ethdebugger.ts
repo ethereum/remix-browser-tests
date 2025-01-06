@@ -10,13 +10,13 @@ import { SolidityProxy, stateDecoder, localDecoder, InternalCallTree } from './s
 import { extractStateVariables } from './solidity-decoder/stateDecoder'
 
 /**
-  * Ethdebugger is a wrapper around a few classes that helps debugging a transaction
+  * Ethdebugger is a wrapper around a few classes that helps debug a transaction
   *
   * - TraceManager - Load / Analyze the trace and retrieve details of specific test
   * - CodeManager - Retrieve loaded byte code and help to resolve AST item from vmtrace index
   * - SolidityProxy - Basically used to extract state variable from AST
-  * - Breakpoint Manager - Used to add / remove / jumpto breakpoint
-  * - InternalCallTree - Used to retrieved local variables
+  * - Breakpoint Manager - Used to add / remove / jump to breakpoint
+  * - InternalCallTree - Used to retrieve local variables
   * - StorageResolver - Help resolving the storage across different steps
   *
   * @param {Map} opts  -  { function compilationResult } //

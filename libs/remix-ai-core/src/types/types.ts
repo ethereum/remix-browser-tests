@@ -1,6 +1,6 @@
 // model implementation for the model selection component
 
-import exp from 'constants';
+import constants from 'constants';
 import { ModelType } from './constants';
 
 export interface IModelRequirements{
@@ -104,7 +104,7 @@ export class JsonStreamParser {
     let startIndex = 0;
     let endIndex: number;
     while ((endIndex = this.buffer.indexOf('}', startIndex)) !== -1) {
-      // check if next character is a opening curly bracket
+      // check if next character is an opening curly bracket
       let modifiedEndIndex = endIndex;
       if ((modifiedEndIndex = this.buffer.indexOf('{', endIndex)) !== -1 ) {
         endIndex = modifiedEndIndex - 1;

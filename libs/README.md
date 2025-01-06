@@ -30,8 +30,8 @@ Each library is an NPM package and has basic documentation about its usage in it
 
 ## Contributing
 
-Everyone is very welcome to contribute on Remix Project. Suggestions, issues, queries and feedbacks are our pleasure. Please reach us on [Gitter](https://gitter.im/ethereum/remix) in case of any query.
+Everyone is very welcome to contribute on Remix Project. Suggestions, issues, queries and feedback are our pleasure. Please reach us on [Gitter](https://gitter.im/ethereum/remix) in case of any query.
 
-For more information on the contributing in code, see our [contribution guidelines](https://github.com/ethereum/remix-project/blob/master/CONTRIBUTING.md).
+For more information on the contributing to the code, see our [contribution guidelines](https://github.com/ethereum/remix-project/blob/master/CONTRIBUTING.md).
 
 

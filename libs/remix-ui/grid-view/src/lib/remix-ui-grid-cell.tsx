@@ -3,6 +3,7 @@ import React, {useState, useEffect, useContext, useRef, ReactNode, ReactHTMLElem
 import './remix-ui-grid-cell.css'
 import FiltersContext from "./filtersContext"
 import { CustomTooltip } from '@remix-ui/helper'
+import { ChildCallbackContext } from './remix-ui-grid-section'
 
 declare global {
   interface Window {
@@ -33,6 +34,7 @@ interface RemixUIGridCellProps {
 
 export const RemixUIGridCell = (props: RemixUIGridCellProps) => {
   const filterCon = useContext(FiltersContext)
+  const callbackContext = useContext(ChildCallbackContext)
   const [anyEnabled, setAnyEnabled] = useState(false)
   const [expand, setExpand] = useState(false)
   const [pinned, setPinned] = useState<boolean>(props.pinned)
@@ -52,7 +54,14 @@ export const RemixUIGridCell = (props: RemixUIGridCellProps) => {
         props.searchKeywords?.map(keyword => keyword?.toLowerCase()).some(searchKeyword => searchKeyword?.toLowerCase().includes(filterCon.filter?.toLocaleLowerCase())))
 
     setAnyEnabled(enabled)
+    if (callbackContext.onChildCallback && (props.id || props.title)) callbackContext.onChildCallback((props.id || props.title), enabled)
   }, [filterCon, props.tagList])
+
+  useEffect(() => {
+    if (props.pinned!== pinned) {
+      setPinned(props.pinned)
+    }
+  },[props.pinned])
 
   /*const listenOnExpand = (key) => {
     if (key === props.key) setExpand(props.toggleExpandView)
@@ -86,7 +95,7 @@ export const RemixUIGridCell = (props: RemixUIGridCellProps) => {
                   <img className='remixui_grid_view_logo mr-1' src={props.logo} style={{ width: '1rem', height: '1rem' }}/> :
                   <></>
                 }
-                { props.logos && props.logos.map((logo) => <img className='remixui_grid_view_logo mr-1' src={logo} style={{ width: '1rem', height: '1rem' }}/>)}
+                { props.logos && props.logos.map((logo, index) => <img key={index} className='remixui_grid_view_logo mr-1' src={logo} style={{ width: '1rem', height: '1rem' }}/>)}
                 { props.title &&
                   <CustomTooltip
                     placement="top"
@@ -120,6 +129,7 @@ export const RemixUIGridCell = (props: RemixUIGridCellProps) => {
                   tooltipId="pluginManagerInactiveTitleLinkToDoc"
                   tooltipClasses="text-nowrap"
                   tooltipText={props.tagList[key]}
+                  key={props.tagList[key]}
                 >
                   <span key={props.tagList[key]}
                     className={'remixui_grid_cell_tag bg-' + filterCon.keyValueMap[props.tagList[key]].color}

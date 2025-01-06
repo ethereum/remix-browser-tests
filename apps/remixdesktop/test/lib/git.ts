@@ -147,7 +147,7 @@ export async function createCommitOnLocalServer(path: string, message: string) {
         });
 
         git.stderr.on('data', function (data) {
-            console.error('data commiting', data.toString());
+            console.error('data committing', data.toString());
             reject(data.toString());
         });
 

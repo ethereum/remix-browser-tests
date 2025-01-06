@@ -1,5 +1,5 @@
 // FIXME: should this be renamed to indicate its offset/length orientation?
-// Add "reaadonly property"?
+// Add "readonly property"?
 export interface Location {
   start: number;
   length: number;

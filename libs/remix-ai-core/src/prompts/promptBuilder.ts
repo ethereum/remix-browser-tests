@@ -9,7 +9,7 @@ export const PromptBuilder = (inst, answr, modelop) => {
 
 export const buildSolgptPromt = (userPrompt:string, modelOP:RemoteBackendOPModel) => {
   if (modelOP === undefined) {
-    console.log('WARNING: modelOP is undefined. Provide a valide model OP for chat history')
+    console.log('WARNING: modelOP is undefined. Provide a valid model OP for chat history')
     return userPrompt
   }
   if (ChatHistory.getHistory().length === 0){

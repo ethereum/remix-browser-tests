@@ -26,7 +26,7 @@ const DefaultModels = (): IModel[] => {
   };
 
   const model3: IModel = {
-    name: 'llaama3.1_8B',
+    name: 'llama3.1_8B',
     modelOP: RemoteBackendOPModel.CODELLAMA,
     task: 'text-generation',
     modelName: 'llama3_1_8B-q4_0.gguf',
@@ -36,7 +36,7 @@ const DefaultModels = (): IModel[] => {
   };
 
   const model4: IModel = {
-    name: 'llaama3.1_8B_instruct',
+    name: 'llama3.1_8B_instruct',
     modelOP: RemoteBackendOPModel.CODELLAMA,
     task: 'text-generation',
     modelName: 'llama3_1_8B-q4_0_instruct.gguf',

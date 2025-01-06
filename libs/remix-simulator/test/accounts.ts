@@ -19,7 +19,7 @@ describe('Accounts', () => {
   })
 
   describe('eth_getBalance', () => {
-    it('should get a account balance', async () => {
+    it('should get an account balance', async () => {
       const accounts: string[] = await web3.eth.getAccounts()
       const balance0: string = await web3.eth.getBalance(accounts[0], undefined, { number: FMT_NUMBER.STR, bytes: FMT_BYTES.HEX })
       const balance1: string = await web3.eth.getBalance(accounts[1], undefined, { number: FMT_NUMBER.STR, bytes: FMT_BYTES.HEX })

@@ -45,7 +45,7 @@ export class RemixAIPlugin extends ViewPlugin {
     super(profile)
     this.isOnDesktop = inDesktop
     this.agent = new CodeExplainAgent(this)
-    // user machine dont use ressource for remote inferencing
+    // user machine dont use resource for remote inferencing
   }
 
   onActivation(): void {

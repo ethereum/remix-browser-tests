@@ -105,8 +105,8 @@ export class RemixURLResolver {
     // eslint-disable-next-line no-useless-catch
     try {
       const bzz = new Bzz({ url: this.protocol + '//swarm-gateways.net' })
-      const url = bzz.getDownloadURL(cleanUrl, { mode: 'raw' })
-      const response: AxiosResponse = await axios.get(url, { transformResponse: []})
+      const swarmUrl = bzz.getDownloadURL(cleanUrl, { mode: 'raw' }) // variable name changed
+      const response: AxiosResponse = await axios.get(swarmUrl, { transformResponse: []})
       return { content: response.data, cleanUrl }
     } catch (e) {
       throw e

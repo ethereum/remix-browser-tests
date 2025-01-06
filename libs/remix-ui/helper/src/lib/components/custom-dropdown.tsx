@@ -29,7 +29,7 @@ export const CustomToggle = React.forwardRef(
       className={className.replace('dropdown-toggle', '')}
     >
       <div className="d-flex">
-        <div className="mr-auto text-nowrap text-truncate overflow-hidden">{children}</div>
+        <div className="mr-auto text-nowrap text-truncate overflow-hidden" data-id={`dropdown-content`}>{children}</div>
         {icon && (
           <div className="pr-1">
             <i className={`${icon} pr-1`}></i>

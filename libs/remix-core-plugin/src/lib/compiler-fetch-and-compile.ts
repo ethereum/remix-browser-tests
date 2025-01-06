@@ -37,7 +37,7 @@ export class FetchAndCompile extends Plugin {
    *
    * @param {string} contractAddress - Address of the contract to resolve
    * @param {string} deployedBytecode - deployedBytecode of the contract
-   * @param {string} targetPath - Folder where to save the compilation arfefacts
+   * @param {string} targetPath - Folder where to save the compilation artifacts
    * @return {CompilerAbstract} - compilation data targeting the given @arg contractAddress
    */
   async resolve (contractAddress, codeAtAddress, targetPath) {

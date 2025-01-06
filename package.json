@@ -1,6 +1,6 @@
 {
   "name": "remix-project",
-  "version": "0.59.0-dev",
+  "version": "0.60.0-dev",
   "license": "MIT",
   "description": "Ethereum Remix Monorepo",
   "main": "index.js",
@@ -97,7 +97,7 @@
     "@ethereumjs/tx": "5.4.0",
     "@ethereumjs/util": "9.1.0",
     "@ethereumjs/vm": "8.1.1",
-    "@ethersphere/bee-js": "^3.2.0",
+    "@ethersphere/bee-js": "^8.3.0",
     "@floating-ui/react": "^0.26.15",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",

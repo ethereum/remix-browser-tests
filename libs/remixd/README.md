@@ -7,7 +7,7 @@
 
 `@remix-project/remixd` is an NPM module that intends to be used with [Remix IDE](https://remix.ethereum.org/) web and desktop applications. It establishes a two-way websocket connection between the local computer and Remix IDE for a particular project directory.
 
-`remixd` can be used to setup a development environment with other popular frameworks like Hardhat, Truffle, Slither etc.
+`remixd` can be used to set up a development environment with other popular frameworks like Hardhat, Truffle, Slither etc.
 
 More details are explained in the [documentation](https://remix-ide.readthedocs.io/en/latest/remixd.html).
 
@@ -71,13 +71,13 @@ The current user should have `read/write` access to the folder (at least `read` 
 It is important to notice that changes made to the current file in `Remix IDE` are automatically saved to the local computer every 5000 ms. There is no `Save` action. But the `Ctrl-Z` (undo) can be used.
 
 Furthermore:
- - No copy of the shared folder are kept in the browser storage.
+ - No copy of the shared folder is kept in the browser storage.
  - Clicking on the new folder or new file icon under localhost will create a new file or folder in the shared folder.
  - If a folder does not contain any file, the folder will not be displayed in the explorer (that might change).
  - Symbolic links are not forwarded to Remix IDE.
 
 ## Ports Usage
-remixd creates a websocket connections with Remix IDE on different ports. Ports are defined according to specific purpose. Port usage details are as:
+remixd creates a websocket connection with Remix IDE on different ports. Ports are defined according to specific purposes. Port usage details are as:
 
 - **65520** : For `remixd` websocket listener, to share a project from local device with Remix IDE. Shared folder will be loaded in the Remix IDE File Explorer workspace named localhost [See more](https://remix-ide.readthedocs.io/en/latest/remixd.html)
 - **65522** : For `Hardhat` websocket listener, to enable the Hardhat Compilation using Remix IDE Solidity Compiler plugin, if shared folder is a Hardhat project [See more](https://remix-ide.readthedocs.io/en/latest/hardhat.html)

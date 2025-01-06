@@ -1,0 +1,15 @@
+{
+  "circuit.compiler": "Compilatore",
+  "circuit.autoCompile": "Compila automaticamente",
+  "circuit.hideWarnings": "Nascondi gli avvisi",
+  "circuit.advancedConfigurations": "Configurazioni Avanzate",
+  "circuit.compilerConfiguration": "Configurazione del compilatore",
+  "circuit.prime": "Primo",
+  "circuit.useConfigurationFile": "Usa il file di configurazione",
+  "circuit.compile": "Compila",
+  "circuit.noFileSelected": "nessun file selezionato",
+  "circuit.generateR1cs": "Genera R1CS",
+  "circuit.computeWitness": "Calcola Testimone",
+  "circuit.signalInput": "Ingresso Segnale",
+  "circuit.compute": "Calcola"
+}

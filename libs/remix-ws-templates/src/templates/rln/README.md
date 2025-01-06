@@ -29,8 +29,8 @@ This generates a verification key (`./zk/build/verification_key.json`) and artif
 
 This script:
 
-- create a list of identity commitments and add it to a `IncrementalMerkleTree`. The tree is used to generate a merkle proof that a specified identity is actually in the tree (see`tree.createProof(0)`).
+- creates a list of identity commitments and add it to a `IncrementalMerkleTree`. The tree is used to generate a merkle proof that a specified identity is actually in the tree (see`tree.createProof(0)`).
 
 - generate a witness and a proof of execution with `messageId`equal to 0.
 
-- generating 2 proofs (two different messages) with the same `messageId` reveal the two points of the polynomial necessary to deduct the `identitySecret` (using `shamirRecovery`).
+- generating 2 proofs (two different messages) with the same `messageId` reveal the two points of the polynomial necessary to deduce the `identitySecret` (using `shamirRecovery`).

@@ -409,7 +409,7 @@ function getLibraryCallContractName (node: FunctionCallAstNode): string | undefi
  *  library set{...}
  *  contract foo {
  *    ...
- *    function () { set.union() => uinion}
+ *    function () { set.union() => union}
  * @func {ASTNode} function call node
  * @return {string} name of function called on the library
  */
@@ -1040,7 +1040,7 @@ function matches (...fnArgs: any[]): string {
 
 /**
  * Finds first node of a certain type under a specific node.
- * @node {AstNode} node to start form
+ * @node {AstNode} node to start from
  * @type {String} Type the ast node should have
  * @return {AstNode} null or node found
  * Note: developed keeping identifier node search in mind to get first identifier node from left in subscope

@@ -4,7 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { CopyToClipboard } from '@remix-ui/clipboard'
 import { AccountProps } from '../types'
 import { PassphrasePrompt } from './passphrase'
-import { CustomTooltip } from '@remix-ui/helper'
+import { CustomMenu, CustomToggle, CustomTooltip } from '@remix-ui/helper'
+import { Dropdown } from 'react-bootstrap'
 const _paq = window._paq = window._paq || []
 
 export function AccountUI(props: AccountProps) {
@@ -235,22 +236,27 @@ export function AccountUI(props: AccountProps) {
         {props.accounts.isRequesting && <i className="fa fa-spinner fa-pulse ml-2" aria-hidden="true"></i>}
       </label>
       <div className="udapp_account">
-        <select
-          id="txorigin"
-          data-id="runTabSelectAccount"
-          name="txorigin"
-          className="form-control udapp_select custom-select pr-4"
-          value={selectedAccount || ''}
-          onChange={(e) => {
-            props.setAccount(e.target.value)
-          }}
-        >
-          {accounts.map((value, index) => (
-            <option value={value} key={index}>
-              {loadedAccounts[value]}
-            </option>
-          ))}
-        </select>
+        <Dropdown className="udapp_selectExEnvOptions" data-id="runTabSelectAccount">
+          <Dropdown.Toggle as={CustomToggle} icon={null} id="txorigin" data-id="runTabSelectAccount" className="btn btn-light btn-block w-100 d-inline-block border border-dark form-control">
+            {selectedAccount ? loadedAccounts[selectedAccount] : ''}
+          </Dropdown.Toggle>
+          <Dropdown.Menu as={CustomMenu} className="w-100 custom-dropdown-items" data-id="custom-dropdown-items">
+            {accounts && accounts.length > 0 ? accounts.map((value, index) => (
+              <Dropdown.Item
+                key={index}
+                eventKey={selectedAccount}
+                onSelect={(e) => {
+                  props.setAccount(value)
+                }}
+                data-id={`txOriginSelectAccountItem-${value}`}
+              >
+                <span data-id={`${value}`}>
+                  {loadedAccounts[value]}
+                </span>
+              </Dropdown.Item>
+            )) : <Dropdown.Item></Dropdown.Item>}
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </div>
   )

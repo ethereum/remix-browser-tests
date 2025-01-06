@@ -242,7 +242,7 @@ export function ContractGUI(props: ContractGUIProps) {
         await handleDeploy()
       } else {
         // Show log in browser console in case of failure due to unknown reasons
-        console.log('Failed to run because of EVM version incomaptibility or some other compiler issue')
+        console.log('Failed to run because of EVM version incompatibility or some other compiler issue')
       }
     }
   }

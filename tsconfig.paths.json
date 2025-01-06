@@ -183,8 +183,11 @@
               "libs/remix-ai-core/src/index.ts"
             ],
             "@remix-ui/git": [
-                "libs/remix-ui/git/src/index.ts"
+              "libs/remix-ui/git/src/index.ts"
             ],
+            "@remix-ui/environment-explorer": [
+              "libs/remix-ui/environment-explorer/src/index.ts"
+          ],
             "@remix-api": [
               "libs/remix-api/src/index.ts"
             ],

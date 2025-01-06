@@ -21,25 +21,25 @@ export default function ScamDetails ({ refs, floatStyle, scamAlerts }: ScamDetai
       id='scamDetails'
       style={{
         position: 'absolute',
-        bottom: '-3.3rem',
-        left: '-4rem',
-        height: '6rem',
+        bottom: '-3.4rem',
+        left: '-2.5rem',
+        height: 'fit-content',
         transform: 'translate(88.5px, -80px)',
         willChange: 'transform',
         boxShadow: "0 1px 7px var(--secondary)"
       } }
-      className="p-1 pb-0 mb-1 d-flex alert alert-warning border border-warning"
+      className="p-1 pb-0 mb-0 d-flex alert alert-warning border border-warning"
     >
-      <span className="align-self-center pl-4 mt-1">
+      <span className="align-self-center pl-2 mt-1">
         <i style={{ fontSize: 'xxx-large', fontWeight: 'lighter' }} className="pr-2 far fa-exclamation-triangle"></i>
       </span>
-      <div className="d-flex flex-column pr-4 pt-2">
+      <div className="d-flex flex-column pr-2 py-2">
         {scamAlerts && scamAlerts.map((alert, index) => (
-          <span className="pl-4 mt-1" key={`${alert.url}${index}`}>
+          <span className="pl-2 mt-1" key={`${alert.url}${index}`}>
             {alert.url.length < 1 ? <FormattedMessage id={`home.scamAlertText${index + 1}`} defaultMessage={alert.message} />
-              : (<><FormattedMessage id={`home.scamAlertText${index + 1}`} defaultMessage={alert.message} /> : &nbsp;
+              : (<><FormattedMessage id={`home.scamAlertText${index + 1}`} defaultMessage={alert.message} /> :
                 <a
-                  className={`remixui_home_text text-decoration-none ${index === 1 ? 'pl-2' : ''}`}
+                  className={`remixui_home_text text-decoration-none pl-1`}
                   onClick={() => {
                     index === 1 && _paq.push(['trackEvent', 'hometab', 'scamAlert', 'learnMore'])
                     index === 2 && _paq.push(['trackEvent', 'hometab', 'scamAlert', 'safetyTips'])

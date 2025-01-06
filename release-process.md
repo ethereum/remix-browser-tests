@@ -49,7 +49,7 @@ This command will ask for a new version.
  
 This command uses `lerna` and is solely responsible for publishing all the remix libraries. It will ask for a new version of each library. Make sure you are logged in to NPM.
 
-Once these commands run successfully, the version for each remix library will be updated to latest in the libs' package.json file.
+Once these commands run successfully, the version for each remix library will be updated to the latest in the libs' package.json file.
 
  - Create and merge bump PR to master
  

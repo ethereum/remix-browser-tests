@@ -29,7 +29,7 @@ template RLN(DEPTH, LIMIT_BIT_SIZE) {
     // messageId range check
     RangeCheck(LIMIT_BIT_SIZE)(messageId, userMessageLimit);
 
-    // SSS share calculations
+    // SSS share calculation
     signal a1 <== Poseidon(3)([identitySecret, externalNullifier, messageId]);
     y <== identitySecret + a1 * x;
 

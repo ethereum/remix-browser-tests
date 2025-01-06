@@ -87,7 +87,7 @@ export class CodeManager {
    * Retrieve the called function for the current vm step for the given @arg address
    *
    * @param {String} stepIndex - vm trace step
-   * @param {String} sourceMap - source map given byt the compilation result
+   * @param {String} sourceMap - source map given by the compilation result
    * @param {Object} ast - ast given by the compilation result
    * @return {Object} return the ast node of the function
    */
@@ -125,7 +125,7 @@ export class CodeManager {
    *
    * @param {String} address - address of the current context (used to resolve instruction index)
    * @param {String} pc - pc that point to the instruction index
-   * @param {String} sourceMap - source map given byt the compilation result
+   * @param {String} sourceMap - source map given by the compilation result
    * @param {Object} ast - ast given by the compilation result
    * @return {Object} return the ast node of the function
    */

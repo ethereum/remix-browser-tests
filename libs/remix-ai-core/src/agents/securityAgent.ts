@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 
 class SecurityAgent {
-  private codebase: string[]; // list of code base file
+  private codebase: string[]; // list of codebase files
   public currentFile: string;
 
   constructor(codebasePath: string) {
@@ -22,7 +22,7 @@ class SecurityAgent {
   }
 
   public getRecommendations(currentLine: string, numSuggestions: number = 3): string[] {
-    // process the code base highlighting security vunerabilities and deliver recommendations
+    // process the codebase highlighting security vulnerabilities and deliver recommendations
     const suggestions: string[] = [];
     return suggestions;
   }

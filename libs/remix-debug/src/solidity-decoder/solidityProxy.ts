@@ -31,7 +31,7 @@ export class SolidityProxy {
   /**
     * retrieve the compiled contract name at the @arg vmTraceIndex (cached)
     *
-    * @param {Int} vmTraceIndex  - index in the vm trave where to resolve the executed contract name
+    * @param {Int} vmTraceIndex  - index in the vm trace where to resolve the executed contract name
     * @return {Object} a contract object
     */
   async contractObjectAt (vmTraceIndex: number) {
@@ -91,7 +91,7 @@ export class SolidityProxy {
   /**
     * extract the state variables of the given compiled @arg vmtraceIndex (cached)
     *
-    * @param {Int} vmTraceIndex  - index in the vm trave where to resolve the state variables
+    * @param {Int} vmTraceIndex  - index in the vm trace where to resolve the state variables
     * @param {String} address  - contract address
     * @return {Object} - returns state variables of @args vmTraceIndex
     */

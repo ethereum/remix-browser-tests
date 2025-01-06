@@ -1,10 +1,10 @@
 {
-  "solUmlGen.pngDownload": "Download as PNG",
-  "solUmlGen.pdfDownload": "Download as PDF",
-  "solUmlGen.pngDownloadTooltip": "Download UML diagram as a PNG file",
-  "solUmlGen.pdfDownloadTooltip": "Download UML diagram as a PDF file",
-  "solUmlGen.text1": "To view your contract as a UML Diagram",
-  "solUmlGen.text2": "Right-click on your contract file",
-  "solUmlGen.clickOn": "Click on",
-  "solUmlGen.generateUML": "Generate UML"
+  "solUmlGen.pngDownload": "Scarica come PNG",
+  "solUmlGen.pdfDownload": "Scarica come PDF",
+  "solUmlGen.pngDownloadTooltip": "Scarica diagramma UML come un file PNG",
+  "solUmlGen.pdfDownloadTooltip": "Scarica diagramma UML come un file PDF",
+  "solUmlGen.text1": "Per visualizzare il tuo contratto come un diagramma UML",
+  "solUmlGen.text2": "Clicca con il destro del mouse sul file del tuo contratto",
+  "solUmlGen.clickOn": "Clicca su",
+  "solUmlGen.generateUML": "Genera UML"
 }

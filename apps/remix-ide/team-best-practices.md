@@ -5,7 +5,7 @@ This document aims to address contributors best practices of the following repos
  - remix-ide https://github.com/ethereum/remix-project
  - remix-plugin https://github.com/ethereum/remix-plugin
 
-This document is not in its final version, **a team meeting which aims to address new/old best practices, feedback, workflows, all kind of issues related to how the team work together occurs every 2 weeks.**
+This document is not in its final version, **a team meeting which aims to address new/old best practices, feedback, workflows, all kind of issues related to how the team works together occurs every 2 weeks.**
 This document link to other specialised best practices (like coding best practices).
 
 Related links:
@@ -122,9 +122,9 @@ Before starting to coding, we should ensure all devs / contributors are aware of
 
  - A milestone should **only** contain items we are sure to finish.
  - The end of a milestone trigger a new release.
- - Milestone items and duration should take in account time spent in bugs fixing and support.
+ - Milestone items and duration should take into account time spent in bugs fixing and support.
  - The team should commit to the milestone duration.
- - If a dev finish early he/she can help other to push remaining tasks.
+ - If a dev finish early he/she can help others to push remaining tasks.
  - If a dev finish early he/she can work on specifying / integrating the next milestone.
  - A milestone duration is fixed at the start of the milestone (but should better not exceed 1 month).
  - Progress and issues regarding a milestone are discussed on regular standups.
@@ -146,7 +146,7 @@ Before starting to coding, we should ensure all devs / contributors are aware of
  - After a new release we should stay in alert for possible regression and better not release on Friday at 5pm :)
 
  ### 2) Community:
- - Before the official release, we should select a group of power users and invite them to test and give feedbacks.
+ - Before the official release, we should select a group of power users and invite them to test and give feedback.
  - Users need to know upfront a new release is coming and we should prepare them for it by showcasing some new features they can expect and when it will happen (fixed date, published at least 1 week in advance).
  - Whenever we have a new release we have to communicate this efficiently (twitter, reddit, ...).
 

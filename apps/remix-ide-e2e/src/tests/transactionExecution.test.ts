@@ -245,11 +245,13 @@ module.exports = {
       .setSolidityCompilerVersion('soljson-v0.8.17+commit.8df45f5f.js')
       .clickLaunchIcon('udapp')
       .switchEnvironment('vm-mainnet-fork')
+      .click('*[data-id="runTabSelectAccount"]')
       .waitForElementPresent({
         locateStrategy: 'css selector',
-        selector: 'select[data-id="runTabSelectAccount"] option[value="0xdD870fA1b7C4700F2BD7f44238821C26f7392148"]',
+        selector: `*[data-id="0xdD870fA1b7C4700F2BD7f44238821C26f7392148"]`,
         timeout: 250000
       }) // wait for the udapp to load the list of accounts
+      .click('*[data-id="0xdD870fA1b7C4700F2BD7f44238821C26f7392148"]')
       .selectContract('MyResolver')
       .createContract('')
       .clickInstance(0)

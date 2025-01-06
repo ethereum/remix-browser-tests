@@ -11,7 +11,7 @@ import {
 
 type WrapFunction = ((contracts: ContractHLAst[], isSameName: boolean, version: string) => ReportObj[])
 
-export default class abstractAstView {
+export default class AbstractAstView {
   contracts: ContractHLAst[] = []
   currentContractIndex = -1
   currentFunctionIndex = -1
@@ -91,7 +91,7 @@ export default class abstractAstView {
           parameters: this.getLocalParameters(node)
         })
       } else if (node.nodeType === 'ModifierInvocation') {
-        if (!this.isFunctionNotModifier) throw new Error('abstractAstView.js: Found modifier invocation outside of function scope.')
+        if (!this.isFunctionNotModifier) throw new Error('AbstractAstView.js: Found modifier invocation outside of function scope.')
         this.getCurrentFunction().modifierInvocations.push(node)
       } else if (relevantNodeFilter(node)) {
         let scope: FunctionHLAst | ModifierHLAst | ContractHLAst = (this.isFunctionNotModifier) ? this.getCurrentFunction() : this.getCurrentModifier()
@@ -130,7 +130,7 @@ export default class abstractAstView {
       if (inheritsFrom) {
         currentContract.stateVariables = currentContract.stateVariables.concat(inheritsFrom.stateVariables)
       } else {
-        console.log('abstractAstView.js: could not find contract definition inherited from ' + inheritsFromName)
+        console.log('AbstractAstView.js: could not find contract definition inherited from ' + inheritsFromName)
       }
     })
   }
@@ -138,7 +138,7 @@ export default class abstractAstView {
   private setCurrentContract (contract: ContractHLAst): void {
     const name: string = getContractName(contract.node)
     if (this.contracts.map((c: ContractHLAst) => getContractName(c.node)).filter((n) => n === name).length > 0) {
-      console.log('abstractAstView.js: two or more contracts with the same name detected, import aliases not supported at the moment')
+      console.log('AbstractAstView.js: two or more contracts with the same name detected, import aliases not supported at the moment')
       this.multipleContractsWithSameName = true
     }
     this.currentContractIndex = (this.contracts.push(contract) - 1)

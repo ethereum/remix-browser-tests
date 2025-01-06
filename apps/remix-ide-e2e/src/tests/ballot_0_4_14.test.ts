@@ -36,6 +36,7 @@ module.exports = {
     browser.pause(500)
       .clickLaunchIcon('udapp')
       .selectAccount('0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c')
+      .pause()
       .setValue('input[placeholder="uint8 _numProposals"]', '2')
       .click('*[data-id="Deploy - transact (not payable)"]')
       .waitForElementPresent('*[data-id="universalDappUiContractActionWrapper"]', 60000)

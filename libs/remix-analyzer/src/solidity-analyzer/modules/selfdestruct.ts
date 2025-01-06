@@ -6,7 +6,7 @@ import { AnalyzerModule, ModuleAlgorithm, ModuleCategory, ReportObj, ContractHLA
 
 export default class selfdestruct implements AnalyzerModule {
   name = 'Selfdestruct: '
-  description = 'Contracts using destructed contract can be broken'
+  description = 'Contracts using destroyed contract can be broken'
   category: ModuleCategory = category.SECURITY
   algorithm: ModuleAlgorithm = algorithm.HEURISTIC
   version: SupportedVersion = {

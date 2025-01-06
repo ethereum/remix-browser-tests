@@ -77,7 +77,7 @@ const tests = {
   },
 
   'Should deploy contract on Sepolia Test Network using MetaMask #group1': function (browser: NightwatchBrowser) {
-    browser.clearConsole().waitForElementPresent('*[data-id="runTabSelectAccount"] option', 45000)
+    browser.clearConsole().waitForElementPresent('*[data-id="runTabSelectAccount"]', 45000)
       .clickLaunchIcon('filePanel')
       .openFile('Greet.sol')
       .clickLaunchIcon('udapp')
@@ -169,7 +169,7 @@ const tests = {
       })
   },
   'Should deploy contract on Sepolia Test Network using MetaMask again #group1': function (browser: NightwatchBrowser) {
-    browser.clearConsole().waitForElementPresent('*[data-id="runTabSelectAccount"] option', 45000)
+    browser.clearConsole().waitForElementPresent('*[data-id="runTabSelectAccount"]', 45000)
       .clickLaunchIcon('filePanel')
       .openFile('Greet.sol')
       .clickLaunchIcon('udapp')
@@ -210,7 +210,7 @@ const tests = {
   },
 
   'Should deploy contract on Ethereum Main Network using MetaMask #group1': function (browser: NightwatchBrowser) {
-    browser.waitForElementPresent('*[data-id="runTabSelectAccount"] option')
+    browser.waitForElementPresent('*[data-id="runTabSelectAccount"]')
       .clickLaunchIcon('filePanel')
       .addFile('Greet.sol', sources[0]['Greet.sol'])
       .clickLaunchIcon('udapp')
@@ -408,11 +408,11 @@ const sources = [
       pragma solidity ^0.8.0;
       contract HelloWorld {
           string public message;
-          
+
           fallback () external {
               message = 'Hello World!';
           }
-          
+
           function greet(string memory _message) public {
               message = _message;
           }

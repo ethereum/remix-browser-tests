@@ -1,12 +1,9 @@
-import { Bee } from '@ethersphere/bee-js'
+import { Bee, NULL_STAMP, SWARM_GATEWAY_URL } from '@ethersphere/bee-js'
 // eslint-disable-next-line no-unused-vars
 import type { UploadResult } from '@ethersphere/bee-js'
 
 // public gateway node address
-const publicBeeNode = new Bee('https://api.gateway.ethswarm.org/')
-
-// on the public gateway the postage stamp id is not relevant, so we use all zeroes
-const defaultPostageStampId = '0000000000000000000000000000000000000000000000000000000000000000'
+const publicBeeNode = new Bee(SWARM_GATEWAY_URL)
 
 export const publishToSwarm = async (contract, api) => {
   // gather list of files to publish
@@ -52,12 +49,12 @@ export const publishToSwarm = async (contract, api) => {
             sources.push({
               content: content,
               hash: hash,
-              filename: fileName
+              filename: fileName,
             })
             resolve({
               content: content,
               hash: hash,
-              filename: fileName
+              filename: fileName,
             })
           })
           .catch((error) => {
@@ -72,7 +69,7 @@ export const publishToSwarm = async (contract, api) => {
   const beeNodes = [publicBeeNode]
 
   // add custom private Bee node to the list
-  const postageStampId = api.config.get('settings/swarm-postage-stamp-id') || defaultPostageStampId
+  const postageStampId = api.config.get('settings/swarm-postage-stamp-id') || NULL_STAMP
   const privateBeeAddress = api.config.get('settings/swarm-private-bee-address')
   if (privateBeeAddress) {
     const privateBee = new Bee(privateBeeAddress)
@@ -116,7 +113,7 @@ export const publishToSwarm = async (contract, api) => {
       content: contract.metadata,
       hash: contract.metadataHash,
       filename: 'metadata.json',
-      output: result
+      output: result,
     })
   } catch (error) {
     console.error(error)
@@ -135,7 +132,7 @@ const swarmVerifiedPublish = async (beeNodes: Bee[], postageStampId: string, con
       return {
         message: 'hash mismatch between solidity bytecode and uploaded content.',
         url: 'bzz-raw://' + hash,
-        hash
+        hash,
       }
     } else {
       api.writeFile('swarm/' + hash, content)
@@ -158,7 +155,7 @@ const hashFromResults = (results: UploadResult[]) => {
 const uploadToBee = async (bee: Bee, postageStampId: string, content) => {
   try {
     if (bee.url === publicBeeNode.url) {
-      postageStampId = defaultPostageStampId
+      postageStampId = NULL_STAMP
     }
     return await bee.uploadData(postageStampId, content)
   } catch {

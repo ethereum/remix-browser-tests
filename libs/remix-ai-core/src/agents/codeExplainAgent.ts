@@ -1,4 +1,4 @@
-// interactive code explaining and highlight security vunerabilities
+// interactive code explaining and highlighting security vulnerabilities
 import * as fs from 'fs';
 
 export class CodeExplainAgent {
@@ -35,7 +35,7 @@ export class CodeExplainAgent {
   }
 
   public getExplanations(currentLine: string, numSuggestions: number = 3): string[] {
-    // process the code base explaining the current file and highlight some details
+    // process the code base explaining the current file and highlighting some details
     const suggestions: string[] = [];
     return suggestions;
   }

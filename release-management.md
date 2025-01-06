@@ -27,7 +27,7 @@ We check all the issues and associated effort and identify critical issues.
 e.g:
  - issues that'll need to be split.
  - issues that miss important information.
- - issues that are dependent on each others.
+ - issues that are dependent on each other.
  - issues that require different skills or that the team member is less available during this release.
 
 ## Configuring releases: 

@@ -21,7 +21,7 @@ export default async (opts) => {
     '.prettierrc.json': (await import('raw-loader!./.prettierrc')).default
   }
 
-  // If no options is selected, opts.upgradeable will be undefined
+  // If no options are selected, opts.upgradeable will be undefined
   // We do not show test file for upgradeable contract
   // @ts-ignore
   if (!opts || opts.upgradeable === undefined || !opts.upgradeable) {

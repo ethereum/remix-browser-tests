@@ -25,7 +25,7 @@
 ```
 `CompilerInput` can be used to form the [compiler input](https://github.com/ethereum/remix-project/blob/master/libs/remix-solidity/src/compiler/types.ts#L1) by passing the [options](https://github.com/ethereum/remix-project/blob/master/libs/remix-solidity/src/compiler/types.ts#L144)
 
-`Compiler` is a class containing various methods to perform compiler related actions. Have a look to `Compiler` interface:
+`Compiler` is a class containing various methods to perform compiler related actions. Have a look at `Compiler` interface:
 
 ```
 class Compiler {
@@ -135,7 +135,7 @@ class Compiler {
 
 Please feel free to open an issue or a pull request. 
 
-In case you want to add some code, do have a look to our contribution guidelnes [here](https://github.com/ethereum/remix-project/blob/master/CONTRIBUTING.md). Reach us on [Gitter](https://gitter.im/ethereum/remix) in case of any queries.   
+In case you want to add some code, do have a look to our contribution guidelines [here](https://github.com/ethereum/remix-project/blob/master/CONTRIBUTING.md). Reach us on [Gitter](https://gitter.im/ethereum/remix) in case of any queries.   
 
 ### License
 MIT © 2018-21 Remix Team

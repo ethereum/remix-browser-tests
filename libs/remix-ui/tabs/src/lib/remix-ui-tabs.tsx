@@ -73,7 +73,7 @@ export const TabsUI = (props: TabsUIProps) => {
   const [explaining, setExplaining] = useState<boolean>(false)
   const tabsRef = useRef({})
   const tabsElement = useRef(null)
-  const [ai_switch, setAI_switch] = useState<boolean>(false)
+  const [ai_switch, setAI_switch] = useState<boolean>(true)
   const tabs = useRef(props.tabs)
   tabs.current = props.tabs // we do this to pass the tabs list to the onReady callbacks
 
@@ -247,7 +247,7 @@ export const TabsUI = (props: TabsUIProps) => {
           <div className="d-flex border-left ml-2 align-items-center" style={{ height: "3em" }}>
             <CustomTooltip
               placement="bottom"
-              tooltipId="overlay-tooltip-explaination"
+              tooltipId="overlay-tooltip-explanation"
               tooltipText={
                 <span>
                   {((tabsState.currentExt === 'sol') || (tabsState.currentExt === 'vy') || (tabsState.currentExt === 'circom')) ? (

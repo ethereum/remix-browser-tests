@@ -161,11 +161,11 @@ export class TemplatesSelectionPlugin extends ViewPlugin {
               tooltipTitle={template.tooltip}
               hScrollable={false}
             >
-              {template.items.map(item => {
+              {template.items.map((item, index) => {
                 return <RemixUIGridCell
                   plugin={this}
                   title={item.displayName}
-                  key={item.name}
+                  key={item.name || index}
                   id={item.name}
                   searchKeywords={[item.displayName, item.description, template.name]}
                   tagList={item.tagList}

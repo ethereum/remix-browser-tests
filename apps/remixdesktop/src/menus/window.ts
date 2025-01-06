@@ -15,7 +15,7 @@ export default (
       type: 'separator'
     },
     {
-      // It's the same thing as clicking the green traffc-light on macOS
+      // It's the same thing as clicking the green traffic-light on macOS
       role: 'zoom',
       accelerator: commandKeys['window:zoom']
     },

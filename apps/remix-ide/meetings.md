@@ -34,10 +34,10 @@ Each other native plugin can request a guided tour with:
 Other type of plugin may be able to the native plugin guided tour but we won't push this if the integration is not working out of the box. 
 We rather update the remix-plugin doc saying that `guided tour framework name` is the preferred one.
 
-## web site
+## website
 
-we commit to have a public web site for general info about us.
-It won't be a branded web site.
+we commit to have a public website for general info about us.
+It won't be a branded website.
 We are asking a designer for improving the Liana's logo.
 We don't need to have a framework (hugo, hexo) if that's too much overhead.
 @liana is testing out the easiest solution.
@@ -98,7 +98,7 @@ first steps :
 - put all the public link to the local package
 - basic electron wrapper
 
-## out reach beyond community
+## outreach beyond community
 
 We agree it is something interesting to explore, 
 It is not 100% dev tool nor remix so we should organize call with other people from EF at least

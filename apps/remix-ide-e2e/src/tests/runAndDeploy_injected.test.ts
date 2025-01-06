@@ -73,7 +73,7 @@ const tests = {
 
   'Should deploy contract on Sepolia Test Network using MetaMask #group1': function (browser: NightwatchBrowser) {
     if (!checkBrowserIsChrome(browser)) return
-    browser.clearConsole().waitForElementPresent('*[data-id="runTabSelectAccount"] option', 45000)
+    browser.clearConsole().waitForElementPresent('*[data-id="runTabSelectAccount"]', 45000)
       .clickLaunchIcon('filePanel')
       .openFile('Greet.sol')
       .clickLaunchIcon('udapp')
@@ -133,7 +133,7 @@ const tests = {
 
   'Should deploy contract on Ethereum Main Network using MetaMask #group1': function (browser: NightwatchBrowser) {
     if (!checkBrowserIsChrome(browser)) return
-    browser.waitForElementPresent('*[data-id="runTabSelectAccount"] option')
+    browser.waitForElementPresent('*[data-id="runTabSelectAccount"]')
       .clickLaunchIcon('filePanel')
       .openFile('Greet.sol')
       .clickLaunchIcon('udapp')
@@ -293,11 +293,11 @@ const sources = [
       pragma solidity ^0.8.0;
       contract HelloWorld {
           string public message;
-          
+
           fallback () external {
               message = 'Hello World!';
           }
-          
+
           function greet(string memory _message) public {
               message = _message;
           }
@@ -311,7 +311,7 @@ const sources = [
         function sendSomeEther(uint256 num) public {
             payable(msg.sender).transfer(num);
         }
-    
+
     }`
     }
   }
