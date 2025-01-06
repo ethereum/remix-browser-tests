@@ -1,12 +1,12 @@
 import * as snarkjs from 'snarkjs'
-import type { CircomPluginClient } from "../services/circomPluginClient"
-import { ActionPayloadTypes, AppState, ICircuitAppContext } from "../types"
+import type { CircomPluginClient } from '../services/circomPluginClient'
+import { ActionPayloadTypes, AppState, ICircuitAppContext } from '../types'
 import { GROTH16_VERIFIER, PLONK_VERIFIER } from './constant'
 import { extractNameFromKey, extractParentFromKey } from '@remix-ui/helper'
 import isElectron from 'is-electron'
 
 export const compileCircuit = async (plugin: CircomPluginClient, appState: AppState) => {
-  if (appState.status !== "compiling") {
+  if (appState.status !== 'compiling') {
     return console.log('Existing circuit compilation in progress')
   }
 
@@ -17,14 +17,8 @@ export const compileCircuit = async (plugin: CircomPluginClient, appState: AppSt
   }
 }
 
-export const computeWitness = async (
-  plugin: CircomPluginClient,
-  appState: AppState,
-  dispatch: ICircuitAppContext['dispatch'],
-  status: string,
-  witnessValues: Record<string, string>
-) => {
-  if (status !== "computing") {
+export const computeWitness = async (plugin: CircomPluginClient, appState: AppState, dispatch: ICircuitAppContext['dispatch'], status: string, witnessValues: Record<string, string>) => {
+  if (status !== 'computing') {
     return console.log('Existing witness computation in progress')
   }
 
@@ -32,11 +26,11 @@ export const computeWitness = async (
     const input = JSON.stringify(witnessValues)
     const witness = await plugin.computeWitness(input)
 
-      if (appState.exportWtnsJson) {
-        const wtns = await snarkjs.wtns.exportJson(witness)
-        const wtnsJson = wtns.map(wtn => wtn.toString())
-        const fileName = extractNameFromKey(appState.filePath)
-        const writePath = extractParentFromKey(appState.filePath) + `/.bin/${fileName.replace('.circom', '_js')}/${fileName.replace('.circom', '.wtn.json')}`
+    if (appState.exportWtnsJson) {
+      const wtns = await snarkjs.wtns.exportJson(witness)
+      const wtnsJson = wtns.map((wtn) => wtn.toString())
+      const fileName = extractNameFromKey(appState.filePath)
+      const writePath = extractParentFromKey(appState.filePath) + `/.bin/${fileName.replace('.circom', '_js')}/${fileName.replace('.circom', '.wtn.json')}`
 
       await writeFile(plugin, writePath, JSON.stringify(wtnsJson, null, 2))
       trackEvent(plugin, 'computeWitness', 'wtns.exportJson', writePath)
@@ -56,7 +50,7 @@ export const runSetupAndExport = async (plugin: CircomPluginClient, appState: Ap
     await plugin.generateR1cs(appState.filePath, { version: appState.version, prime: appState.primeValue })
 
     const r1cs = await readFileAsUint8Array(plugin, getR1csPath(appState))
-    const zkeyFinal = { type: "mem" }
+    const zkeyFinal = { type: 'mem' }
 
     if (appState.provingScheme === 'groth16') {
       await setupGroth16(plugin, appState, dispatch, r1cs, ptauFinal, zkeyFinal)
@@ -108,7 +102,7 @@ function getWitnessPath(appState: AppState) {
 }
 
 function getPtauUrl(appState: AppState) {
-  return `https://ipfs-cluster.ethdevops.io/ipfs/${appState.ptauList.find(ptau => ptau.name === appState.ptauValue)?.ipfsHash}`
+  return `https://ipfs-cluster.ethdevops.io/ipfs/${appState.ptauList.find((ptau) => ptau.name === appState.ptauValue)?.ipfsHash}`
 }
 
 async function setupGroth16(plugin: CircomPluginClient, appState: AppState, dispatch, r1cs, ptauFinal, zkeyFinal) {
@@ -159,9 +153,9 @@ async function writeProofFiles(plugin, appState, proof, scheme, verified) {
   await writeFile(plugin, proofPath, JSON.stringify(proof, null, 2))
 
   if (verified) {
-    trackEvent(plugin, 'proof_verified', proofPath, "notification")
+    trackEvent(plugin, 'proof_verified', proofPath, 'notification')
   } else {
-    trackEvent(plugin, 'proof_failed', proofPath, "notification")
+    trackEvent(plugin, 'proof_failed', proofPath, 'notification')
   }
 }
 
@@ -170,11 +164,12 @@ function trackEvent(plugin, eventCategory, action, label) {
 }
 
 async function readFileAsUint8Array(plugin: CircomPluginClient, path: string) {
-   // @ts-ignore
-  await plugin.call('fileManager', 'readFile', path)}
+  // @ts-ignore
+  await plugin.call('fileManager', 'readFile', path)
+}
 
 async function writeFile(plugin: CircomPluginClient, path: string, content: string) {
-   // @ts-ignore
+  // @ts-ignore
   await plugin.call('fileManager', 'writeFile', path, content)
 }
 
