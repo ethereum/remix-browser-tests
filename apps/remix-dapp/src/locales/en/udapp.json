@@ -133,7 +133,7 @@
   "udapp.contractCreation": "Contract Creation",
   "udapp.transactionFee": "Transaction is invalid. Max fee should not be less than Base fee",
   "udapp.title1": "Represents the part of the tx fee that goes to the miner.",
-  "udapp.title2": "Represents the maximum amount of fee that you will pay for this transaction. The minimun needs to be set to base fee.",
+  "udapp.title2": "Represents the maximum amount of fee that you will pay for this transaction. The minimum needs to be set to base fee.",
   "udapp.gasPrice": "Gas price",
   "udapp.gweiText": "visit {a} for current gas price info.",
   "udapp.maxTransactionFee": "Max transaction fee",

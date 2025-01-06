@@ -434,7 +434,7 @@ module.exports = {
       .click('*[data-id="saveGitHubCredentials"]')
       .modalFooterOKClick('github-credentials-error')
   },
-  'check source controle panel #group5': function (browser: NightwatchBrowser) {
+  'check source control panel #group5': function (browser: NightwatchBrowser) {
     browser
       .waitForElementVisible('*[data-id="sourcecontrol-panel"]')
       .click('*[data-id="sourcecontrol-panel"]')
@@ -448,7 +448,7 @@ module.exports = {
       .clickLaunchIcon('filePanel')
       .switchWorkspace('default_workspace')
   },
-  'check source controle panel again #group5': function (browser: NightwatchBrowser) {
+  'check source control panel again #group5': function (browser: NightwatchBrowser) {
     browser
       .pause(1000)
       .clickLaunchIcon('dgit')
@@ -485,7 +485,7 @@ module.exports = {
           'Incorrect content')
       })
   },
-  'check source controle panel for uniswap #group5': function (browser: NightwatchBrowser) {
+  'check source control panel for uniswap #group5': function (browser: NightwatchBrowser) {
     browser
       .pause(5000)
       .clickLaunchIcon('dgit')

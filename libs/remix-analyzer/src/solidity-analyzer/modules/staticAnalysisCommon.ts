@@ -179,7 +179,7 @@ function getFunctionCallType (func: FunctionCallAstNode): string {
 }
 
 /**
- * Get the variable name written to by a effect node, except for inline assembly because there is no information to find out where we write to. Trows if not a effect node or is inlineassmbly.
+ * Get the variable name written to by a effect node, except for inline assembly because there is no information to find out where we write to. Throws if not a effect node or is inline assembly.
  * Example: x = 10; => x
  * @effectNode {ASTNode} Assignment node
  * @return {string} variable name written to

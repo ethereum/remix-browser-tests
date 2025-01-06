@@ -38,14 +38,14 @@ describe('Events', () => {
         address: receiptTest.contractAddress,
         fromBlock: 3,
         toBlock: 'latest',
-        topics: ['0xdcd9c7fa0342f01013bd0bf2bec103a81936162dcebd1f0c38b1d4164c17e0fc', '0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735']
+        topics: ['0xdcd9c7fa0342f01013bd0bf2bec103a81936162dcebd1f0c38b1d4164c17e0fc']
       })
 
       let ownerLogs = await web3.eth.getPastLogs({
         address: receiptOwner.contractAddress,
         fromBlock: 3,
         toBlock: 'latest',
-        topics: ['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735', '0xdcd9c7fa0342f01013bd0bf2bec103a81936162dcebd1f0c38b1d4164c17e0fc']
+        topics: ['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735']
       })
 
       // this should include the event triggered by the "set" transaction call.
@@ -56,7 +56,7 @@ describe('Events', () => {
         address: receiptOwner.contractAddress,
         fromBlock: 2,
         toBlock: 'latest',
-        topics: ['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735', '0xdcd9c7fa0342f01013bd0bf2bec103a81936162dcebd1f0c38b1d4164c17e0fc']
+        topics: ['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735']
       })
       // this should include the event triggered from the ctor.
       assert.equal(ownerLogs.length, 2, '3) ownerLogs length should be equal to 2')
@@ -65,10 +65,19 @@ describe('Events', () => {
         address: receiptOwner.contractAddress,
         fromBlock: 1,
         toBlock: 2,
-        topics: ['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735', '0xdcd9c7fa0342f01013bd0bf2bec103a81936162dcebd1f0c38b1d4164c17e0fc']
+        topics: ['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735']
       })
       // this should only include the event triggered from the ctor.
       assert.equal(ownerLogs.length, 1, '4) ownerLogs length should be equal to 1')
+
+      ownerLogs = await web3.eth.getPastLogs({
+        address: receiptOwner.contractAddress,
+        fromBlock: 1,
+        toBlock: 2,
+        topics: [['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735', '0xdcd9c7fa0342f01013bd0bf2bec103a81936162dcebd1f0c38b1d4164c17e0fc']]
+      })
+      // 0xdcd9c7fa0342f01013b is a topic from a event emitted by the other contract and should not be take into account.
+      assert.equal(ownerLogs.length, 1, '5) ownerLogs length should be equal to 1')
     })
   })
 })

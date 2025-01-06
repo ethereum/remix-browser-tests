@@ -4,13 +4,13 @@
 
 ### Running the app locally
 
-In the main repo yarn, then run yarn serve 
+In the main repo run yarn, then run yarn serve  
 In this directory apps/remixdesktop, yarn, then run: yarn start:dev to boot the electron app
 
 Then, the app will be started in live reload mode, and anything you do in Remix IDE will be reloaded.
 It will not however reload electron code. You need to rerun yarn start:dev every time. 
 
-If you run into issues with yarn when native node modules are being rebuilt you need
+If you run into issues with yarn when native node modules are being rebuilt, you need
 - Windows: install Visual Studio Tools with Desktop Development C++ enabled in the Workloads
 - MacOS: install Xcode or Xcode Command Line Tools. Also make sure the compilers (clang++ | g++) target the right sdk includes, ```export SDKROOT="xcrun --show-sdk-path"```
 - Linux: unknown, probably a C++ compiler

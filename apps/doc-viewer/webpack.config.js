@@ -28,7 +28,7 @@ module.exports = composePlugins(withNx(), withReact(), (config) => {
     new webpack.DefinePlugin({})
   )
 
-  // souce-map loader
+  // source-map loader
   config.module.rules.push({
     test: /\.js$/,
     use: ['source-map-loader'],

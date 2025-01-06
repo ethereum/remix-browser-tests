@@ -1,6 +1,6 @@
 # Contributing
 
-Everyone is welcome to contribute to Remix's codebase and please join our [Discord](https://discord.gg/mh9hFCKkEq).
+Everyone is welcome to contribute to Remix's codebase and please join our [Discord](https://discord.com/invite/nfv6ZYjAeP).
 
 ## Development
 Remix libraries work closely with [Remix IDE](https://remix.ethereum.org). Each library has a README to explain its application.
@@ -72,7 +72,7 @@ import panelJson from './panel.json';
 import enJson from '../en';
 
 // There may have some untranslated content. Always fill in the gaps with EN JSON.
-// No need for a defaultMessage prop when render a FormattedMessage component.
+// No need for a defaultMessage prop when rendering a FormattedMessage component.
 export default Object.assign({}, enJson, {
   ...panelJson,
 })

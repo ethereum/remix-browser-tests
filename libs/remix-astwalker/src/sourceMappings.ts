@@ -8,7 +8,7 @@ export declare interface SourceMappings {
 }
 
 /**
- * Turn an character offset into a "LineColPosition".
+ * Turn a character offset into a "LineColPosition".
  *
  * @param offset  The character offset to convert.
  */

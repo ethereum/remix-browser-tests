@@ -58,6 +58,6 @@ export const HandleStreamResponse = async (streamResponse,
   }
 }
 
-export const UpdtateChatHistory = (userPromptprompt: string, AIAnswer: string) => {
-  ChatHistory.pushHistory(userPromptprompt, AIAnswer)
+export const UpdateChatHistory = (userPrompt: string, AIAnswer: string) => {
+  ChatHistory.pushHistory(userPrompt, AIAnswer)
 }

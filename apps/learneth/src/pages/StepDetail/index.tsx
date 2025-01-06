@@ -85,7 +85,7 @@ function StepDetailPage() {
           <div className="errorloadingspacer"></div>
           <h1 className="pl-3 pr-3 pt-3 pb-1">{clonedStep.name}</h1>
           <button
-            className="w-100nav-item rounded-0 nav-link btn btn-success test"
+            className="w-100 nav-item rounded-0 nav-link btn btn-success test"
             onClick={() => {
               dispatch({
                 type: 'remixide/displayFile',

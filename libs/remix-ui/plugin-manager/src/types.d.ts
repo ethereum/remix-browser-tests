@@ -20,7 +20,7 @@ export class RemixEngine extends Engine {
 export function isNative(name: any): any
 /**
  * Checks if plugin caller 'from' is allowed to activate plugin 'to'
- * The caller can have 'canActivate' as a optional property in the plugin profile.
+ * The caller can have 'canActivate' as an optional property in the plugin profile.
  * This is an array containing the 'name' property of the plugin it wants to call.
  * canActivate = ['plugin1-to-call','plugin2-to-call',....]
  * or the plugin is allowed by default because it is native

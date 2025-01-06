@@ -101,7 +101,7 @@ module.exports = {
         browser.assert.equal(content, 'testing')
       })
   },
-  'Should have a artifacts file with JSON test data #group1 #group3 #group5 #group7': function (browser: NightwatchBrowser) {
+  'Should have an artifacts file with JSON test data #group1 #group3 #group5 #group7': function (browser: NightwatchBrowser) {
     browser.waitForElementVisible('*[data-id="remixIdeSidePanel"]', 5000)
       .click('*[data-id="treeViewLitreeViewItemtest_contracts/artifacts"]')
       .openFile('test_contracts/artifacts/Storage_metadata.json')
@@ -111,7 +111,7 @@ module.exports = {
         browser.assert.equal(metadata.test, 'data')
       })
   },
-  'Should have a empty workspace #group1 #group3 #group5 #group7': function (browser: NightwatchBrowser) {
+  'Should have an empty workspace #group1 #group3 #group5 #group7': function (browser: NightwatchBrowser) {
     browser.waitForElementVisible('*[data-id="remixIdeSidePanel"]', 5000)
       .switchWorkspace('emptyspace')
   },

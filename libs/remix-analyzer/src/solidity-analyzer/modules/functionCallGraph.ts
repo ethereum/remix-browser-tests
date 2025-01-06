@@ -33,7 +33,7 @@ function buildLocalFuncCallGraphInternal (functions: FunctionHLAst[], nodeFilter
  *    "functions": {
  *      "KingOfTheEtherThrone.claimThrone(string memory)": {    // function in KingOfEtherThrone
  *        "node": {...},                                        // function node as defined in abstractAstView.js
- *        "calls": {                                            // list of full qualified function names which are called form this function
+ *        "calls": {                                            // list of full qualified function names which are called from this function
  *        }
  *      }
  *    }

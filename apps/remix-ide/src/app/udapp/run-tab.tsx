@@ -160,13 +160,15 @@ export class RunTab extends ViewPlugin {
       'injected-metamask-gnosis': 'Deploy to Gnosis through the Metamask browser extension.',
       'injected-metamask-arbitrum': 'Deploy to Arbitrum through the Metamask browser extension.',
       'injected-metamask-sepolia': 'Deploy to the Sepolia testnet through the Metamask browser extension.',
-      'injected-metamask-ephemery': 'Deploy to the Ephemery testnet through the Metamask browser extension.'
+      'injected-metamask-ephemery': 'Deploy to the Ephemery testnet through the Metamask browser extension.',
+      'injected-metamask-linea': 'Deploy to Linea through the Metamask browser extension.'
     }
 
     const logos = {
       'injected-metamask-optimism': ['assets/img/optimism-ethereum-op-logo.png', 'assets/img/metamask.png'],
       'injected-metamask-arbitrum': ['assets/img/arbitrum-arb-logo.png', 'assets/img/metamask.png'],
       'injected-metamask-gnosis': ['assets/img/gnosis_chain.png', 'assets/img/metamask.png'],
+      'injected-metamask-linea': ['assets/img/linea_chain.png', 'assets/img/metamask.png'],
       'injected-metamask-sepolia': ['assets/img/metamask.png'],
       'injected-metamask-ephemery': ['assets/img/metamask.png'],
       'injected-MetaMask': ['assets/img/metamask.png'],
@@ -243,6 +245,7 @@ export class RunTab extends ViewPlugin {
             "decimals": 18
           })
         */
+        await addCustomInjectedProvider(11, event, 'injected-metamask-linea', 'L2 - Linea', '0xe708', ['https://rpc.linea.build'])
       }
     }
 

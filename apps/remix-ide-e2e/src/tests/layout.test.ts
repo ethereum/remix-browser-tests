@@ -26,7 +26,7 @@ module.exports = {
       .assert.containsText('.sidepanel h6[data-id="sidePanelSwapitTitle"]', 'SOLIDITY COMPILER')
       .waitForElementNotVisible('.pinned-panel h6[data-id="sidePanelSwapitTitle"]')
   },
-  'Should pin a plugin while a another plugin is already pinned': function (browser: NightwatchBrowser) {
+  'Should pin a plugin while an another plugin is already pinned': function (browser: NightwatchBrowser) {
     browser.waitForElementVisible('[data-id="movePluginToRight"]')
       .click('[data-id="movePluginToRight"]')
       .waitForElementVisible('[data-id="movePluginToLeft"]')

@@ -502,9 +502,9 @@ export class CircomPluginClient extends PluginClient {
           const exists = await this.call('fileManager', 'exists', path)
 
           if (exists) return path
-          else throw new Error(`Report path ${path} do no exist in the Remix FileSystem`)
+          else throw new Error(`Report path ${path} does not exist in the Remix FileSystem`)
         } else {
-          throw new Error(`Report path ${path} do no exist in the Remix FileSystem`)
+          throw new Error(`Report path ${path} does not exist in the Remix FileSystem`)
         }
       }
     }

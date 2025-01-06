@@ -7,7 +7,7 @@ module.exports = {
   before: function (browser: NightwatchBrowser, done: VoidFunction) {
     // this test suite also contribute testing https://github.com/ethereum/remix/pull/1497 and https://github.com/ethereum/remix-ide/pull/2898
     // quick explanation:
-    // the goal of https://github.com/ethereum/remix-ide/pull/2898 is to keep track of all the compiled contracts an not only the last one.
+    // the goal of https://github.com/ethereum/remix-ide/pull/2898 is to keep track of all the compiled contracts a not only the last one.
     // this introduce an issue: if 2 compiled contracts have the same name, the second one override the first which is not wanted.
     // fix's delivered by https://github.com/ethereum/remix/pull/1497: instead of getting contract by name,
     // which result in name clashing we process the whole contract object (which contain bytecode, deployedbytecode, ...)

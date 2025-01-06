@@ -37,7 +37,7 @@ export const keccak256 = function(a: Buffer): Uint8Array {
 }
 
 /**
- * Creates Keccak hash of a utf-8 string input
+ * Creates Keccak hash of an utf-8 string input
  * @param a The input data (String)
  * @param bits (number = 256) The Keccak width
  */

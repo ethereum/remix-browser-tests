@@ -38,7 +38,7 @@ export function extractHexByteSlice (slotValue, byteLength, offsetFromLSB) {
 }
 
 /**
- * @returns a hex encoded storage content at the given @arg location. it does not have Ox prefix but always has the full length.
+ * @returns a hex encoded storage content at the given @arg location. it does not have 0x prefix but always has the full length.
  *
  * @param {Object} location  - object containing the slot and offset of the data to extract.
  * @param {Object} storageResolver  - storage resolver

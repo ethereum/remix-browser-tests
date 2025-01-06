@@ -19,7 +19,7 @@ export class OpenZeppelinProxy extends Plugin {
   }
 
   async isConcerned(ast: ContractAST = {} as ContractAST): Promise<boolean> {
-    // check in the AST if it's an upgradable contract
+    // check in the AST if it's an upgradeable contract
     const UUPSSymbol = ast.exportedSymbols && ast.exportedSymbols[UUPS] ? ast.exportedSymbols[UUPS][0] : null
 
     if (UUPSSymbol) {

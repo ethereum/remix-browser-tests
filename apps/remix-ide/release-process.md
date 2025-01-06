@@ -1,9 +1,9 @@
-This document includes:
+This document describes:
  - how to update remix.ethereum.org.
  - how to update remix-alpha.ethereum.org.
  - how to release remix IDE.
 
-# remix IDE release
+# Remix IDE Release
 
  - git fetch origin master
  - git checkout origin/master
@@ -12,7 +12,7 @@ This document includes:
  - merge PR
  - git fetch origin master
  - git checkout origin/master
- - git tag v(version-number)
+ - git tag v<version-number>
  - git push --tags
  - github-changes -o ethereum -r remix-ide -a --only-pulls --use-commit-body --only-merges --between-tags previous_version...next_version
  - publish a release in github using the changelog
@@ -23,7 +23,7 @@ This document includes:
  - npm publish
  - after remix_live is updated, drop the zip (from https://github.com/ethereum/remix-live/) to the release.
 
-# remix-ide beta release
+# Remix IDE Beta Release
  - git fetch origin master
  - git checkout origin/master
  - git checkout -b bumpVersion
@@ -31,7 +31,7 @@ This document includes:
  - merge PR
  - git fetch origin master
  - git checkout origin/master
- - git tag v(version-number) (with "vx.x.x-beta.1")
+ - git tag v<version-number> (with "vx.x.x-beta.1")
  - git push --tags
  - github-changes -o ethereum -r remix-ide -a --only-pulls --use-commit-body --only-merges --between-tags previous_version...next_version
  - publish a beta release in github using the changelog
@@ -41,7 +41,7 @@ This document includes:
 
 This is not strictly speaking a release. Updating the remix site is done through the Travis build:
 
- - git co -b remix_live origin/remix_live
+ - git checkout -b remix_live origin/remix_live
  - git reset --hard -master-commit-hash-
  - git push -f origin remix_live
 
