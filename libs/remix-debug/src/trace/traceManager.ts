@@ -6,6 +6,14 @@ import { TraceCache } from './traceCache'
 import { TraceStepManager } from './traceStepManager'
 import { isCreateInstruction } from './traceHelper'
 
+export class TraceError extends Error {
+  constructor(message: string, public readonly stepIndex?: number) {
+    super(message)
+    this.name = 'TraceError'
+    Object.setPrototypeOf(this, TraceError.prototype)
+  }
+}
+
 export class TraceManager {
   web3
   fork: string
@@ -126,10 +134,10 @@ export class TraceManager {
     try {
       this.checkRequestedStep(stepIndex)
     } catch (check) {
-      throw new Error(check)
+      throw new TraceError(`Invalid step index: ${check.message}`, stepIndex)
     }
     const callsPath = util.buildCallPath(stepIndex, this.traceCache.callsTree.call)
-    if (callsPath === null) throw new Error('no call path built')
+    if (callsPath === null) throw new TraceError('Failed to build call path: no valid path found', stepIndex)
     return callsPath
   }
 
@@ -137,27 +145,27 @@ export class TraceManager {
     try {
       this.checkRequestedStep(stepIndex)
     } catch (check) {
-      throw new Error(check)
+      throw new TraceError(`Invalid step index: ${check.message}`, stepIndex)
     }
     const call = util.findCall(stepIndex, this.traceCache.callsTree.call)
     if (call === null) {
-      throw new Error('no callstack found')
+      throw new TraceError('No callstack found for the given step index', stepIndex)
     }
     return call.callStack
   }
 
   getStackAt (stepIndex) {
-    this.checkRequestedStep(stepIndex)
-    if (this.trace[stepIndex] && this.trace[stepIndex].stack) { // there's always a stack
+    try {
+      this.checkRequestedStep(stepIndex)
+    } catch (check) {
+      throw new TraceError(`Invalid step index: ${check.message}`, stepIndex)
+    }
+    if (this.trace[stepIndex] && this.trace[stepIndex].stack) {
       if (Array.isArray(this.trace[stepIndex].stack)) {
         const stack = this.trace[stepIndex].stack.slice(0)
         stack.reverse()
         return stack.map(el => toHexPaddedString(el))
       } else {
-        // it's an object coming from the VM.
-        // for performance reasons,
-        // we don't turn the stack coming from the VM into an array when the tx is executed
-        // but now when the app needs it.
         const stack = []
         for (const prop in this.trace[stepIndex].stack) {
           if (prop !== 'length') {
@@ -167,9 +175,8 @@ export class TraceManager {
         stack.reverse()
         return stack
       }
-    } else {
-      throw new Error('no stack found')
     }
+    throw new TraceError('No stack data found for the given step index', stepIndex)
   }
 
   getLastCallChangeSince (stepIndex) {
