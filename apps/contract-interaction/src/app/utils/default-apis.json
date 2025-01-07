@@ -1,0 +1,576 @@
+{
+  "Sourcify": {
+    "apiUrl": "https://sourcify.dev/server",
+    "explorerUrl": "https://repo.sourcify.dev"
+  },
+  "Etherscan": {
+    "1": {
+      "apiUrl": "https://api.etherscan.io",
+      "explorerUrl": "https://etherscan.io"
+    },
+    "56": {
+      "apiUrl": "https://api.bscscan.com",
+      "explorerUrl": "https://bscscan.com"
+    },
+    "137": {
+      "apiUrl": "https://api.polygonscan.com",
+      "explorerUrl": "https://polygonscan.com"
+    },
+    "250": {
+      "apiUrl": "https://api.ftmscan.com",
+      "explorerUrl": "https://ftmscan.com"
+    },
+    "42161": {
+      "apiUrl": "https://api.arbiscan.io",
+      "explorerUrl": "https://arbiscan.io"
+    },
+    "43114": {
+      "apiUrl": "https://api.snowtrace.io",
+      "explorerUrl": "https://snowtrace.io"
+    },
+    "1285": {
+      "apiUrl": "https://api-moonriver.moonscan.io",
+      "explorerUrl": "https://moonscan.io"
+    },
+    "1284": {
+      "apiUrl": "https://api-moonbeam.moonscan.io",
+      "explorerUrl": "https://moonscan.io"
+    },
+    "25": {
+      "apiUrl": "https://api.cronoscan.com",
+      "explorerUrl": "https://cronoscan.com"
+    },
+    "199": {
+      "apiUrl": "https://api.bttcscan.com",
+      "explorerUrl": "https://bttcscan.com"
+    },
+    "10": {
+      "apiUrl": "https://api-optimistic.etherscan.io",
+      "explorerUrl": "https://optimistic.etherscan.io"
+    },
+    "42220": {
+      "apiUrl": "https://api.celoscan.io",
+      "explorerUrl": "https://celoscan.io"
+    },
+    "288": {
+      "apiUrl": "https://api.bobascan.com",
+      "explorerUrl": "https://bobascan.com"
+    },
+    "100": {
+      "apiUrl": "https://api.gnosisscan.io",
+      "explorerUrl": "https://gnosisscan.io"
+    },
+    "1101": {
+      "apiUrl": "https://api-zkevm.polygonscan.com",
+      "explorerUrl": "https://zkevm.polygonscan.com"
+    },
+    "59144": {
+      "apiUrl": "https://api.lineascan.build",
+      "explorerUrl": "https://lineascan.build"
+    },
+    "8453": {
+      "apiUrl": "https://api.basescan.org",
+      "explorerUrl": "https://basescan.org"
+    },
+    "534352": {
+      "apiUrl": "https://api.scrollscan.com",
+      "explorerUrl": "https://scrollscan.com"
+    },
+    "17000": {
+      "apiUrl": "https://api-holesky.etherscan.io",
+      "explorerUrl": "https://holesky.etherscan.io"
+    },
+    "11155111": {
+      "apiUrl": "https://api-sepolia.etherscan.io",
+      "explorerUrl": "https://sepolia.etherscan.io"
+    },
+    "97": {
+      "apiUrl": "https://api-testnet.bscscan.com",
+      "explorerUrl": "https://bscscan.com"
+    },
+    "80001": {
+      "apiUrl": "https://api-testnet.polygonscan.com",
+      "explorerUrl": "https://polygonscan.com"
+    },
+    "4002": {
+      "apiUrl": "https://api-testnet.ftmscan.com",
+      "explorerUrl": "https://ftmscan.com"
+    },
+    "421611": {
+      "apiUrl": "https://api-testnet.arbiscan.io",
+      "explorerUrl": "https://arbiscan.io"
+    },
+    "42170": {
+      "apiUrl": "https://api-nova.arbiscan.io",
+      "explorerUrl": "https://nova.arbiscan.io"
+    },
+    "43113": {
+      "apiUrl": "https://api-testnet.snowtrace.io",
+      "explorerUrl": "https://snowtrace.io"
+    },
+    "1287": {
+      "apiUrl": "https://api-moonbase.moonscan.io",
+      "explorerUrl": "https://moonscan.io"
+    },
+    "338": {
+      "apiUrl": "https://api-testnet.cronoscan.com",
+      "explorerUrl": "https://cronoscan.com"
+    },
+    "1028": {
+      "apiUrl": "https://api-testnet.bttcscan.com",
+      "explorerUrl": "https://bttcscan.com"
+    },
+    "44787": {
+      "apiUrl": "https://api-alfajores.celoscan.io",
+      "explorerUrl": "https://alfajores.celoscan.io"
+    },
+    "2888": {
+      "apiUrl": "https://api-testnet.bobascan.com",
+      "explorerUrl": "https://bobascan.com"
+    },
+    "84532": {
+      "apiUrl": "https://api-sepolia.basescan.org",
+      "explorerUrl": "https://sepolia.basescan.org"
+    },
+    "1442": {
+      "apiUrl": "https://api-testnet-zkevm.polygonscan.com",
+      "explorerUrl": "https://zkevm.polygonscan.com"
+    },
+    "59140": {
+      "apiUrl": "https://api-testnet.lineascan.build",
+      "explorerUrl": "https://lineascan.build"
+    },
+    "534351": {
+      "apiUrl": "https://api-sepolia.scrollscan.com",
+      "explorerUrl": "https://sepolia.scrollscan.com"
+    }
+  },
+  "Blockscout": {
+    "1": {
+      "apiUrl": "https://eth.blockscout.com"
+    },
+    "5": {
+      "apiUrl": "https://eth-goerli.blockscout.com"
+    },
+    "10": {
+      "apiUrl": "https://optimism.blockscout.com"
+    },
+    "30": {
+      "apiUrl": "https://rootstock.blockscout.com"
+    },
+    "31": {
+      "apiUrl": "https://rootstock-testnet.blockscout.com"
+    },
+    "42": {
+      "apiUrl": "https://explorer.execution.mainnet.lukso.network"
+    },
+    "61": {
+      "apiUrl": "https://etc.blockscout.com"
+    },
+    "63": {
+      "apiUrl": "https://etc-mordor.blockscout.com"
+    },
+    "81": {
+      "apiUrl": "https://shibuya.blockscout.com"
+    },
+    "100": {
+      "apiUrl": "https://gnosis.blockscout.com"
+    },
+    "109": {
+      "apiUrl": "https://www.shibariumscan.io"
+    },
+    "111": {
+      "apiUrl": "https://testnet-explorer.gobob.xyz"
+    },
+    "122": {
+      "apiUrl": "https://explorer.fuse.io"
+    },
+    "123": {
+      "apiUrl": "https://explorer.fusespark.io"
+    },
+    "137": {
+      "apiUrl": "https://polygon.blockscout.com"
+    },
+    "148": {
+      "apiUrl": "https://explorer.evm.shimmer.network"
+    },
+    "157": {
+      "apiUrl": "https://puppyscan.shib.io"
+    },
+    "169": {
+      "apiUrl": "https://pacific-explorer.manta.network"
+    },
+    "185": {
+      "apiUrl": "https://explorer.mintchain.io"
+    },
+    "197": {
+      "apiUrl": "https://dxb.vrcscan.com"
+    },
+    "248": {
+      "apiUrl": "https://explorer.oasys.games"
+    },
+    "291": {
+      "apiUrl": "https://explorer.orderly.network"
+    },
+    "300": {
+      "apiUrl": "https://zksync-sepolia.blockscout.com"
+    },
+    "311": {
+      "apiUrl": "https://omaxscan.com"
+    },
+    "313": {
+      "apiUrl": "https://ncnscan.com"
+    },
+    "324": {
+      "apiUrl": "https://zksync.blockscout.com"
+    },
+    "336": {
+      "apiUrl": "https://shiden.blockscout.com"
+    },
+    "360": {
+      "apiUrl": "https://molten.calderaexplorer.xyz"
+    },
+    "372": {
+      "apiUrl": "https://explorer.fortresschain.finance"
+    },
+    "416": {
+      "apiUrl": "https://explorer.sx.technology"
+    },
+    "570": {
+      "apiUrl": "https://explorer.rollux.com"
+    },
+    "592": {
+      "apiUrl": "https://astar.blockscout.com"
+    },
+    "648": {
+      "apiUrl": "https://explorer-endurance.fusionist.io"
+    },
+    "713": {
+      "apiUrl": "https://vrcscan.com"
+    },
+    "721": {
+      "apiUrl": "https://explorer.lycanchain.com"
+    },
+    "813": {
+      "apiUrl": "https://qng.qitmeer.io"
+    },
+    "879": {
+      "apiUrl": "https://kadscan.kadsea.org"
+    },
+    "911": {
+      "apiUrl": "https://scan.taprootchain.io"
+    },
+    "919": {
+      "apiUrl": "https://sepolia.explorer.mode.network"
+    },
+    "957": {
+      "apiUrl": "https://explorer.lyra.finance"
+    },
+    "1073": {
+      "apiUrl": "https://explorer.evm.testnet.shimmer.network"
+    },
+    "1075": {
+      "apiUrl": "https://explorer.evm.testnet.iotaledger.net"
+    },
+    "1101": {
+      "apiUrl": "https://zkevm.blockscout.com"
+    },
+    "1135": {
+      "apiUrl": "https://blockscout.lisk.com"
+    },
+    "1291": {
+      "apiUrl": "https://explorer-evm.testnet.swisstronik.com"
+    },
+    "1432": {
+      "apiUrl": "https://explorer-sepolia.zentachain.io"
+    },
+    "1687": {
+      "apiUrl": "https://sepolia-testnet-explorer.mintchain.io"
+    },
+    "1729": {
+      "apiUrl": "https://explorer.reya.network"
+    },
+    "1750": {
+      "apiUrl": "https://explorer.metall2.com"
+    },
+    "1829": {
+      "apiUrl": "https://explorer.playblock.io"
+    },
+    "1833": {
+      "apiUrl": "https://verify-testnet.blockscout.com"
+    },
+    "1890": {
+      "apiUrl": "https://phoenix.lightlink.io"
+    },
+    "1891": {
+      "apiUrl": "https://pegasus.lightlink.io"
+    },
+    "1995": {
+      "apiUrl": "https://explorer.testnet.edexa.com"
+    },
+    "1996": {
+      "apiUrl": "https://explorer.sanko.xyz"
+    },
+    "2016": {
+      "apiUrl": "https://netzexplorer.io"
+    },
+    "2021": {
+      "apiUrl": "https://edgscan.live"
+    },
+    "2145": {
+      "apiUrl": "https://explorer.chainers.io"
+    },
+    "2410": {
+      "apiUrl": "https://explorer.karak.network"
+    },
+    "2999": {
+      "apiUrl": "https://explorer.aevo.xyz"
+    },
+    "3799": {
+      "apiUrl": "https://testnet-explorer.tangle.tools"
+    },
+    "3888": {
+      "apiUrl": "https://kalyscan.io"
+    },
+    "4058": {
+      "apiUrl": "https://ocean.ftnscan.com"
+    },
+    "4202": {
+      "apiUrl": "https://sepolia-blockscout.lisk.com"
+    },
+    "4396": {
+      "apiUrl": "https://explorer.vedaord.com"
+    },
+    "4460": {
+      "apiUrl": "https://testnet-explorer.orderly.org"
+    },
+    "4653": {
+      "apiUrl": "https://explorer.gold.dev"
+    },
+    "4999": {
+      "apiUrl": "https://blackfort.blockscout.com"
+    },
+    "5000": {
+      "apiUrl": "https://explorer.mantle.xyz"
+    },
+    "5003": {
+      "apiUrl": "https://explorer.sepolia.mantle.xyz"
+    },
+    "5112": {
+      "apiUrl": "https://explorer.ham.fun"
+    },
+    "6398": {
+      "apiUrl": "https://connext-sepolia.blockscout.com"
+    },
+    "6699": {
+      "apiUrl": "https://oxscan.io"
+    },
+    "6969": {
+      "apiUrl": "https://tombscout.com"
+    },
+    "7001": {
+      "apiUrl": "https://zetachain-athens-3.blockscout.com"
+    },
+    "7771": {
+      "apiUrl": "https://testnetscan.bit-rock.io"
+    },
+    "7887": {
+      "apiUrl": "https://explorer.kinto.xyz"
+    },
+    "7979": {
+      "apiUrl": "https://doscan.io"
+    },
+    "8131": {
+      "apiUrl": "https://testnet-qng.qitmeer.io"
+    },
+    "8337": {
+      "apiUrl": "https://explorer.ipsprotocol.xyz"
+    },
+    "8453": {
+      "apiUrl": "https://base.blockscout.com"
+    },
+    "8822": {
+      "apiUrl": "https://explorer.evm.iota.org"
+    },
+    "8853": {
+      "apiUrl": "https://explorer.myclique.io"
+    },
+    "8866": {
+      "apiUrl": "https://explorer.lumio.io"
+    },
+    "8869": {
+      "apiUrl": "https://lif3scout.com"
+    },
+    "8899": {
+      "apiUrl": "https://exp-l1-ng.jibchain.net"
+    },
+    "9996": {
+      "apiUrl": "https://mainnet.mindscan.info"
+    },
+    "12553": {
+      "apiUrl": "https://scan.rss3.io"
+    },
+    "13371": {
+      "apiUrl": "https://explorer.immutable.com"
+    },
+    "13473": {
+      "apiUrl": "https://explorer.testnet.immutable.com"
+    },
+    "17000": {
+      "apiUrl": "https://eth-holesky.blockscout.com"
+    },
+    "18233": {
+      "apiUrl": "https://unreal.blockscout.com"
+    },
+    "23452": {
+      "apiUrl": "https://scan.dreyerx.com"
+    },
+    "27563": {
+      "apiUrl": "https://scan.onchaincoin.io"
+    },
+    "34443": {
+      "apiUrl": "https://explorer.mode.network"
+    },
+    "42161": {
+      "apiUrl": "https://arbitrum.blockscout.com"
+    },
+    "42766": {
+      "apiUrl": "https://testnet-scan.zkfair.io"
+    },
+    "53302": {
+      "apiUrl": "https://sepolia-explorer.superseed.xyz"
+    },
+    "53339": {
+      "apiUrl": "https://blk.keeex.me"
+    },
+    "54211": {
+      "apiUrl": "https://explorer.testedge2.haqq.network"
+    },
+    "57000": {
+      "apiUrl": "https://rollux.tanenbaum.io"
+    },
+    "60808": {
+      "apiUrl": "https://explorer.gobob.xyz"
+    },
+    "64002": {
+      "apiUrl": "https://xchain-testnet-explorer.idex.io"
+    },
+    "70700": {
+      "apiUrl": "https://explorer.apex.proofofplay.com"
+    },
+    "78225": {
+      "apiUrl": "https://explorer.stack.so"
+    },
+    "84532": {
+      "apiUrl": "https://base-sepolia.blockscout.com"
+    },
+    "98881": {
+      "apiUrl": "https://explorer.ebi.xyz"
+    },
+    "101010": {
+      "apiUrl": "https://stability.blockscout.com"
+    },
+    "102031": {
+      "apiUrl": "https://creditcoin-testnet.blockscout.com"
+    },
+    "111111": {
+      "apiUrl": "https://explorer.main.siberium.net"
+    },
+    "111188": {
+      "apiUrl": "https://explorer.re.al"
+    },
+    "224433": {
+      "apiUrl": "https://scan.conet.network"
+    },
+    "241120": {
+      "apiUrl": "https://andromeda.anomalyscan.io"
+    },
+    "355113": {
+      "apiUrl": "https://explorer.testnet.bitfinity.network"
+    },
+    "622277": {
+      "apiUrl": "https://explorer.hypra.network"
+    },
+    "656476": {
+      "apiUrl": "https://opencampus-codex.blockscout.com"
+    },
+    "686868": {
+      "apiUrl": "https://scan.wonnetwork.org"
+    },
+    "782251": {
+      "apiUrl": "https://testnet.explorer.stack.so"
+    },
+    "984122": {
+      "apiUrl": "https://explorer.forma.art"
+    },
+    "5820948": {
+      "apiUrl": "https://onlyscan.info"
+    },
+    "7225878": {
+      "apiUrl": "https://explorer.saakuru.network"
+    },
+    "7777777": {
+      "apiUrl": "https://explorer.zora.energy"
+    },
+    "10241025": {
+      "apiUrl": "https://hal.explorer.caldera.xyz"
+    },
+    "11155111": {
+      "apiUrl": "https://eth-sepolia.blockscout.com"
+    },
+    "11155112": {
+      "apiUrl": "https://explorer-testnet.aevo.xyz"
+    },
+    "11155420": {
+      "apiUrl": "https://optimism-sepolia.blockscout.com"
+    },
+    "20180427": {
+      "apiUrl": "https://stability-testnet.blockscout.com"
+    },
+    "28122024": {
+      "apiUrl": "https://scanv2-testnet.ancient8.gg"
+    },
+    "65010002": {
+      "apiUrl": "https://bakerloo.autonity.org"
+    },
+    "65100002": {
+      "apiUrl": "https://piccadilly.autonity.org"
+    },
+    "88888888": {
+      "apiUrl": "https://babytuna.explorer.tunachain.io"
+    },
+    "89346162": {
+      "apiUrl": "https://reya-cronos.blockscout.com"
+    },
+    "245022926": {
+      "apiUrl": "https://neon-devnet.blockscout.com"
+    },
+    "245022934": {
+      "apiUrl": "https://neon.blockscout.com"
+    },
+    "666666666": {
+      "apiUrl": "https://explorer.degen.tips"
+    },
+    "888888888": {
+      "apiUrl": "https://scan.ancient8.gg"
+    },
+    "1123581321": {
+      "apiUrl": "https://explorer.xoracle.io"
+    },
+    "1313161554": {
+      "apiUrl": "https://explorer.mainnet.aurora.dev"
+    },
+    "1380012617": {
+      "apiUrl": "https://mainnet.explorer.rarichain.org"
+    },
+    "2046399126": {
+      "apiUrl": "https://elated-tan-skat.explorer.mainnet.skalenodes.com"
+    },
+    "2863311531": {
+      "apiUrl": "https://testnet.a8scan.io"
+    },
+    "81247166294": {
+      "apiUrl": "https://testnet.otoscan.io"
+    }
+  }
+}

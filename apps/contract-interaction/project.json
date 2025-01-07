@@ -1,0 +1,88 @@
+{
+  "name": "contract-interaction",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/contract-interaction/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "development",
+      "dependsOn": [
+        "install"
+      ],
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/contract-interaction",
+        "index": "apps/contract-interaction/src/index.html",
+        "baseHref": "./",
+        "main": "apps/contract-interaction/src/main.tsx",
+        "polyfills": "apps/contract-interaction/src/polyfills.ts",
+        "tsConfig": "apps/contract-interaction/tsconfig.app.json",
+        "assets": [
+          "apps/contract-interaction/src/favicon.ico",
+          "apps/contract-interaction/src/assets",
+          "apps/contract-interaction/src/profile.json"
+        ],
+        "styles": [
+          "apps/contract-interaction/src/styles.css"
+        ],
+        "scripts": [],
+        "webpackConfig": "apps/contract-interaction/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/contract-interaction/src/environments/environment.ts",
+              "with": "apps/contract-interaction/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/contract-interaction/**/*.ts"
+        ],
+        "eslintConfig": "apps/contract-interaction/.eslintrc"
+      }
+    },
+    "install": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "cd apps/contract-interaction && yarn"
+        ],
+        "parallel": false
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "contract-interaction:build",
+        "hmr": true,
+        "baseHref": "/"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "contract-interaction:build:development",
+          "port": 5003
+        },
+        "production": {
+          "buildTarget": "contract-interaction:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

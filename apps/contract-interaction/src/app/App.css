@@ -1,0 +1,668 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.fa-arrow-up-right-from-square::before {
+  content: "\f08e";
+}
+
+.fa-xmark::before {
+  content: "\f00d";
+}
+
+.udapp_cardContainer {
+  padding: 0 24px 16px;
+  margin: 0;
+  background: none;
+}
+
+.udapp_runTabView {
+  display: flex;
+  flex-direction: column;
+}
+
+.udapp_runTabView::-webkit-scrollbar {
+  display: none;
+}
+
+.udapp_settings {
+  padding: 0 24px 16px;
+}
+
+.udapp_crow {
+  display: block;
+  margin-top: 8px;
+}
+
+.udapp_col1 {
+  width: 30%;
+  float: left;
+  align-self: center;
+}
+
+.udapp_settingsLabel {
+  font-size: 11px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.udapp_settingsCompiledBy {
+  margin-bottom: 4px;
+}
+
+.udapp_syncFramework {
+  margin-bottom: 4px;
+}
+
+.udapp_environment {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.udapp_environment a {
+  margin-left: 7px;
+}
+
+.udapp_account {
+  display: flex;
+  align-items: center;
+}
+
+.udapp_account i {
+  margin-left: 12px;
+}
+
+.udapp_col2 {
+  border-radius: 3px;
+}
+
+.udapp_col2_1 {
+  width: 164px;
+  min-width: 164px;
+}
+
+.udapp_select {
+  font-weight: normal;
+  width: 100%;
+  overflow: hidden;
+}
+
+.udapp_instanceContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2%;
+  border: none;
+  text-align: center;
+  padding: 0 14px 16px;
+}
+
+.udapp_deployedContracts {
+  font-size: 1rem;
+}
+
+.udapp_pendingTxsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+  border: none;
+  text-align: center;
+}
+
+.udapp_container {
+  padding: 0 24px 16px;
+}
+
+.udapp_contractNames {
+  width: 100%;
+  border: 1px solid
+}
+
+.udapp_evmVersion {
+  cursor: default;
+}
+
+.udapp_subcontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.udapp_subcontainer i {
+  width: 16px;
+  display: flex;
+  justify-content: center;
+  margin-left: 1px;
+}
+
+.udapp_button button {
+  flex: none;
+}
+
+.udapp_button {
+  display: flex;
+  align-items: center;
+  margin-top: 13px;
+}
+
+.udapp_atAddress {
+  margin: 0;
+  min-width: 100px;
+  width: 100px;
+  height: 100%;
+  word-break: inherit;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+
+.udapp_atAddress:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.udapp_atAddressSect {
+  margin-top: 8px;
+  height: 32px;
+}
+
+.udapp_atAddressSect input {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.udapp_ataddressinput {
+  padding: .25rem;
+}
+
+.udapp_recorderSection:hover {
+  cursor: pointer;
+}
+
+.udapp_recorderSectionLabel:hover {
+  cursor: pointer;
+}
+
+.udapp_recorderSectionLabel {
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.udapp_input {
+  font-size: 10px !important;
+}
+
+.udapp_pendingTxsText {
+  font-style: italic;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.udapp_item {
+  margin-right: 1em;
+  display: flex;
+  align-items: center;
+}
+
+.udapp_pendingContainer {
+  display: flex;
+  align-items: baseline;
+}
+
+.udapp_pending {
+  height: 25px;
+  text-align: center;
+  padding-left: 10px;
+  border-radius: 3px;
+  margin-left: 5px;
+}
+
+.udapp_disableMouseEvents {
+  pointer-events: none;
+}
+
+.udapp_icon {
+  cursor: pointer;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.udapp_icon:hover {
+  font-size: 12px;
+}
+
+.udapp_errorIcon {
+  color: var(--warning);
+  margin-left: 15px;
+}
+
+.udapp_failDesc {
+  color: var(--warning);
+  padding-left: 10px;
+  display: inline;
+}
+
+.udapp_network {
+  pointer-events: none;
+}
+
+.udapp_networkItem {
+  margin-right: 5px;
+}
+
+.udapp_transactionActions {
+  display: flex;
+  justify-content: space-evenly;
+  width: 145px;
+}
+
+.udapp_orLabel {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.udapp_infoDeployAction {
+  margin-left: 1px;
+  font-size: 13px;
+  color: var(--info);
+}
+
+.udapp_gasValueContainer {
+  flex-direction: row;
+  display: flex;
+}
+
+.udapp_gasNval {
+  font-size: 0.8rem;
+}
+
+.udapp_gasNvalUnit {
+  width: 41%;
+  margin-left: 10px;
+  font-size: 0.8rem;
+}
+
+.udapp_deployDropdown {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.udapp_checkboxAlign {
+  padding-top: 2px;
+}
+
+.udapp_instanceTitleContainer {
+  display: flex;
+  align-items: center;
+}
+
+.udapp_calldataInput {
+  height: 32px;
+}
+
+.udapp_title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  width: 100%;
+  overflow: hidden;
+  word-break: break-word;
+  line-height: initial;
+  overflow: visible;
+  padding: 0 0 8px;
+  margin: 0;
+  background: none;
+  border: none;
+}
+
+.udapp_title button {
+  background: none;
+  border: none;
+}
+
+.udapp_titleLine {
+  display: flex;
+  align-items: baseline;
+}
+
+.udapp_titleText {
+  word-break: break-word;
+  width: 100%;
+  border: none;
+  overflow: hidden;
+}
+
+.udapp_spanTitleText {
+  line-height: 12px;
+  padding: 0;
+  font-size: 11px;
+  width: 100%;
+  border: none;
+  background: none;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.udapp_inputGroupText {
+  width: 100%;
+}
+
+.udapp_title .udapp_copy {
+  color: var(--primary);
+}
+
+.udapp_titleExpander {
+  align-self: center;
+}
+
+.udapp_nameNbuts {
+  display: contents;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.udapp_instance {
+  display: block;
+  flex-direction: column;
+  background: none;
+  border-radius: 2px;
+}
+
+.udapp_instance.udapp_hidesub {
+  border-bottom: 1px solid;
+}
+
+.udapp_instance.udapp_hidesub .udapp_title {
+  display: flex;
+}
+
+.udapp_instance.udapp_hidesub .udapp_udappClose {
+  display: flex;
+}
+
+.udapp_instance.udapp_hidesub>* {
+  display: none;
+}
+
+.udapp_methCaret {
+  min-width: 12px;
+  width: 12px;
+  margin-left: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 0.6;
+  vertical-align: middle;
+  padding: 0;
+}
+
+.udapp_cActionsWrapper {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0.25rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0.25rem;
+  padding: 8px 10px 7px;
+}
+
+.udapp_group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.udapp_buttonsContainer {
+  margin-top: 2%;
+  display: flex;
+  overflow: hidden;
+}
+
+.udapp_instanceButton {
+  height: 32px;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.udapp_closeIcon {
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.udapp_udappClose {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.udapp_contractProperty {
+  width: 100%;
+}
+
+.udapp_contractProperty.udapp_hasArgs input {
+  padding: .36em;
+  border-radius: 5px;
+}
+
+.udapp_contractProperty .udapp_contractActionsContainerSingle input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.udapp_contractProperty button {
+  min-width: 80px;
+  width: 100px;
+  margin: 0;
+  word-break: inherit;
+}
+
+.udapp_contractProperty.udapp_constant button {
+  min-width: 100px;
+  width: 100px;
+  margin: 0;
+  word-break: inherit;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.udapp_contractProperty>.udapp_value {
+  box-sizing: border-box;
+  float: left;
+  align-self: center;
+  margin-left: 4px;
+}
+
+.udapp_contractActionsContainer {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.udapp_contractActionsContainerSingle {
+  display: flex;
+  width: 100%;
+}
+
+.udapp_contractActionsContainerSingle i {
+  line-height: 2;
+}
+
+.udapp_contractActionsContainerMulti {
+  display: none;
+  width: 100%;
+}
+
+.udapp_contractActionsContainerMultiInner {
+  width: 100%;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+.udapp_multiHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.udapp_contractActionsContainerMultiInner .udapp_multiTitle {
+  padding-left: 10px;
+}
+
+.udapp_contractProperty .udapp_multiTitle {
+  padding: 0;
+  line-height: 16px;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: default;
+}
+
+.udapp_contractProperty .udapp_contractActionsContainerMultiInner .udapp_multiArg label {
+  text-align: right;
+}
+
+.udapp_multiHeader .udapp_methCaret {
+  float: right;
+  margin-right: 0;
+}
+
+.udapp_contractProperty.udapp_constant .udapp_multiTitle {
+  display: inline-block;
+  width: 90%;
+  /* font-size: 10px; */
+  height: 25px;
+  padding-left: 20px;
+  font-weight: bold;
+  line-height: 25px;
+  cursor: default;
+}
+
+.udapp_multiArg {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.udapp_multiArg input {
+  padding: 5px;
+}
+
+.udapp_multiArg label {
+  width: auto;
+  padding: 0;
+  margin: 0 4px 0 0;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: right;
+  word-break: initial;
+}
+
+.udapp_multiArg button {
+  max-width: 100px;
+  border-radius: 3px;
+  border-width: 1px;
+  width: inherit;
+}
+
+.udapp_multiHeader button {
+  display: inline-block;
+  width: 94%;
+}
+
+.udapp_hasArgs .udapp_multiArg input {
+  border-left: 1px solid #dddddd;
+  width: 67%;
+}
+
+.udapp_hasArgs input {
+  display: block;
+  height: 32px;
+  border: 1px solid #dddddd;
+  padding: .36em;
+  border-left: none;
+  padding: 8px 8px 8px 10px;
+  font-size: 10px !important;
+}
+
+.udapp_hasArgs button {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+}
+
+.udapp_hasArgs .udapp_contractActionsContainerMulti button {
+  border-radius: 3px;
+}
+
+.udapp_contractActionsContainerMultiInner .udapp_multiArg i {
+  padding-right: 10px;
+}
+
+.udapp_hideWarningsContainer {
+  display: flex;
+  align-items: center;
+  margin-left: 2%
+}
+
+#confirmsetting {
+  z-index: 1;
+}
+
+.udapp_wrapword {
+  white-space: pre-wrap;
+  /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
+}
+
+.deploy-items {
+  padding: 0.25rem 0.25rem;
+  border-radius: .25rem;
+}
+
+.deploy-items a {
+  border-radius: .25rem;
+  text-transform: none;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: .8rem;
+  padding: 0.25rem 0.25rem;
+  width: auto;
+}
+
+.udapp_selectExEnvOptions {
+  width: 100%;
+}
+
+.remixui_runtabBalancelabel {
+  font-size: 0.688rem;
+  line-height: 0.75rem;
+  color: var(--runtab);
+}

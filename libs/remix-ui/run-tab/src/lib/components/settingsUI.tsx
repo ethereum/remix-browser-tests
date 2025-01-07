@@ -7,6 +7,11 @@ import { AccountUI } from './account'
 import { GasLimitUI } from './gasLimit'
 import { ValueUI } from './value'
 
+// Re-exporting components to be re-used.
+export { NetworkUI } from './network'
+export { ValueUI } from './value'
+export { GasLimitUI } from './gasLimit'
+
 export function SettingsUI(props: SettingsProps) {
   //   this._deps.config.events.on('settings/personal-mode_changed', this.onPersonalChange.bind(this))
 
