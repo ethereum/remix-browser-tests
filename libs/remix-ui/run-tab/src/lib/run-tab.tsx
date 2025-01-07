@@ -22,6 +22,7 @@ import {
   createNewAddress,
   setPassphraseModal,
   setMatchPassphraseModal,
+  createNewSmartAccount,
   signMessage,
   fetchSelectedContract,
   createNewInstance,
@@ -363,6 +364,7 @@ export function RunTabUI(props: RunTabProps) {
             runTabPlugin={plugin}
             setExecutionContext={setExecutionEnvironment}
             createNewBlockchainAccount={createNewAddress}
+            createNewSmartAccount={createNewSmartAccount}
             setPassphrase={setPassphraseModal}
             setMatchPassphrase={setMatchPassphraseModal}
             modal={modal}

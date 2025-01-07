@@ -100,7 +100,8 @@ export function AccountUI(props: AccountProps) {
   }, [selectExEnv, personalMode, networkName])
 
   const newAccount = () => {
-    props.createNewBlockchainAccount(passphraseCreationPrompt())
+    if (selectExEnv && selectExEnv.startsWith('injected') && networkName.includes('Sepolia')) props.createNewSmartAccount()
+    else props.createNewBlockchainAccount(passphraseCreationPrompt())
   }
 
   const signMessage = () => {
