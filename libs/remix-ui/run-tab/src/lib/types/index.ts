@@ -197,7 +197,8 @@ export interface AccountProps {
   tooltip: (toasterMsg: string) => void,
   modal: (title: string, message: string | JSX.Element, okLabel: string, okFn: () => void, cancelLabel?: string, cancelFn?: () => void, okBtnClass?: string, cancelBtnClass?: string) => void,
   signMessageWithAddress: (account: string, message: string, modalContent: (hash: string, data: string) => JSX.Element, passphrase?: string) => void,
-  passphrase: string
+  passphrase: string,
+  networkName: string
 }
 
 export interface GasPriceProps {
