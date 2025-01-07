@@ -44,7 +44,7 @@ const clientProfile: Profile = {
 
 As you can see in the clientProfile you define the methods which are exposed to the Remix plugin system.
 
-5. add a base plugin and a plugin client
+4. add a base plugin and a plugin client
 ```
 export class CompilerLoaderPlugin extends ElectronBasePlugin {
   clients: CompilerLoaderPluginClient[] = []
@@ -71,7 +71,7 @@ The ElectronBasePluginClient is the specific instance which will be connected to
 
 Any instance specific code is set as functions on the ElectronBasePluginClient class.
 
-6. If you need fs access you need to track the workingdir like we do here:
+5. If you need fs access you need to track the workingdir like we do here:
 This ensures you know where the user is working
 
 ```
@@ -92,7 +92,7 @@ class IsoGitPluginClient extends ElectronBasePluginClient {
 
   ```
 
-7. If you need to call methods on the BASE which holds all the clients you can add methods there, for example this iterates over clients 
+6. If you need to call methods on the BASE which holds all the clients you can add methods there, for example this iterates over clients 
 and finds the one with the webContentsId. This ID passed on ie by menu items. Look at menu.ts to see how that works.
 
 ```
@@ -104,21 +104,21 @@ and finds the one with the webContentsId. This ID passed on ie by menu items. Lo
   }
 ```
 
-8. Add your plugin to engine.ts
+7. Add your plugin to engine.ts
 
 ```
 const compilerLoaderPlugin = new CompilerLoaderPlugin()
 ```
 
-9. Register the plugin in engine.ts
+8. Register the plugin in engine.ts
 
 ```
 engine.register(compilerLoaderPlugin)
 ```
 
-10. activation of plugins is done when the clients connect to the engine. No need to activate it. 
+9. activation of plugins is done when the clients connect to the engine. No need to activate it. 
 
-11. Add the plugin to the preload.ts. Add it to this list:
+10. Add the plugin to the preload.ts. Add it to this list:
 
 ```
 const exposedPLugins = ['fs', 'git', 'xterm', 'isogit', 'electronconfig', 'electronTemplates', 'ripgrep', 'compilerloader', 'appUpdater']
@@ -126,7 +126,7 @@ const exposedPLugins = ['fs', 'git', 'xterm', 'isogit', 'electronconfig', 'elect
 
 If you don't do this, it won't work.
 
-12. In Remix IDE create a plugin in src/app/plugins/electron. If everything works correctly the methods will be loaded from the electron side, no need to specify them here.
+11. In Remix IDE create a plugin in src/app/plugins/electron. If everything works correctly the methods will be loaded from the electron side, no need to specify them here.
 This plugin is only a passthrough. 
 
 ```
@@ -150,11 +150,10 @@ export class compilerLoaderPluginDesktop extends ElectronPlugin {
 }
 ```
 
-13. if you need to activate that on load you need to add it to the app.js where other plugins are activated.
+12. if you need to activate that on load you need to add it to the app.js where other plugins are activated.
 
 
 
 ## CI
 
 CI will only run the builds if the branch is master or contains the word: desktop
-
