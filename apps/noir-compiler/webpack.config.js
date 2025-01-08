@@ -2,11 +2,20 @@ const { composePlugins, withNx } = require('@nrwl/webpack')
 const webpack = require('webpack')
 const TerserPlugin = require("terser-webpack-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
+const fs = require('fs')
+const path = require('path')
 
 // Nx plugins for webpack.
 module.exports = composePlugins(withNx(), (config) => {
-  // Update the webpack config as needed here.
-  // e.g. `config.plugins.push(new MyPlugin())`
+  // use the web build for noir-wasm
+  let pkgNoirWasm = fs.readFileSync(path.resolve(__dirname, '../../node_modules/@noir-lang/noir_wasm/package.json'), 'utf8')
+  let typeCount = 0
+
+  pkgNoirWasm = pkgNoirWasm.replace("node", "./node").replace("import", "./import").replace("require", "./require").replace(/"types"/g, match => ++typeCount === 2 ? '"./types"' : match).replace("default", "./default")
+  fs.writeFileSync(path.resolve(__dirname, '../../node_modules/@noir-lang/noir_wasm/package.json'), pkgNoirWasm)
+  
+  console.log('pkgNoirWasm: ', pkgNoirWasm)
+
   // add fallback for node modules
   config.resolve.fallback = {
     ...config.resolve.fallback,

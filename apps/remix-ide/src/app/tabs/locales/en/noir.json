@@ -1,0 +1,27 @@
+{
+    "noir.compiler": "Compiler",
+    "noir.autoCompile": "Auto compile",
+    "noir.hideWarnings": "Hide warnings",
+    "noir.advancedConfigurations": "Advanced Configurations",
+    "noir.compilerConfiguration": "Compiler configuration",
+    "noir.prime": "Prime",
+    "noir.useConfigurationFile": "Use configuration file",
+    "noir.compile": "Compile",
+    "noir.noFileSelected": "no file selected",
+    "noir.generateR1cs": "Generate R1CS",
+    "noir.computeWitness": "Compute Witness",
+    "noir.generateProof": "Generate Proof",
+    "noir.signalInput": "Signal Input",
+    "noir.compute": "Compute",
+    "noir.setupExports": "Setup and Exports",
+    "noir.provingScheme": "Proving Scheme",
+    "noir.ptau": "POWER OF TAU (PTAU)",
+    "noir.randomText": "Ceremony: Random Text",
+    "noir.randomBeacon": "Ceremony: Random Beacon",
+    "noir.exportVerifierContract": "Export verifier contract",
+    "noir.exportVerificationKey": "Export verification key",
+    "noir.exportVerifierCalldata": "Export verifier calldata",
+    "noir.exportWtnsJson": "Export witness as JSON",
+    "noir.runSetup": "Run setup"
+  }
+  

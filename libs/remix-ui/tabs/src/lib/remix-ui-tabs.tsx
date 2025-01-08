@@ -66,6 +66,7 @@ const tabsReducer = (state: ITabsState, action: ITabsAction) => {
     return state
   }
 }
+const PlayExtList = ['js', 'ts', 'sol', 'circom', 'vy', 'nr']
 
 export const TabsUI = (props: TabsUIProps) => {
   const [tabsState, dispatch] = useReducer(tabsReducer, initialTabsState)
@@ -203,23 +204,22 @@ export const TabsUI = (props: TabsUIProps) => {
             <button
               data-id="play-editor"
               className="btn text-success pr-0 py-0 d-flex"
-              disabled={!(tabsState.currentExt === 'js' || tabsState.currentExt === 'ts' || tabsState.currentExt === 'sol' || tabsState.currentExt === 'circom' || tabsState.currentExt === 'vy')}
+              disabled={!(PlayExtList.includes(tabsState.currentExt))}
               onClick={async () => {
                 const path = active().substr(active().indexOf('/') + 1, active().length)
                 const content = await props.plugin.call('fileManager', 'readFile', path)
                 if (tabsState.currentExt === 'js' || tabsState.currentExt === 'ts') {
                   await props.plugin.call('scriptRunnerBridge', 'execute', content, path)
-                  _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
                 } else if (tabsState.currentExt === 'sol' || tabsState.currentExt === 'yul') {
                   await props.plugin.call('solidity', 'compile', path)
-                  _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
                 } else if (tabsState.currentExt === 'circom') {
                   await props.plugin.call('circuit-compiler', 'compile', path)
-                  _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
                 } else if (tabsState.currentExt === 'vy') {
                   await props.plugin.call('vyper', 'vyperCompileCustomAction')
-                  _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
+                } else if (tabsState.currentExt === 'nr') {
+                  await props.plugin.call('noir-compiler', 'compile', path)
                 }
+                _paq.push(['trackEvent', 'editor', 'clickRunFromEditor', tabsState.currentExt])
               }}
             >
               <i className="fas fa-play"></i>

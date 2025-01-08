@@ -110,6 +110,7 @@
     "@nlux/highlighter": "^2.17.1",
     "@nlux/react": "^2.17.1",
     "@nlux/themes": "^2.17.1",
+    "@noir-lang/noir_wasm": "^1.0.0-beta.1",
     "@openzeppelin/contracts": "^5.0.0",
     "@openzeppelin/upgrades-core": "^1.30.0",
     "@openzeppelin/wizard": "0.4.0",
