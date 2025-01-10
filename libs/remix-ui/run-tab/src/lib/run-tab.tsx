@@ -235,6 +235,16 @@ export function RunTabUI(props: RunTabProps) {
     }
   }, [runTab.popup])
 
+  useEffect(() => {
+    if (runTab.selectExEnv.includes('injected') &&
+      Object.entries(runTab.accounts.loadedAccounts).length === 0 &&
+    runTab.accounts.selectedAccount.length > 0) {
+      // switch to vm-cancum because no account is loaded from injected provider
+      const context = plugin.blockchain.defaultPinnedProviders[0] // vm-cancun
+      setExecutionEnvironment({ context, fork: '' })
+    }
+  }, [runTab.accounts.loadedAccounts])
+
   const setCheckIpfs = (value: boolean) => {
     dispatch(setIpfsCheckedState(value))
   }
