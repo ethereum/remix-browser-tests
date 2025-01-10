@@ -69,7 +69,7 @@ const tests = {
           locateStrategy: 'xpath'
         }
       )
-      // check if forked state is selected as current envionment
+      // check if forked state is selected as current environment
       .assert.elementPresent('*[data-id="selected-provider-vm-fs-forkedState_1"]')
       // check if forked state file is created with expected details
       .openFile('.states/forked_states/forkedState_1.json')
@@ -105,12 +105,12 @@ const tests = {
       .setValue('input[data-id="modalDialogForkState"]', 'forkedState_2')
       .modalFooterOKClick('udappNotify')
       .waitForElementVisible('*[data-shared="tooltipPopup"]', 10000)
-      .assert.textContains('*[data-shared="tooltipPopup"]', `VM state 'forkedState_2' forked and selected as current envionment.`)
-      // check if 'forkedState_2' is selected as current envionment 
+      .assert.textContains('*[data-shared="tooltipPopup"]', `VM state 'forkedState_2' forked and selected as current environment.`)
+      // check if 'forkedState_2' is selected as current environment 
       .assert.elementPresent('*[data-id="selected-provider-vm-fs-forkedState_2"]')
-      // check if 'forkedState_2' is present in envionment explorer
+      // check if 'forkedState_2' is present in environment explorer
       .assert.elementPresent('[data-id="remixUIGSforkedState_2"]')
-      // check if 'forkedState_2' is pinned in envionment explorer
+      // check if 'forkedState_2' is pinned in environment explorer
       .assert.elementPresent('[data-id="vm-fs-forkedState_2-pinned"]')
       // 'forkedState_2' should have 3 blocks
       .assert.textContains('[data-id="vm-fs-forkedState_2desc"]', 'Latest Block: 3')

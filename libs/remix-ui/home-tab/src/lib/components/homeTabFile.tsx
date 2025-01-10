@@ -127,7 +127,7 @@ function HomeTabFile({ plugin }: HomeTabFileProps) {
     plugin.verticalIcons.select('filePanel')
   }
 
-  const handleSwichToRecentWorkspace = async (e, workspaceName) => {
+  const handleSwitchToRecentWorkspace = async (e, workspaceName) => {
     e.preventDefault()
     plugin.call('sidePanel', 'showContent', 'filePanel')
     plugin.verticalIcons.select('filePanel')
@@ -146,17 +146,17 @@ function HomeTabFile({ plugin }: HomeTabFileProps) {
                 Recent Workspaces
               </label>
               {state.recentWorkspaces[0] && state.recentWorkspaces[0] !== '' && (
-                <a className="cursor-pointer mb-1 ml-2" href="#" onClick={(e) => handleSwichToRecentWorkspace(e, state.recentWorkspaces[0])}>
+                <a className="cursor-pointer mb-1 ml-2" href="#" onClick={(e) => handleSwitchToRecentWorkspace(e, state.recentWorkspaces[0])}>
                   {state.recentWorkspaces[0]}
                 </a>
               )}
               {state.recentWorkspaces[1] && state.recentWorkspaces[1] !== '' && (
-                <a className="cursor-pointer mb-1 ml-2" href="#" onClick={(e) => handleSwichToRecentWorkspace(e, state.recentWorkspaces[1])}>
+                <a className="cursor-pointer mb-1 ml-2" href="#" onClick={(e) => handleSwitchToRecentWorkspace(e, state.recentWorkspaces[1])}>
                   {state.recentWorkspaces[1]}
                 </a>
               )}
               {state.recentWorkspaces[2] && state.recentWorkspaces[2] !== '' && (
-                <a className="cursor-pointer ml-2" href="#" onClick={(e) => handleSwichToRecentWorkspace(e, state.recentWorkspaces[2])}>
+                <a className="cursor-pointer ml-2" href="#" onClick={(e) => handleSwitchToRecentWorkspace(e, state.recentWorkspaces[2])}>
                   {state.recentWorkspaces[2]}
                 </a>
               )}

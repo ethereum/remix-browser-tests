@@ -253,7 +253,7 @@ export const add = async (filepath: addInputType) => {
 
 }
 
-const getLastCommmit = async () => {
+const getLastCommit = async () => {
   try {
     let currentcommitoid = "";
     currentcommitoid = await getCommitFromRef("HEAD");
@@ -275,7 +275,7 @@ export const rm = async (args: rmInputType) => {
 }
 
 export const checkoutfile = async (filename: string) => {
-  const oid = await getLastCommmit();
+  const oid = await getLastCommit();
   if (oid)
     try {
       const commitOid = await plugin.call('dgitApi', 'resolveref', {
@@ -444,7 +444,7 @@ const parseError = async (e: any) => {
       type: ModalTypes.alert
     })
   } else {
-    await sendToMatomo(gitMatomoEventTypes.ERROR, ['UKNOWN'])
+    await sendToMatomo(gitMatomoEventTypes.ERROR, ['UNKNOWN'])
     await plugin.call('notification', 'alert' as any, {
       title: 'Error',
       message: e.message

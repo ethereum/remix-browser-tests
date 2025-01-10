@@ -149,7 +149,8 @@ export function isNative(name) {
     'templateSelection',
     'walletconnect',
     'contract-verification',
-    'popupPanel'
+    'popupPanel',
+    'LearnEth',
   ]
   return nativePlugins.includes(name) || requiredModules.includes(name) || isInjectedProvider(name) || isVM(name) || isScriptRunner(name)
 }

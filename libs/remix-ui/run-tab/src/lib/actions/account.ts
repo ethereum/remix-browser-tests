@@ -70,7 +70,7 @@ export const createNewBlockchainAccount = async (plugin: RunTab, dispatch: React
         if (plugin.REACT_API.passphrase === plugin.REACT_API.matchPassphrase) {
           cb(plugin.REACT_API.passphrase)
         } else {
-          dispatch(displayNotification('Error', 'Passphase does not match', 'OK', null))
+          dispatch(displayNotification('Error', 'Passphrase does not match', 'OK', null))
         }
         setPassphrase('')
         setMatchPassphrase('')

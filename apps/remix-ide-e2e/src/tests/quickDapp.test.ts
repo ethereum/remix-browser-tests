@@ -90,7 +90,7 @@ const tests = {
       .setValue('input[data-id="surgePassword"]', surgePassword)
       .setValue('input[data-id="surgeSubdomain"]', surgeSubdomain)
       .setValue('input[data-id="functionTitle0x6057361d"]', 'Function Store Title')
-      .setValue('input[data-id="functionTitle0x2e64cec1"]', 'Function Retrive Title')
+      .setValue('input[data-id="functionTitle0x2e64cec1"]', 'Function Retrieve Title')
       .execute((function() {
         document.querySelector('input[data-id="uploadLogo"]').classList.remove('d-none');
       }))
@@ -176,7 +176,7 @@ const tests = {
         })
       })
       .assert.containsText('*[data-id="functionTitle0x6057361d"]', 'Function Store Title')
-      .assert.containsText('*[data-id="functionTitle0x2e64cec1"]', 'Function Retrive Title')
+      .assert.containsText('*[data-id="functionTitle0x2e64cec1"]', 'Function Retrieve Title')
       .assert.containsText('*[data-id="dappTitle"]', 'Storage')
       .assert.containsText('*[data-id="dappInstructions"]', 'Store & retrieve value in a variable')
       .assert.elementPresent('.fa-twitter.btn', 'Twitter icon should be present')
@@ -191,9 +191,9 @@ const tests = {
       .getLocation('*[data-id="function0x6057361d"]', function (result: any) {
         const funcStoreLocation = result.value
         browser.getLocation('*[data-id="function0x2e64cec1"]', function (result: any) {
-          const funcRetriveLocation = result.value
-          browser.assert.strictEqual(funcStoreLocation.y, funcRetriveLocation.y, 'Both functions should be on the same horizontal line')
-          browser.assert.ok(funcStoreLocation.x > funcRetriveLocation.x, 'Function Store should be on the right of Function Retrive')
+          const funcRetrieveLocation = result.value
+          browser.assert.strictEqual(funcStoreLocation.y, funcRetrieveLocation.y, 'Both functions should be on the same horizontal line')
+          browser.assert.ok(funcStoreLocation.x > funcRetrieveLocation.x, 'Function Store should be on the right of Function Retrieve')
         })
       })
       .getAttribute('a[data-id="viewSourceCode"]', 'href', function (result) {

@@ -76,7 +76,7 @@ describe('Events', () => {
         toBlock: 2,
         topics: [['0x342827c97908e5e2f71151c08502a66d44b6f758e3ac2f1de95f02eb95f0a735', '0xdcd9c7fa0342f01013bd0bf2bec103a81936162dcebd1f0c38b1d4164c17e0fc']]
       })
-      // 0xdcd9c7fa0342f01013b is a topic from a event emitted by the other contract and should not be take into account.
+      // 0xdcd9c7fa0342f01013b is a topic from an event emitted by the other contract and should not be take into account.
       assert.equal(ownerLogs.length, 1, '5) ownerLogs length should be equal to 1')
     })
   })

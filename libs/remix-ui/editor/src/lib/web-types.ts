@@ -115,9 +115,9 @@ export const loadTypes = async (monaco) => {
   monaco.languages.typescript.typescriptDefaults.addExtraLib(ethersSha2Default, `file:///node_modules/@types/@ethersproject_sha2/index.d.ts`)
 
   // @ts-ignore
-  const ethersSingningkey = await import('raw-loader!@ethersproject/signing-key/lib/index.d.ts')
-  const ethersSingningkeyDefault = ethersSingningkey.default.replace(/@ethersproject\//g, '@ethersproject_')
-  monaco.languages.typescript.typescriptDefaults.addExtraLib(ethersSingningkeyDefault, `file:///node_modules/@types/@ethersproject_signing-key/index.d.ts`)
+  const ethersSigningkey = await import('raw-loader!@ethersproject/signing-key/lib/index.d.ts')
+  const ethersSigningkeyDefault = ethersSigningkey.default.replace(/@ethersproject\//g, '@ethersproject_')
+  monaco.languages.typescript.typescriptDefaults.addExtraLib(ethersSigningkeyDefault, `file:///node_modules/@types/@ethersproject_signing-key/index.d.ts`)
 
   // @ts-ignore
   const ethersSolidity = await import('raw-loader!@ethersproject/solidity/lib/index.d.ts')

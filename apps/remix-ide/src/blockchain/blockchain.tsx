@@ -157,7 +157,7 @@ export class Blockchain extends Plugin {
       _paq.push(['trackEvent', 'blockchain', 'providerPinned', name])
       this.emit('providersChanged')
       this.changeExecutionContext({ context: name }, null, null, null)
-      this.call('notification', 'toast', `VM state '${providerName}' forked and selected as current envionment.`)
+      this.call('notification', 'toast', `VM state '${providerName}' forked and selected as current environment.`)
     })
 
     this.on('environmentExplorer', 'providerUnpinned', (name, provider) => {
