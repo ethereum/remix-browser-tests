@@ -6,6 +6,7 @@ import React, { useCallback } from 'react';
 import { ICompletions, IModel, RemoteInferencer, IRemoteModel, IParams, GenerationParams, CodeExplainAgent } from '@remix/remix-ai-core';
 import { CustomRemixApi } from '@remix-api'
 import { PluginViewWrapper } from '@remix-ui/helper'
+const _paq = (window._paq = window._paq || [])
 
 type chatRequestBufferT<T> = {
   [key in keyof T]: T[key]
@@ -199,6 +200,7 @@ export class RemixAIPlugin extends ViewPlugin {
     else {
       console.log("chatRequestBuffer is not empty. First process the last request.")
     }
+    _paq.push(['trackEvent', 'ai', 'remixAI_chat', 'askFromTerminal'])
   }
 
   async ProcessChatRequestBuffer(params:IParams=GenerationParams){

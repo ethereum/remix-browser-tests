@@ -55,7 +55,7 @@ module.exports = composePlugins(withNx(), (config) => {
     })
   )
 
-  // souce-map loader
+  // source-map loader
   config.module.rules.push({
     test: /\.js$/,
     use: ["source-map-loader"],

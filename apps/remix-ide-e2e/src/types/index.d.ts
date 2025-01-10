@@ -25,7 +25,7 @@ declare module 'nightwatch' {
     journalLastChildIncludes(val: string): NightwatchBrowser
     executeScriptInTerminal(script: string): NightwatchBrowser
     clearEditableContent(cssSelector: string): NightwatchBrowser
-    journalChildIncludes(val: string, opts = {shouldHaveOnlyOneOccurence: boolean}): NightwatchBrowser
+    journalChildIncludes(val: string, opts = {shouldHaveOnlyOneOccurrence: boolean}): NightwatchBrowser
     debugTransaction(index: number): NightwatchBrowser
     checkElementStyle(cssSelector: string, styleProperty: string, expectedResult: string): NightwatchBrowser
     openFile(name: string): NightwatchBrowser
@@ -57,7 +57,7 @@ declare module 'nightwatch' {
     journalLastChild(val: string): NightwatchBrowser
     checkTerminalFilter(filter: string, test: string, notContain: boolean): NightwatchBrowser
     noWorkerErrorFor(version: string): NightwatchBrowser
-    validateValueInput(selector: string, valueTosSet: string[], expectedValue: string): NightwatchBrowser
+    validateValueInput(selector: string, valueToSet: string[], expectedValue: string): NightwatchBrowser
     checkAnnotations(type: string): NightwatchBrowser
     checkAnnotationsNotPresent(type: string): NightwatchBrowser
     getLastTransactionHash(callback: (hash: string) => void)
