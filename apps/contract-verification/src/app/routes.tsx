@@ -3,6 +3,7 @@ import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 
 import { VerifyView, ReceiptsView, LookupView, SettingsView } from './views'
 import { DefaultLayout } from './layouts'
+import { FormattedMessage } from 'react-intl'
 
 const DisplayRoutes = () => (
   <Router>
@@ -10,7 +11,7 @@ const DisplayRoutes = () => (
       <Route
         path="/"
         element={
-          <DefaultLayout from="/" title="Verify" description="Verify compiled contracts on different verification services">
+          <DefaultLayout from="/" title="Verify" description={<FormattedMessage id="contract-verification.verifyDefaultLayout.description" defaultMessage="Verify compiled contracts on different verification services" />}>
             <VerifyView />
           </DefaultLayout>
         }
@@ -19,7 +20,7 @@ const DisplayRoutes = () => (
       <Route
         path="/receipts"
         element={
-          <DefaultLayout from="/" title="Receipts" description="Check the verification statuses of contracts submitted for verification">
+          <DefaultLayout from="/" title="Receipts" description={<FormattedMessage id="contract-verification.receiptsDefaultLayout.description" defaultMessage="Check the verification statuses of contracts submitted for verification" />}>
             <ReceiptsView />
           </DefaultLayout>
         }
@@ -28,7 +29,7 @@ const DisplayRoutes = () => (
       <Route
         path="/lookup"
         element={
-          <DefaultLayout from="/" title="Lookup" description="Search for verified contracts and download them to Remix">
+          <DefaultLayout from="/" title="Lookup" description={<FormattedMessage id="contract-verification.lookupDefaultLayout.description" defaultMessage="Lookup the verification status of a contract by its address" />}>
             <LookupView />
           </DefaultLayout>
         }
@@ -37,7 +38,7 @@ const DisplayRoutes = () => (
       <Route
         path="/settings"
         element={
-          <DefaultLayout from="/" title="Settings" description="Customize settings for each verification service and chain">
+          <DefaultLayout from="/" title="Settings" description={<FormattedMessage id="contract-verification.settingsDefaultLayout.description" defaultMessage="Configure the settings for the contract verification plugin" />}>
             <SettingsView />
           </DefaultLayout>
         }

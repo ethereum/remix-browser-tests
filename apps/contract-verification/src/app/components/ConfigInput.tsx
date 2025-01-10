@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CustomTooltip } from '@remix-ui/helper'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 interface ConfigInputProps {
   label: string
@@ -13,6 +14,7 @@ interface ConfigInputProps {
 export const ConfigInput: React.FC<ConfigInputProps> = ({ label, id, secret, initialValue, saveResult }) => {
   const [value, setValue] = useState(initialValue)
   const [enabled, setEnabled] = useState(false)
+  const intl = useIntl()
 
   // Reset state when initialValue changes
   useEffect(() => {
@@ -42,7 +44,7 @@ export const ConfigInput: React.FC<ConfigInputProps> = ({ label, id, secret, ini
           type={secret ? 'password' : 'text'}
           className={`form-control small w-100 ${!enabled ? 'bg-transparent pl-0 border-0' : ''}`}
           id={id}
-          placeholder={`Add ${label}`}
+          placeholder={intl.formatMessage({ id: "contract-verification.configInputPlaceholder" }, { label })}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           disabled={!enabled}
@@ -51,10 +53,10 @@ export const ConfigInput: React.FC<ConfigInputProps> = ({ label, id, secret, ini
         { enabled ? (
           <>
             <button type="button" className="btn btn-primary btn-sm ml-2" onClick={handleSave}>
-              Save
+              <FormattedMessage id="contract-verification.configInputSaveButton" />
             </button>
             <button type="button" className="btn btn-secondary btn-sm ml-2" onClick={handleCancel}>
-              Cancel
+              <FormattedMessage id="contract-verification.configInputCancelButton" />
             </button>
           </>
         ) : (

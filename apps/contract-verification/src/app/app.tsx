@@ -13,6 +13,7 @@ import { CompilerAbstract } from '@remix-project/remix-solidity'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { getVerifier } from './Verifiers'
 import { ContractDropdownSelection } from './components/ContractDropdown'
+import { IntlProvider } from 'react-intl'
 
 const plugin = new ContractVerificationPluginClient()
 
@@ -32,11 +33,25 @@ const App = () => {
   const [proxyAddressError, setProxyAddressError] = useState('')
   const [abiEncodedConstructorArgs, setAbiEncodedConstructorArgs] = useState<string>('')
   const [abiEncodingError, setAbiEncodingError] = useState<string>('')
+  const [locale, setLocale] = useState<{ code: string; messages: any }>({
+    code: 'en',
+    messages: {}
+  })
 
   const timer = useRef(null)
 
   useEffect(() => {
     plugin.internalEvents.on('verification_activated', () => {
+
+      // @ts-ignore
+      plugin.call('locale', 'currentLocale').then((locale: any) => {
+        setLocale(locale)
+      })
+
+      // @ts-ignore
+      plugin.on('locale', 'localeChanged', (locale: any) => {
+        setLocale(locale)
+      })
       // Fetch compiler artefacts initially
       plugin.call('compilerArtefacts' as any, 'getAllCompilerAbstracts').then((obj: any) => {
         setCompilationOutput(obj)
@@ -143,11 +158,13 @@ const App = () => {
   }, [submittedContracts])
 
   return (
-    <AppContext.Provider value={{ themeType, setThemeType, clientInstance: plugin, settings, setSettings, chains, compilationOutput, submittedContracts, setSubmittedContracts }}>
-      <VerifyFormContext.Provider value={{ selectedChain, setSelectedChain, contractAddress, setContractAddress, contractAddressError, setContractAddressError, selectedContract, setSelectedContract, proxyAddress, setProxyAddress, proxyAddressError, setProxyAddressError, abiEncodedConstructorArgs, setAbiEncodedConstructorArgs, abiEncodingError, setAbiEncodingError }}>
-        <DisplayRoutes />
-      </VerifyFormContext.Provider>
-    </AppContext.Provider>
+    <IntlProvider locale={locale.code} messages={locale.messages}>
+      <AppContext.Provider value={{ themeType, setThemeType, clientInstance: plugin, settings, setSettings, chains, compilationOutput, submittedContracts, setSubmittedContracts }}>
+        <VerifyFormContext.Provider value={{ selectedChain, setSelectedChain, contractAddress, setContractAddress, contractAddressError, setContractAddressError, selectedContract, setSelectedContract, proxyAddress, setProxyAddress, proxyAddressError, setProxyAddressError, abiEncodedConstructorArgs, setAbiEncodedConstructorArgs, abiEncodingError, setAbiEncodingError }}>
+          <DisplayRoutes />
+        </VerifyFormContext.Provider>
+      </AppContext.Provider>
+    </IntlProvider>
   )
 }
 

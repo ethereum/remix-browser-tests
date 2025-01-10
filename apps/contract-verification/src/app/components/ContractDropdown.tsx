@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, Fragment } from 'react'
 import './ContractDropdown.css'
 import { AppContext } from '../AppContext'
+import { FormattedMessage } from 'react-intl'
 
 export interface ContractDropdownSelection {
   triggerFilePath: string
@@ -42,7 +43,7 @@ export const ContractDropdown: React.FC<ContractDropdownProps> = ({ label, id, s
 
   return (
     <div className="form-group">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}><FormattedMessage id="contract-verification.contractDropdownLabel" defaultMessage={label} values={{ label }} /></label>
       <select value={selectedContract ? JSON.stringify(selectedContract) : ''}
         className={`form-control custom-select pr-4 ${!hasContracts ? 'disabled-cursor text-warning' : ''}`}
         id={id}
@@ -65,7 +66,7 @@ export const ContractDropdown: React.FC<ContractDropdownProps> = ({ label, id, s
             </optgroup>
           ))
         ) : (
-          <option>Compiled contract required</option>
+          <option value={''}><FormattedMessage id="contract-verification.contractDropDownDefaultText" defaultMessage={'Compiled contract required'} /></option>
         )}
       </select>
     </div>
