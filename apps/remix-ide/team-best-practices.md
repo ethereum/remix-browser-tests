@@ -5,7 +5,7 @@ This document aims to address contributors best practices of the following repos
  - remix-ide https://github.com/ethereum/remix-project
  - remix-plugin https://github.com/ethereum/remix-plugin
 
-This document is not in its final version, **a team meeting which aims to address new/old best practices, feedback, workflows, all kind of issues related to how the team works together occurs every 2 weeks.**
+This document is not in its final version, **a team meeting which aims to address new/old best practices, feedback, workflows, all kind of issues related to how the team works together occur every 2 weeks.**
 This document link to other specialised best practices (like coding best practices).
 
 Related links:
@@ -158,8 +158,8 @@ Before starting to coding, we should ensure all devs / contributors are aware of
 ### 1) Bugs:
 - A critical bug should get the label `Blocker`, and every effort should be put to fix it.
 - Addressing a non critical and non planned bug can be done:
-  - After having notified in the `remix-dev` channel if the bug does not involves UX or public API changes.
-  - After a dev meeting (e.g the regular standup) if the bug involves any UX or public API changes.
+  - After having notified in the `remix-dev` channel if the bug does not involve UX or public API changes.
+  - After a dev meeting (e.g the regular standup) if the bug involve any UX or public API changes.
 
 ### 2) Support:
 
