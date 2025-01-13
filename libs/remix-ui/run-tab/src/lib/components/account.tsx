@@ -10,7 +10,7 @@ const _paq = window._paq = window._paq || []
 
 export function AccountUI(props: AccountProps) {
   const { selectedAccount, loadedAccounts } = props.accounts
-  const { selectExEnv, personalMode, networkName} = props
+  const { selectExEnv, personalMode, networkName } = props
   const accounts = Object.keys(loadedAccounts)
   const [plusOpt, setPlusOpt] = useState({
     classList: '',

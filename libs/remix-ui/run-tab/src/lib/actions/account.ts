@@ -8,7 +8,7 @@ import { custom, createWalletClient } from "viem"
 import { sepolia } from "viem/chains"
 import { entryPoint07Address } from "viem/account-abstraction"
 import { toAccount } from "viem/accounts"
-const { toSafeSmartAccount } =  require("permissionless/accounts")
+const { toSafeSmartAccount } = require("permissionless/accounts") /* eslint-disable-line  @typescript-eslint/no-var-requires */
 
 export const updateAccountBalances = async (plugin: RunTab, dispatch: React.Dispatch<any>) => {
   const accounts = plugin.REACT_API.accounts.loadedAccounts
@@ -97,8 +97,8 @@ export const createSmartAccount = async (plugin: RunTab, dispatch: React.Dispatc
 
   // @ts-ignore
   const [account] = await window.ethereum!.request({ method: 'eth_requestAccounts' })
-  console.log('account---accounts->', account) 
-  
+  console.log('account---accounts->', account)
+
   const walletClient = createWalletClient({
     account,
     chain: sepolia,
@@ -106,17 +106,18 @@ export const createSmartAccount = async (plugin: RunTab, dispatch: React.Dispatc
   })
 
   const safeAccount = await toSafeSmartAccount({
-      client: walletClient,
-      entryPoint: {
-          address: entryPoint07Address,
-          version: "0.7",
-      },
-      owners: [toAccount(account)],
-      // saltNonce: 0n, // optional
-      version: "1.4.1"
+    client: walletClient,
+    entryPoint: {
+      address: entryPoint07Address,
+      version: "0.7",
+    },
+    owners: [toAccount(account)],
+    // saltNonce: 0n, // optional
+    version: "1.4.1"
   })
 
   console.log('safeAccount----->', safeAccount.address)
+  return plugin.call('notification', 'toast', `Safe account ${safeAccount.address} created for owner ${account}`)
 }
 
 export const signMessageWithAddress = (plugin: RunTab, dispatch: React.Dispatch<any>, account: string, message: string, modalContent: (hash: string, data: string) => JSX.Element, passphrase?: string) => {
