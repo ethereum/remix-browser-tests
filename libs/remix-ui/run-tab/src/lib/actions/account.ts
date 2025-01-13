@@ -3,13 +3,12 @@ import { RunTab } from "../types/run-tab"
 import { clearInstances, setAccount, setExecEnv } from "./actions"
 import { displayNotification, fetchAccountsListFailed, fetchAccountsListRequest, fetchAccountsListSuccess, setMatchPassphrase, setPassphrase } from "./payload"
 import { toChecksumAddress } from '@ethereumjs/util'
-
 import "viem/window"
-import { createPublicClient, http, custom, Account, PublicClient, Address } from "viem"
+import { custom, createWalletClient } from "viem"
 import { sepolia } from "viem/chains"
 import { entryPoint07Address } from "viem/account-abstraction"
-import "permissionless"
-import { toSafeSmartAccount } from "permissionless/accounts"
+import { toAccount } from "viem/accounts"
+const { toSafeSmartAccount } =  require("permissionless/accounts")
 
 export const updateAccountBalances = async (plugin: RunTab, dispatch: React.Dispatch<any>) => {
   const accounts = plugin.REACT_API.accounts.loadedAccounts
@@ -97,35 +96,26 @@ export const createSmartAccount = async (plugin: RunTab, dispatch: React.Dispatc
   console.log('createSmartAccount action')
 
   // @ts-ignore
-  const accounts = await window.ethereum!.request({ method: 'eth_requestAccounts' })
-  console.log('account---accounts->', accounts) 
-  const selectedAddress = plugin.REACT_API.accounts.selectedAccount
-  console.log('account---selectedAddress->', selectedAddress) 
+  const [account] = await window.ethereum!.request({ method: 'eth_requestAccounts' })
+  console.log('account---accounts->', account) 
   
-  const publicClient = createPublicClient({
+  const walletClient = createWalletClient({
+    account,
     chain: sepolia,
-    transport: custom(window.ethereum),
+    transport: custom(window.ethereum!),
   })
 
-  console.log('publicClient->', publicClient) 
-
-
-  // const owner = privateKeyToAccount(SIGNER_PRIVATE_KEY)
-
-  
-
   const safeAccount = await toSafeSmartAccount({
-      client: publicClient,
+      client: walletClient,
       entryPoint: {
           address: entryPoint07Address,
           version: "0.7",
       },
-      owners: [selectedAddress],
+      owners: [toAccount(account)],
       // saltNonce: 0n, // optional
       version: "1.4.1"
   })
 
-  console.log('safeAccount----->', safeAccount)
   console.log('safeAccount----->', safeAccount.address)
 }
 
