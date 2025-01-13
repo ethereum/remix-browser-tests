@@ -50,6 +50,40 @@ function HomeTabFeatured(props:HomeTabFeaturedProps) {
               autoPlaySpeed={10000}
               dotListClass="position-relative mt-2"
             >
+              <div
+                className="mx-1 px-1 d-flex" // Please do not delete. just comment this out. To be used every year.
+              >
+                <a href="https://cryptpad.fr/form/#/2/form/view/pV-DdryeJoYUWvW+gXsFaMNynEY7t5mUsgeD1urgwSE/" target="__blank">
+                  <img className="remixui_carouselImage" src={'/assets/img/solSurvey2024.webp'} alt=""></img>
+                </a>
+                <div className="h6 w-50 p-2 pl-4  align-self-center" style={{ flex: '1' }}>
+                  <h5>
+                  The Solidity Developer Survey 2024 is live!
+                  </h5>
+                  <p className='pt-2'>
+                    Please take a few minutes of your time to
+                    <a
+                      className="mx-1"
+                      onClick={() => _paq.push(['trackEvent', 'hometab', 'featuredSection', 'soliditySurvey24'])}
+                      target="__blank"
+                      href="https://cryptpad.fr/form/#/2/form/view/9xjPVmdv8z0Cyyh1ejseMQ0igmx-TedH5CPST3PhRUk/"
+                    >
+                      COMPLETE THE SURVEY.
+                    </a>
+                  </p>
+                  <p style={{ fontSize: '0.8rem' }} className="mb-3">
+                    Thank you for your support! Read the full announcement
+                    <a
+                      className="remixui_home_text mx-1"
+                      onClick={() => _paq.push(['trackEvent', 'hometab', 'featuredSection', 'soliditySurvey24'])}
+                      target="__blank"
+                      href="https://soliditylang.org/blog/2024/12/27/solidity-developer-survey-2024-announcement/"
+                    >
+                      here.
+                    </a>
+                  </p>
+                </div>
+              </div>
               <div className="mr-1 pr-1 d-flex align-items-center justify-content-center h-100">
                 <a href={releaseDetails.moreLink} target="__blank">
                   <img src={'assets/img/remi_drums_whatsnew.webp'} className="remixui_carouselImage" alt=""></img>

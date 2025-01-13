@@ -47,7 +47,7 @@ export function sortAbiFunction (contractabi) {
   // Check if function is constant (introduced with Solidity 0.6.0)
   const isConstant = ({ stateMutability }) => stateMutability === 'view' || stateMutability === 'pure'
   // Sorts the list of ABI entries. Constant functions will appear first,
-  // followed by non-constant functions. Within those t wo groupings, functions
+  // followed by non-constant functions. Within those two groupings, functions
   // will be sorted by their names.
   return contractabi.sort(function (a, b) {
     if (isConstant(a) && !isConstant(b)) {

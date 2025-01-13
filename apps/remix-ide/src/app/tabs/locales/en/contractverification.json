@@ -1,0 +1,30 @@
+{
+  "contract-verification.verifyNavTitle": "Verify",
+  "contract-verification.receiptsNavTitle": "Receipts",
+  "contract-verification.lookupNavTitle": "Lookup",
+  "contract-verification.settingsNavTitle": "Settings",
+  "contract-verification.contractAddressInput": "Contract Address",
+  "contract-verification.proxyContractAddressInput": "Proxy Address",
+  "contract-verification.proxyInputLabel": "The deployed contract is behind a proxy",
+  "contract-verification.panelDisplayName": "Contract Verification",
+  "contract-verification.searchableChainDropdownLabel": "Chain",
+  "contract-verification.contractAddressError": "Please enter a valid contract address",
+  "contract-verification.chainError": "Please select the chain.",
+  "contract-verification.proxyAddressError": "Please provide a valid proxy contract address.",
+  "contract-verification.verifyButton": "Verify",
+  "contract-verification.lookupButton": "Lookup",
+  "contract-verification.receipts.noContractsSubmitted": "No contracts submitted for verification",
+  "contract-verification.receiptsDefaultLayout.description": "Check the verification statuses of contracts submitted for verification",
+  "contract-verification.verifyDefaultLayout.description": "Verify compiled contracts on different verification services",
+  "contract-verification.lookupDefaultLayout.description": "Search for verified contracts and download them to Remix",
+  "contract-verification.settingsDefaultLayout.description": "Customize settings for each verification service and chain",
+  "contract-verification.configInputPlaceholderText": "Add {label}",
+  "contract-verification.configInputSaveButton": "Save",
+  "contract-verification.configInputCancelButton": "Cancel",
+  "contract-verification.constructorArgumentsToggleRawInput": "Enter raw ABI-encoded constructor arguments",
+  "contract-verification.constructorArgumentsRawAbiEncodingResult": "ABI-encoded constructor arguments",
+  "contract-verification.contractDropdownLabel": "{label}",
+  "contract-verification.contractDropDownDefaultText": "Compiled contract required"
+}
+
+

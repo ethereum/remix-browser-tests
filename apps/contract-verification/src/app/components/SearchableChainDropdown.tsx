@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import Fuse from 'fuse.js'
 import type { Chain } from '../types'
 import { AppContext } from '../AppContext'
+import { useIntl } from 'react-intl'
 
 function getChainDescriptor(chain: Chain): string {
   if (!chain) return ''
@@ -9,7 +10,7 @@ function getChainDescriptor(chain: Chain): string {
 }
 
 interface DropdownProps {
-  label: string
+  label: string | any
   id: string
   setSelectedChain: (chain: Chain) => void
   selectedChain: Chain
@@ -18,6 +19,7 @@ interface DropdownProps {
 export const SearchableChainDropdown: React.FC<DropdownProps> = ({ label, id, setSelectedChain, selectedChain }) => {
   const { chains } = React.useContext(AppContext)
   const ethereumChainIds = [1, 11155111, 17000]
+  const intl = useIntl()
 
   // Add Ethereum chains to the head of the chains list. Sort the rest alphabetically
   const dropdownChains = useMemo(
@@ -90,7 +92,7 @@ export const SearchableChainDropdown: React.FC<DropdownProps> = ({ label, id, se
       {' '}
       {/* Add ref here */}
       <label htmlFor={id}>{label}</label>
-      <input type="text" value={searchTerm} onChange={handleInputChange} onClick={openDropdown} data-id="chainDropdownbox" placeholder="Select a chain" className="form-control" />
+      <input type="text" value={searchTerm} onChange={handleInputChange} onClick={openDropdown} data-id="chainDropdownbox" placeholder={intl.formatMessage({ id: "contract-verification.searchableChainDropdown", defaultMessage: "Select a chain" })} className="form-control" />
       <ul className="dropdown-menu show w-100 bg-light" style={{ maxHeight: '400px', overflowY: 'auto', display: isOpen ? 'initial' : 'none' }}>
         {filteredOptions.map((chain) => (
           <li key={chain.chainId} onClick={() => handleOptionClick(chain)} data-id={chain.chainId} className={`dropdown-item text-dark ${selectedChain?.chainId === chain.chainId ? 'active' : ''}`} style={{ cursor: 'pointer', whiteSpace: 'normal' }}>

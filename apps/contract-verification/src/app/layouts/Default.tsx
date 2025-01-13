@@ -4,8 +4,8 @@ import { NavMenu } from '../components/NavMenu'
 
 interface Props {
   from: string
-  title?: string
-  description?: string
+  title?: string | any
+  description?: string | any
 }
 
 export const DefaultLayout = ({ children, title, description }: PropsWithChildren<Props>) => {

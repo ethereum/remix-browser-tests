@@ -33,7 +33,9 @@ const Model: ModelType = {
         },
       })
 
-      yield remixClient.onload()
+      yield remixClient.onload(() => {
+        remixClient.call('manager', 'activatePlugin', 'solidityUnitTesting')
+      })
 
       toast.dismiss()
 

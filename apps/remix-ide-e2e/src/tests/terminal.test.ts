@@ -183,16 +183,16 @@ module.exports = {
       .selectContract('OwnerTest')
       .createContract('')
       .pause(1000)
-      .journalChildIncludes('constructor', { shouldHaveOnlyOneOccurence: true })
+      .journalChildIncludes('constructor', { shouldHaveOnlyOneOccurrence: true })
       .pause(5000)
       .click('*[data-id="terminalClearConsole"]') // clear the terminal
       .clickInstance(0)
       .clickFunction('changeOwner - transact (not payable)', { types: 'address newOwner', values: '0xd9145CCE52D386f254917e481eB44e9943F39138' })
       .pause(1000)
-      .journalChildIncludes('inside changeOwner', { shouldHaveOnlyOneOccurence: true })
+      .journalChildIncludes('inside changeOwner', { shouldHaveOnlyOneOccurrence: true })
       .clickFunction('getOwner - call')
       .pause(1000)
-      .journalChildIncludes('inside getOwner', { shouldHaveOnlyOneOccurence: true })
+      .journalChildIncludes('inside getOwner', { shouldHaveOnlyOneOccurrence: true })
   },
 
   'Emit 2 similar events and check the filtering is done properly #group4': function (browser: NightwatchBrowser) {
@@ -385,7 +385,7 @@ module.exports = {
     }
 
     function resolveENS() view {
-        // Same address for Mainet, Ropsten, Rinkerby, Gorli and other networks;
+        // Same address for Mainnet, Ropsten, Rinkerby, Gorli and other networks;
         ENS ens = ENS(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
         (,bytes32 node) = NameEncoder.dnsEncodeName("vitalik.eth");
         Resolver resolver = ens.resolver(node);
@@ -602,14 +602,14 @@ library Lib {
 }
 /**
  * @title Storage
- * @dev Store & retrieve value inr a variable
+ * @dev Store & retrieve value in a variable
  */
 contract StorageWithLib {
 
     uint256 number;
 
     /**
-     * @dev Store valrue in variable
+     * @dev Store value in variable
      * @param num value to store
      */
     function store(uint256 num) public {
@@ -750,7 +750,7 @@ const scriptAutoExec = {
 
   /**
    * @title Storage
-   * @dev Store & retrieve value inr a variable
+   * @dev Store & retrieve value in a variable
    * @custom:dev-run-script ./scripts/deploy_storage.js
    */
   contract Storage {
@@ -758,7 +758,7 @@ const scriptAutoExec = {
       uint256 number;
 
       /**
-       * @dev Store valrue in variable
+       * @dev Store value in variable
        * @param num value to store
        */
       function store(uint256 num) public {

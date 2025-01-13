@@ -2,11 +2,11 @@ import React, { useEffect, useState, useContext } from 'react'
 import { ethers } from 'ethers/'
 
 interface ContractAddressInputProps {
-  label: string
+  label: string | any
   id: string
   contractAddress: string
   setContractAddress: (address: string) => void
-  contractAddressError: string
+  contractAddressError: string | any
   setContractAddressError: (error: string) => void
 }
 
