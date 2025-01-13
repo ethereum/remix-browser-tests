@@ -3,6 +3,7 @@
   "panel.maintainedBy": "Поддерживается",
   "panel.documentation": "Документация",
   "panel.description": "Описание",
+  "panel.displayName": "Отображаемое имя",
   "panel.maintainedByRemix": "Поддерживается Remix",
   "panel.pluginInfo": "Информация о плагине",
   "panel.linkToDoc": "Ссылка на документацию",

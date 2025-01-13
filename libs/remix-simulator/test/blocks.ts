@@ -63,6 +63,17 @@ describe('blocks', () => {
     })
   })
 
+  describe('evm_mine', () => {
+    it('should mine empty block using evm_mine', async function () {
+      await web3.provider.request({
+        method: 'evm_mine',
+        params: [{ blocks: 3 }],
+      })
+      const number = await web3.eth.getBlockNumber()
+      assert.equal(number, 3)
+    })
+  })
+
   describe('eth_getBlockByHash', () => {
     it('should get block given its hash', async () => {
       const correctBlock = await web3.eth.getBlock(0)

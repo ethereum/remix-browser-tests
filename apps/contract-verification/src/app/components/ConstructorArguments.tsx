@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 
 import { AppContext } from '../AppContext'
 import { ContractDropdownSelection } from './ContractDropdown'
+import { FormattedMessage } from 'react-intl'
 
 interface ConstructorArgumentsProps {
   abiEncodedConstructorArgs: string
@@ -102,7 +103,9 @@ export const ConstructorArguments: React.FC<ConstructorArgumentsProps> = ({ abiE
       <div className="d-flex py-1 align-items-center custom-control custom-checkbox">
         <input className="form-check-input custom-control-input" type="checkbox" id="toggleRawInputSwitch" checked={toggleRawInput} onChange={() => setToggleRawInput(!toggleRawInput)} />
         <label className="m-0 form-check-label custom-control-label" style={{ paddingTop: '2px' }} htmlFor="toggleRawInputSwitch">
-          Enter raw ABI-encoded constructor arguments
+          <FormattedMessage
+            id="contract-verification.constructorArgumentsToggleRawInput"
+          />
         </label>
       </div>
       {toggleRawInput ? (
@@ -122,7 +125,10 @@ export const ConstructorArguments: React.FC<ConstructorArgumentsProps> = ({ abiE
           {abiEncodedConstructorArgs && (
             <div>
               <label className="form-check-label" htmlFor="rawAbiEncodingResult">
-                ABI-encoded constructor arguments:
+                <FormattedMessage
+                  id="contract-verification.constructorArgumentsRawAbiEncodingResult"
+                  defaultMessage="ABI-encoded constructor arguments"
+                /> :
               </label>
               <textarea className="form-control" rows={5} disabled value={abiEncodedConstructorArgs} id="rawAbiEncodingResult" style={{ opacity: 0.5 }} />
             </div>

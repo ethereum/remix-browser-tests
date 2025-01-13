@@ -4,6 +4,7 @@ import type { VerifierIdentifier, VerifierSettings, ContractVerificationSettings
 import { mergeChainSettingsWithDefaults } from '../utils'
 import { AppContext } from '../AppContext'
 import { VerifyFormContext } from '../VerifyFormContext'
+import { FormattedMessage } from 'react-intl'
 
 export const SettingsView = () => {
   const { settings, setSettings } = useContext(AppContext)
@@ -28,7 +29,7 @@ export const SettingsView = () => {
 
   return (
     <>
-      <SearchableChainDropdown label="Chain" id="network-dropdown" setSelectedChain={setSelectedChain} selectedChain={selectedChain} />
+      <SearchableChainDropdown label={<FormattedMessage id="contract-verification.searchableChainDropdownLabel" defaultMessage="Chain" />} id="network-dropdown" setSelectedChain={setSelectedChain} selectedChain={selectedChain} />
 
       {selectedChain && (
         <div>

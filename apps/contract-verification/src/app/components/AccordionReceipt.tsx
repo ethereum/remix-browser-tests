@@ -97,32 +97,32 @@ const ReceiptsBody = ({ receipts }: { receipts: VerificationReceipt[] }) => {
           className="list-group-item d-flex flex-row align-items-center"
         >
           <CustomTooltip
-              placement="top"
-              tooltipClasses=" text-break"
-              tooltipTextClasses="text-capitalize"
-              tooltipText={`Status: ${receipt.status}${receipt.message ? `, Message: ${receipt.message}` : ''}`}
-            >
-              <span className="mr-2">
-                {['verified', 'partially verified', 'already verified'].includes(receipt.status) ?
-                  <i className="fas fa-check text-success px-1"></i> :
-                  receipt.status === 'fully verified' ?
-                    <i className="fas fa-check-double text-success px-1"></i> :
-                    receipt.status === 'failed' ?
-                      <i className="fas fa-xmark text-warning px-1"></i> :
-                      ['pending', 'awaiting implementation verification'].includes(receipt.status) ?
-                        <i className="fas fa-spinner fa-spin"></i> :
-                        <i className="fas fa-question"></i>
-                }
-              </span>
-            </CustomTooltip>
-            <div className="d-flex flex-row w-100 justify-content-between">
+            placement="top"
+            tooltipClasses=" text-break"
+            tooltipTextClasses="text-capitalize"
+            tooltipText={`Status: ${receipt.status}${receipt.message ? `, Message: ${receipt.message}` : ''}`}
+          >
+            <span className="mr-2">
+              {['verified', 'partially verified', 'already verified'].includes(receipt.status) ?
+                <i className="fas fa-check text-success px-1"></i> :
+                receipt.status === 'fully verified' ?
+                  <i className="fas fa-check-double text-success px-1"></i> :
+                  receipt.status === 'failed' ?
+                    <i className="fas fa-xmark text-warning px-1"></i> :
+                    ['pending', 'awaiting implementation verification'].includes(receipt.status) ?
+                      <i className="fas fa-spinner fa-spin"></i> :
+                      <i className="fas fa-question"></i>
+              }
+            </span>
+          </CustomTooltip>
+          <div className="d-flex flex-row w-100 justify-content-between">
             <CustomTooltip placement="top" tooltipClasses=" text-break" tooltipText={`API: ${receipt.verifierInfo.apiUrl}`}>
               <span className="font-weight-bold pr-2">{receipt.verifierInfo.name}</span>
             </CustomTooltip>
             <div className="ml-1">
               {!!receipt.lookupUrl && receipt.verifierInfo.name === 'Blockscout' ?
                 <CopyToClipboard classList="pr-0 py-0" tip="Copy code URL" content={receipt.lookupUrl} direction="top" /> :
-                !!receipt.lookupUrl && <a href={receipt.lookupUrl} target="_blank" className="fa fas fa-arrow-up-right-from-square"></a>
+                !!receipt.lookupUrl && <a href={receipt.lookupUrl} target="_blank" className="fa fas fa-arrow-up-right-from-square" rel="noreferrer"></a>
               }
             </div>
           </div>

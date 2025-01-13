@@ -3,6 +3,7 @@
   "panel.maintainedBy": "维护者",
   "panel.documentation": "文档",
   "panel.description": "描述",
+  "panel.displayName": "显示名称",
   "panel.maintainedByRemix": "由 Remix 维护",
   "panel.pluginInfo": "插件信息",
   "panel.linkToDoc": "文档链接",

@@ -3,6 +3,7 @@
   "panel.maintainedBy": "유지 관리:",
   "panel.documentation": "문서",
   "panel.description": "상세정보",
+  "panel.displayName": "표시 이름",
   "panel.maintainedByRemix": "리믹스에 의한 유지 관리",
   "panel.pluginInfo": "플러그인 정보",
   "panel.linkToDoc": "문서 링크",

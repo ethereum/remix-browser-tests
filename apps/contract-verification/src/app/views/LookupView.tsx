@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { VerifyFormContext } from '../VerifyFormContext'
 import { useSourcifySupported } from '../hooks/useSourcifySupported'
 import { CopyToClipboard } from '@remix-ui/clipboard'
+import { FormattedMessage } from 'react-intl'
 
 export const LookupView = () => {
   const { settings, clientInstance } = useContext(AppContext)
@@ -74,10 +75,10 @@ export const LookupView = () => {
   return (
     <>
       <form onSubmit={handleLookup}>
-        <SearchableChainDropdown label="Chain" id="network-dropdown" selectedChain={selectedChain} setSelectedChain={setSelectedChain} />
-        <ContractAddressInput label="Contract Address" id="contract-address" contractAddress={contractAddress} setContractAddress={setContractAddress} contractAddressError={contractAddressError} setContractAddressError={setContractAddressError} />
+        <SearchableChainDropdown label={<FormattedMessage id="contract-verification.searchableChainDropdownLabel" defaultMessage="Chain" />} id="network-dropdown" selectedChain={selectedChain} setSelectedChain={setSelectedChain} />
+        <ContractAddressInput label={<FormattedMessage id="contract-verification.contractAddressInput" defaultMessage="Contract Address" />} id="contract-address" contractAddress={contractAddress} setContractAddress={setContractAddress} contractAddressError={contractAddressError} setContractAddressError={setContractAddressError} />
         <button type="submit" className="btn w-100 btn-primary" disabled={submitDisabled}>
-          Lookup
+          <FormattedMessage id="contract-verification.lookupButton" defaultMessage="Lookup" />
         </button>
       </form>
       <div className="pt-3">

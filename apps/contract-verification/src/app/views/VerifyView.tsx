@@ -5,12 +5,13 @@ import { SearchableChainDropdown, ContractDropdown, ContractAddressInput } from 
 import type { VerifierIdentifier, SubmittedContract, VerificationReceipt, VerifierInfo, VerificationResponse } from '../types'
 import { VERIFIERS } from '../types'
 import { mergeChainSettingsWithDefaults, validConfiguration } from '../utils'
-import { useNavigate } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import { ConstructorArguments } from '../components/ConstructorArguments'
 import { CustomTooltip } from '@remix-ui/helper'
 import { AbstractVerifier, getVerifier } from '../Verifiers'
 import { VerifyFormContext } from '../VerifyFormContext'
 import { useSourcifySupported } from '../hooks/useSourcifySupported'
+import { FormattedMessage } from 'react-intl'
 
 export const VerifyView = () => {
   const { compilationOutput, setSubmittedContracts, settings, clientInstance } = useContext(AppContext)
@@ -177,9 +178,14 @@ export const VerifyView = () => {
 
   return (
     <form onSubmit={handleVerify}>
-      <SearchableChainDropdown label="Chain" id="network-dropdown" selectedChain={selectedChain} setSelectedChain={setSelectedChain} />
+      <SearchableChainDropdown
+        label={<FormattedMessage id="contract-verification.searchableChainDropdown" defaultMessage={"Chain"} />}
+        id="network-dropdown"
+        selectedChain={selectedChain}
+        setSelectedChain={setSelectedChain}
+      />
       <ContractAddressInput
-        label="Contract Address"
+        label={<FormattedMessage id="contract-verification.contractAddressInput" defaultMessage={"Contract Address"}/>}
         id="contract-address"
         contractAddress={contractAddress}
         setContractAddress={setContractAddress}
@@ -200,11 +206,11 @@ export const VerifyView = () => {
         <div className="d-flex py-1 align-items-center custom-control custom-checkbox">
           <input id="has-proxy" className="form-check-input custom-control-input" type="checkbox" checked={!!hasProxy} onChange={(e) => setHasProxy(e.target.checked)} />
           <label htmlFor="has-proxy" className="m-0 form-check-label custom-control-label" style={{ paddingTop: '2px' }}>
-            The deployed contract is behind a proxy
+            <FormattedMessage id="contract-verification.proxyInputLabel" defaultMessage={'The deployed contract is behind a proxy'} />
           </label>
         </div>
         {hasProxy && <ContractAddressInput
-          label="Proxy Address"
+          label={<FormattedMessage id="contract-verification.proxyContractAddressInput" defaultMessage={'Proxy Address'} />}
           id="proxy-address"
           contractAddress={proxyAddress}
           setContractAddress={setProxyAddress}
@@ -261,14 +267,14 @@ export const VerifyView = () => {
         })}
       </div>
       <CustomTooltip tooltipText={submitDisabled ? (
-        (!!contractAddressError || !contractAddress) ? "Please provide a valid contract address." :
-          !selectedChain ? "Please select the chain." :
-            !selectedContract ? "Please select the contract (compile if needed)." :
-              ((hasProxy && !!proxyAddressError) || (hasProxy && !proxyAddress)) ? "Please provide a valid proxy contract address." :
-                "Please provide all necessary data to verify") // Is not expected to be a case
-        : "Verify with selected tools"}>
+        (!!contractAddressError || !contractAddress) ? <FormattedMessage id="contract-verification.contractAddressError" defaultMessage="Please provide a valid contract address." /> :
+          !selectedChain ? <FormattedMessage id="contract-verification.chainError" defaultMessage="Please select the chain." /> :
+            !selectedContract ? <FormattedMessage id="contract-verification.selectedContractError" defaultMessage="Please select the contract." /> :
+              ((hasProxy && !!proxyAddressError) || (hasProxy && !proxyAddress)) ? <FormattedMessage id="contract-verification.proxyAddressError" defaultMessage="Please provide a valid proxy address." /> :
+                <FormattedMessage id="contract-verification.generalVerifyError" defaultMessage={"Please provide all necessary data to verify"} />) // Is not expected to be a case
+        : <FormattedMessage id="contract-verification.verifyButtonTooltip" defaultMessage="Verify the contract on the selected chains with the selected verifiers." />}>
         <button type="submit" className="w-100 btn btn-primary mt-3" disabled={submitDisabled}>
-          Verify
+          <FormattedMessage id="contract-verification.verifyButton" defaultMessage="Verify" />
         </button>
       </CustomTooltip>
     </form>

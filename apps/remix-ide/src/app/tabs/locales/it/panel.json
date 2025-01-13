@@ -3,6 +3,7 @@
   "panel.maintainedBy": "Mantenuto Da",
   "panel.documentation": "Documentazione",
   "panel.description": "Descrizione",
+  "panel.displayName": "Nome visualizzato",
   "panel.maintainedByRemix": "Mantenuto da Remix",
   "panel.pluginInfo": "Informazioni sul plugin",
   "panel.linkToDoc": "Link alla documentazione",
