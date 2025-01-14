@@ -113,7 +113,14 @@ export const createSmartAccount = async (plugin: RunTab, dispatch: React.Dispatc
     transport: custom(window.ethereum!),
   })
 
-  const salt = 0
+  let salt
+  const safeAddresses: string[] = Object.keys(plugin.REACT_API.smartAccounts)
+  if(safeAddresses.length) {
+    const lastSafeAddress: string = safeAddresses[safeAddresses.length - 1]
+    const lastSmartAccount: SmartAccount = plugin.REACT_API.smartAccounts[lastSafeAddress]
+    salt = lastSmartAccount.salt + 1
+  } else salt = 0
+
   const safeAccount = await toSafeSmartAccount({
     client: walletClient,
     entryPoint: {
