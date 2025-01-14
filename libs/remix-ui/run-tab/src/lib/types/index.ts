@@ -38,6 +38,13 @@ export type Provider = {
   position: number
 }
 
+export type SmartAccount = {
+  address: string
+  salt: number
+  ownerEOA: string
+  timestamp: number
+}
+
 export interface RunTabState {
   accounts: {
     loadedAccounts: Record<string, string>,
@@ -46,6 +53,7 @@ export interface RunTabState {
     error: string,
     selectedAccount: string
   },
+  smartAccounts: Record<string, SmartAccount>
   sendValue: string,
   sendUnit: 'ether' | 'finney' | 'gwei' | 'wei',
   gasLimit: number,

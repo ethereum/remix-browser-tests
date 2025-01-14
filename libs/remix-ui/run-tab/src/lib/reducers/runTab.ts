@@ -16,6 +16,7 @@ export const runTabInitialState: RunTabState = {
     error: null,
     selectedAccount: ''
   },
+  smartAccounts: {},
   sendValue: '0',
   sendUnit: 'wei',
   gasLimit: 0,
