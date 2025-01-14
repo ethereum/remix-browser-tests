@@ -9,9 +9,10 @@ import HomeTabScamAlert from './components/homeTabScamAlert'
 import HomeTabGetStarted from './components/homeTabGetStarted'
 import HomeTabFeatured from './components/homeTabFeatured'
 import HomeTabFeaturedPlugins from './components/homeTabFeaturedPlugins'
-import { appPlatformTypes, platformContext } from '@remix-ui/app'
+import { AppContext, appPlatformTypes, platformContext } from '@remix-ui/app'
 import { HomeTabFileElectron } from './components/homeTabFileElectron'
 import { LanguageOptions } from './components/homeTablangOptions'
+import { desktopConnectionType } from '@remix-api'
 
 declare global {
   interface Window {
@@ -25,6 +26,7 @@ export interface RemixUiHomeTabProps {
 
 export const RemixUiHomeTab = (props: RemixUiHomeTabProps) => {
   const platform = useContext(platformContext)
+  const appContext = useContext(AppContext)
   const { plugin } = props
 
   const [state, setState] = useState<{
@@ -70,6 +72,10 @@ export const RemixUiHomeTab = (props: RemixUiHomeTabProps) => {
       checkResolution()
     }
   }, [])
+
+  if (appContext.appState.connectedToDesktop != desktopConnectionType .disabled) {
+    return (<></>)
+  }
 
   //  border-right
   return (

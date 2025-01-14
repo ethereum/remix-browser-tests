@@ -34,5 +34,13 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
       showPopupPanel: action.payload
     }
   }
+
+  case appActionTypes.setConnectedToDesktop: {
+    console.log('setConnectedToDesktop', action.payload)
+    return {
+      ...state,
+      connectedToDesktop: action.payload
+    }
+  }
   }
 }

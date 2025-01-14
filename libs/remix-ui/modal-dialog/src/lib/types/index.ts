@@ -20,7 +20,7 @@ export interface ModalDialogProps {
   cancelFn?: (reason?: AppModalCancelTypes) => void,
   modalClass?: string,
   modalParentClass?: string
-  showCancelIcon?: boolean,
+  hideCancelIcon?: boolean,
   hide?: boolean,
   handleHide: (hideState?: boolean) => void,
   children?: React.ReactNode,

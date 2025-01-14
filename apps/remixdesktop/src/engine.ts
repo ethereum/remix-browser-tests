@@ -16,6 +16,7 @@ import { FoundryPlugin } from './plugins/foundryPlugin';
 import { HardhatPlugin } from './plugins/hardhatPlugin';
 import { CircomElectronPlugin } from './plugins/circomElectronBasePlugin';
 import { isE2E } from './main';
+import { DesktopHostPlugin } from './plugins/desktopHost';
 
 const engine = new Engine()
 const appManager = new PluginManager()
@@ -32,6 +33,7 @@ const foundryPlugin = new FoundryPlugin()
 const hardhatPlugin = new HardhatPlugin()
 const remixAIDesktopPlugin = new RemixAIDesktopPlugin()
 const circomPlugin = new CircomElectronPlugin()
+const desktopHostPlugin = new DesktopHostPlugin()
 
 engine.register(appManager)
 engine.register(fsPlugin)
@@ -47,6 +49,7 @@ engine.register(appUpdaterPlugin)
 engine.register(hardhatPlugin)
 engine.register(remixAIDesktopPlugin)
 engine.register(circomPlugin)
+engine.register(desktopHostPlugin)
 
 appManager.activatePlugin('electronconfig')
 appManager.activatePlugin('fs')

@@ -14,6 +14,7 @@ import { UsageTypes } from './types'
 import { appReducer } from './reducer/app'
 import { appInitialState } from './state/app'
 import isElectron from 'is-electron'
+import { desktopConnectionType } from '@remix-api'
 
 declare global {
   interface Window {
@@ -44,12 +45,18 @@ const RemixApp = (props: IRemixAppUi) => {
   const sidePanelRef = useRef(null)
   const pinnedPanelRef = useRef(null)
 
+  //console.log('RemixApp props', props)
+
   const [appState, appStateDispatch] = useReducer(appReducer, {
     ...appInitialState,
-    showPopupPanel: !window.localStorage.getItem('did_show_popup_panel') && !isElectron()
+    showPopupPanel: !window.localStorage.getItem('did_show_popup_panel') && !isElectron(),
+    connectedToDesktop: props.app.desktopClientMode ? desktopConnectionType .disconnected : desktopConnectionType .disabled
   })
 
   useEffect(() => {
+    if (props.app.params && props.app.params.activate && props.app.params.activate.split(',').includes('desktopClient')){
+      setHideSidePanel(true)
+    }
     async function activateApp() {
       props.app.themeModule.initTheme(() => {
         setAppReady(true)
@@ -112,27 +119,29 @@ const RemixApp = (props: IRemixAppUi) => {
   },[appState.showPopupPanel])
 
   function setListeners() {
-    props.app.sidePanel.events.on('toggle', () => {
-      setHideSidePanel((prev) => {
-        return !prev
+    if (!props.app.desktopClientMode){
+      props.app.sidePanel.events.on('toggle', () => {
+        setHideSidePanel((prev) => {
+          return !prev
+        })
       })
-    })
-    props.app.sidePanel.events.on('showing', () => {
-      setHideSidePanel(false)
-    })
-
-    props.app.layout.event.on('minimizesidepanel', () => {
-      // the 'showing' event always fires from sidepanel, so delay this a bit
-      setTimeout(() => {
-        setHideSidePanel(true)
-      }, 1000)
-    })
-
-    props.app.layout.event.on('maximisesidepanel', () => {
-      setMaximiseLeftTrigger((prev) => {
-        return prev + 1
+      props.app.sidePanel.events.on('showing', () => {
+        setHideSidePanel(false)
       })
-    })
+
+      props.app.layout.event.on('minimizesidepanel', () => {
+        // the 'showing' event always fires from sidepanel, so delay this a bit
+        setTimeout(() => {
+          setHideSidePanel(true)
+        }, 1000)
+      })
+
+      props.app.layout.event.on('maximisesidepanel', () => {
+        setMaximiseLeftTrigger((prev) => {
+          return prev + 1
+        })
+      })
+    }
 
     props.app.layout.event.on('enhancesidepanel', () => {
       setEnhanceLeftTrigger((prev) => {

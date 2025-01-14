@@ -39,6 +39,7 @@ export class TxRunnerWeb3 {
     let currentDateTime = new Date();
     const start = currentDateTime.getTime() / 1000
     const cb = (err, resp) => {
+      console.log('transactionBroadcasted', resp, err)
       if (err) {
         return callback(err, resp)
       }
@@ -46,6 +47,7 @@ export class TxRunnerWeb3 {
       const listenOnResponse = () => {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve, reject) => {
+          console.log('waiting for receipt from IDE')
           const receipt = await tryTillReceiptAvailable(resp, this.getWeb3())
           tx = await tryTillTxAvailable(resp, this.getWeb3())
           currentDateTime = new Date();
@@ -79,7 +81,9 @@ export class TxRunnerWeb3 {
       )
     } else {
       try {
+        console.log('sending transaction')
         const res = await this.getWeb3().eth.sendTransaction(tx, null, { checkRevertBeforeSending: false, ignoreGasPricing: true })
+        console.log('transaction success', res)
         cb(null, res.transactionHash)
       } catch (e) {
         if (!e.message) e.message = ''

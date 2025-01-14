@@ -9,7 +9,9 @@ import axios from 'axios'
 import { StatusBar } from 'apps/remix-ide/src/app/components/status-bar'
 import { StatusBarContextProvider } from '../contexts/statusbarcontext'
 import DidYouKnow from './components/didYouKnow'
-import { appPlatformTypes, platformContext } from '@remix-ui/app'
+import { AppContext, appPlatformTypes, platformContext } from '@remix-ui/app'
+import { DesktopStatus } from './components/desktopStatus'
+import { desktopConnectionType } from '@remix-api'
 
 export interface RemixUIStatusBarProps {
   statusBarPlugin: StatusBar
@@ -45,6 +47,7 @@ export function RemixUIStatusBar({ statusBarPlugin }: RemixUIStatusBarProps) {
   const dismiss = useDismiss(context)
   const role = useRole(context)
   const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss, role])
+  const appContext = useContext(AppContext)
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -65,6 +68,11 @@ export function RemixUIStatusBar({ statusBarPlugin }: RemixUIStatusBarProps) {
     if (!aiActive) return
     setIsAiActive(aiActive)
     return aiActive
+  }
+
+  if (platform !== appPlatformTypes.desktop && appContext.appState.connectedToDesktop !== desktopConnectionType .disabled) {
+    return (<><div className="d-flex remixui_statusbar_height flex-row bg-warning justify-content-between align-items-center">
+      <DesktopStatus/></div></>)
   }
 
   return (
@@ -96,6 +104,7 @@ export function RemixUIStatusBar({ statusBarPlugin }: RemixUIStatusBarProps) {
               <GitStatus plugin={statusBarPlugin} gitBranchName={gitBranchName} setGitBranchName={setGitBranchName} />
             </div>
           </div>
+
           <div className="w-100 remixui_statusbar">
             <DidYouKnow />
           </div>

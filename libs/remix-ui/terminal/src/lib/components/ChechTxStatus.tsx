@@ -1,7 +1,7 @@
 import React from 'react' // eslint-disable-line
 
 const CheckTxStatus = ({ tx, type }) => {
-  if (tx.status === 1 || tx.status === '0x1' || tx.status === true) {
+  if (tx.status === 1 || tx.status === '0x1' || tx.status === true || tx.status === '1' || tx.status === BigInt(1)) {
     return <i className="remix_ui_terminal_txStatus remix_ui_terminal_succeeded fas fa-check-circle"></i>
   }
   if (type === 'call' || type === 'unknownCall' || type === 'unknown') {

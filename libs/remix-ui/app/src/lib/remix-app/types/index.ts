@@ -5,7 +5,8 @@ export const enum ModalTypes {
   password = 'password',
   default = 'default',
   form = 'form',
-  forceChoice = 'forceChoice'
+  forceChoice = 'forceChoice',
+  fixed = 'fixed'
 }
 
 export const enum AppModalCancelTypes {

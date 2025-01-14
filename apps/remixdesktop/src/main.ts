@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, Menu, MenuItem, shell, utilityProcess, screen, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, Menu, MenuItem, shell, utilityProcess, screen, ipcMain, protocol } from 'electron';
 import path from 'path';
 
 
@@ -173,6 +173,19 @@ ipcMain.handle('matomo:trackEvent', async (event, data) => {
   if (data && data[0] && data[0] === 'trackEvent') {
     trackEvent(data[1], data[2], data[3], data[4])
   }
+})
+
+ipcMain.on('focus-window', (event, windowId) => {
+  console.log('focus-window', windowId)
+  windowSet.forEach((win: BrowserWindow) => {
+    //if (win.id === windowId) {
+      if(win.isMinimized()) {
+        win.restore()
+      }
+      win.show()
+      win.focus()
+   // }
+  })
 })
 
 

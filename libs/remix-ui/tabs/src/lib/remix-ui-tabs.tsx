@@ -1,11 +1,13 @@
 import { fileDecoration, FileDecorationIcons } from '@remix-ui/file-decorators'
 import { CustomTooltip } from '@remix-ui/helper'
 import { Plugin } from '@remixproject/engine'
-import React, { useState, useRef, useEffect, useReducer } from 'react' // eslint-disable-line
+import React, { useState, useRef, useEffect, useReducer, useContext } from 'react' // eslint-disable-line
 import { FormattedMessage } from 'react-intl'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import './remix-ui-tabs.css'
 import { values } from 'lodash'
+import { AppContext } from '@remix-ui/app'
+import { desktopConnectionType } from '@remix-api'
 const _paq = (window._paq = window._paq || [])
 
 /* eslint-disable-next-line */
@@ -76,6 +78,7 @@ export const TabsUI = (props: TabsUIProps) => {
   const [ai_switch, setAI_switch] = useState<boolean>(true)
   const tabs = useRef(props.tabs)
   tabs.current = props.tabs // we do this to pass the tabs list to the onReady callbacks
+  const appContext = useContext(AppContext)
 
   useEffect(() => {
     if (props.tabs[tabsState.selectedIndex]) {
@@ -187,7 +190,12 @@ export const TabsUI = (props: TabsUIProps) => {
   }
 
   return (
-    <div className="remix-ui-tabs d-flex justify-content-between border-0 header nav-tabs" data-id="tabs-component">
+    <div
+      className={`remix-ui-tabs justify-content-between border-0 header nav-tabs ${
+        appContext.appState.connectedToDesktop === desktopConnectionType .disabled ? 'd-flex' : 'd-none'
+      }`}
+      data-id="tabs-component"
+    >
       <div className="d-flex flex-row" style={{ maxWidth: 'fit-content', width: '99%' }}>
         <div className="d-flex flex-row justify-content-center align-items-center m-1 mt-1">
           <CustomTooltip

@@ -13,6 +13,47 @@ import { ForkedVMStateProvider } from '../providers/vm-provider'
 import { Recorder } from '../tabs/runTab/model/recorder'
 const _paq = (window._paq = window._paq || [])
 
+export const providerDescriptions = {
+  'vm-cancun': 'Deploy to the in-browser virtual machine running the Cancun fork.',
+  'vm-shanghai': 'Deploy to the in-browser virtual machine running the Shanghai fork.',
+  'vm-paris': 'Deploy to the in-browser virtual machine running the Paris fork.',
+  'vm-london': 'Deploy to the in-browser virtual machine running the London fork.',
+  'vm-berlin': 'Deploy to the in-browser virtual machine running the Berlin fork.',
+  'vm-mainnet-fork': 'Deploy to a fork of the Ethereum mainnet in the in-browser virtual machine.',
+  'vm-sepolia-fork': 'Deploy to a fork of the Sepolia testnet in the in-browser virtual machine.',
+  'vm-custom-fork': 'Deploy to a fork of a custom network in the in-browser virtual machine.',
+  'walletconnect': 'Deploy using WalletConnect.',
+  'desktopHost': 'Deploy using web metamask.',
+  'basic-http-provider': 'Deploy to a Custom local network.',
+  'hardhat-provider': 'Deploy to the local Hardhat dev chain.',
+  'ganache-provider': 'Deploy to the local Ganache dev chain.',
+  'foundry-provider': 'Deploy to the local Foundry dev chain.',
+  'injected-MetaMask': 'Deploy through the Metamask browser extension.',
+  'injected-Brave Wallet': 'Deploy through the Brave Wallet extension.',
+  'injected-Brave': 'Deploy through the Brave browser extension.',
+  'injected-metamask-optimism': 'Deploy to Optimism through the Metamask browser extension.',
+  'injected-metamask-gnosis': 'Deploy to Gnosis through the Metamask browser extension.',
+  'injected-metamask-arbitrum': 'Deploy to Arbitrum through the Metamask browser extension.',
+  'injected-metamask-sepolia': 'Deploy to the Sepolia testnet through the Metamask browser extension.',
+  'injected-metamask-ephemery': 'Deploy to the Ephemery testnet through the Metamask browser extension.',
+  'injected-metamask-linea': 'Deploy to Linea through the Metamask browser extension.'
+}
+
+export const providerLogos = {
+  'injected-metamask-optimism': ['assets/img/optimism-ethereum-op-logo.png', 'assets/img/metamask.png'],
+  'injected-metamask-arbitrum': ['assets/img/arbitrum-arb-logo.png', 'assets/img/metamask.png'],
+  'injected-metamask-gnosis': ['assets/img/gnosis_chain.png', 'assets/img/metamask.png'],
+  'injected-metamask-linea': ['assets/img/linea_chain.png', 'assets/img/metamask.png'],
+  'injected-metamask-sepolia': ['assets/img/metamask.png'],
+  'injected-metamask-ephemery': ['assets/img/metamask.png'],
+  'injected-MetaMask': ['assets/img/metamask.png'],
+  'injected-Brave Wallet': ['assets/img/brave.png'],
+  'injected-Trust Wallet': ['assets/img/trust-wallet.png'],
+  'hardhat-provider': ['assets/img/hardhat.png'],
+  'walletconnect': ['assets/img/Walletconnect-logo.png'],
+  'foundry-provider': ['assets/img/foundry.png']
+}
+
 const profile = {
   name: 'udapp',
   displayName: 'Deploy & run transactions',
@@ -35,7 +76,8 @@ const profile = {
     'clearAllInstances',
     'addInstance',
     'resolveContractAndAddInstance',
-    'showPluginDetails'
+    'showPluginDetails',
+    'getProviders',
   ]
 }
 
@@ -139,46 +181,6 @@ export class RunTab extends ViewPlugin {
   async onInitDone() {
     const udapp = this // eslint-disable-line
 
-    const descriptions = {
-      'vm-cancun': 'Deploy to the in-browser virtual machine running the Cancun fork.',
-      'vm-shanghai': 'Deploy to the in-browser virtual machine running the Shanghai fork.',
-      'vm-paris': 'Deploy to the in-browser virtual machine running the Paris fork.',
-      'vm-london': 'Deploy to the in-browser virtual machine running the London fork.',
-      'vm-berlin': 'Deploy to the in-browser virtual machine running the Berlin fork.',
-      'vm-mainnet-fork': 'Deploy to a fork of the Ethereum mainnet in the in-browser virtual machine.',
-      'vm-sepolia-fork': 'Deploy to a fork of the Sepolia testnet in the in-browser virtual machine.',
-      'vm-custom-fork': 'Deploy to a fork of a custom network in the in-browser virtual machine.',
-      'walletconnect': 'Deploy using WalletConnect.',
-      'basic-http-provider': 'Deploy to a Custom local network.',
-      'hardhat-provider': 'Deploy to the local Hardhat dev chain.',
-      'ganache-provider': 'Deploy to the local Ganache dev chain.',
-      'foundry-provider': 'Deploy to the local Foundry dev chain.',
-      'injected-MetaMask': 'Deploy through the Metamask browser extension.',
-      'injected-Brave Wallet': 'Deploy through the Brave Wallet extension.',
-      'injected-Brave': 'Deploy through the Brave browser extension.',
-      'injected-metamask-optimism': 'Deploy to Optimism through the Metamask browser extension.',
-      'injected-metamask-gnosis': 'Deploy to Gnosis through the Metamask browser extension.',
-      'injected-metamask-arbitrum': 'Deploy to Arbitrum through the Metamask browser extension.',
-      'injected-metamask-sepolia': 'Deploy to the Sepolia testnet through the Metamask browser extension.',
-      'injected-metamask-ephemery': 'Deploy to the Ephemery testnet through the Metamask browser extension.',
-      'injected-metamask-linea': 'Deploy to Linea through the Metamask browser extension.'
-    }
-
-    const logos = {
-      'injected-metamask-optimism': ['assets/img/optimism-ethereum-op-logo.png', 'assets/img/metamask.png'],
-      'injected-metamask-arbitrum': ['assets/img/arbitrum-arb-logo.png', 'assets/img/metamask.png'],
-      'injected-metamask-gnosis': ['assets/img/gnosis_chain.png', 'assets/img/metamask.png'],
-      'injected-metamask-linea': ['assets/img/linea_chain.png', 'assets/img/metamask.png'],
-      'injected-metamask-sepolia': ['assets/img/metamask.png'],
-      'injected-metamask-ephemery': ['assets/img/metamask.png'],
-      'injected-MetaMask': ['assets/img/metamask.png'],
-      'injected-Brave Wallet': ['assets/img/brave.png'],
-      'injected-Trust Wallet': ['assets/img/trust-wallet.png'],
-      'hardhat-provider': ['assets/img/hardhat.png'],
-      'walletconnect': ['assets/img/Walletconnect-logo.png'],
-      'foundry-provider': ['assets/img/foundry.png']
-    }
-
     const addProvider = async (position, name, displayName, isInjected, isVM, isForkedState, fork = '', dataId = '', title = '', forkedVM = false) => {
       await this.call('blockchain', 'addProvider', {
         position,
@@ -186,8 +188,8 @@ export class RunTab extends ViewPlugin {
         dataId,
         name,
         displayName,
-        description: descriptions[name] || displayName,
-        logos: logos[name],
+        description: providerDescriptions[name] || displayName,
+        logos: providerLogos[name],
         fork,
         isInjected,
         isForkedVM: forkedVM,
@@ -203,10 +205,20 @@ export class RunTab extends ViewPlugin {
         },
         provider: new Provider(udapp, name)
       })
+      this.emit('providerAdded', {
+        name,
+        displayName,
+        description: providerDescriptions[name] || displayName,
+        logos: providerLogos[name],
+        fork,
+        isInjected,
+        isVM,
+        isForkedState,
+      })
     }
 
     const addCustomInjectedProvider = async (position, event, name, displayName, networkId, urls, nativeCurrency?) => {
-      // name = `${name} through ${event.detail.info.name}`
+      console.log(`${name} through ${event.detail.info.name}`)
       await this.engine.register([new InjectedCustomProvider(event.detail.provider, name, displayName, networkId, urls, nativeCurrency)])
       await addProvider(position, name, displayName + ' - ' + event.detail.info.name, true, false, false)
     }
@@ -265,7 +277,7 @@ export class RunTab extends ViewPlugin {
       let stateDetail = await this.call('fileManager', 'readFile', stateFilePath)
       stateDetail = JSON.parse(stateDetail)
       const providerName = 'vm-fs-' + stateDetail.stateName
-      descriptions[providerName] = JSON.stringify({
+      providerDescriptions[providerName] = JSON.stringify({
         name: providerName,
         latestBlock: stateDetail.latestBlockNumber,
         timestamp: stateDetail.savingTimestamp
@@ -275,7 +287,7 @@ export class RunTab extends ViewPlugin {
         name: providerName,
         displayName: stateDetail.stateName,
         kind: 'provider',
-        description: descriptions[providerName],
+        description: providerDescriptions[providerName],
         methods: ['sendAsync', 'init'],
         version: packageJson.version
       }, this.blockchain, stateDetail.forkName)
@@ -303,6 +315,11 @@ export class RunTab extends ViewPlugin {
 
     // wallet connect
     await addProvider(6, 'walletconnect', 'WalletConnect', false, false, false)
+
+    if (isElectron()) {
+      // desktop host
+      await addProvider(5, 'desktopHost', 'Metamask Wallet', false, false, false)
+    }
 
     // external provider
     await addProvider(10, 'basic-http-provider', 'Custom - External Http Provider', false, false, false)
