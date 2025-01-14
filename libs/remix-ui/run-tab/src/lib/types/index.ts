@@ -282,7 +282,7 @@ export interface ContractDropdownProps {
   setSelectedContract: (contractName: string) => void
   remixdActivated: boolean,
   isValidProxyAddress?: (address: string) => Promise<boolean>,
-  isValidProxyUpgrade?: (proxyAddress: string, contractName: string, solcInput: SolcInput, solcOuput: SolcOutput, solcVersion: string) => Promise<LayoutCompatibilityReport | { ok: boolean, pass: boolean, warning: boolean }>,
+  isValidProxyUpgrade?: (proxyAddress: string, contractName: string, solcInput: SolcInput, solcOutput: SolcOutput, solcVersion: string) => Promise<LayoutCompatibilityReport | { ok: boolean, pass: boolean, warning: boolean }>,
   proxy: { deployments: { address: string, date: string, contractName: string }[] }
   solCompilerVersion: { version: string, canReceive: boolean }
   setCompilerVersion: React.Dispatch<React.SetStateAction<{

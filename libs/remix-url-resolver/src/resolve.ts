@@ -140,8 +140,8 @@ export class RemixURLResolver {
   async handleNpmImport(url: string): Promise<HandlerResponse> {
     if (!url) throw new Error('url is empty')
     let fetchUrl = url
-    const isVersionned = semverRegex().exec(url.replace(/@/g, '@ ').replace(/\//g, ' /'))
-    if (this.getDependencies && !isVersionned) {
+    const isVersioned = semverRegex().exec(url.replace(/@/g, '@ ').replace(/\//g, ' /'))
+    if (this.getDependencies && !isVersioned) {
       try {
         const { deps, yarnLock, packageLock } = await this.getDependencies()
         let matchLength = 0

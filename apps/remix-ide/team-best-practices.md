@@ -158,7 +158,7 @@ Before starting to coding, we should ensure all devs / contributors are aware of
 ### 1) Bugs:
 - A critical bug should get the label `Blocker`, and every effort should be put to fix it.
 - Addressing a non critical and non planned bug can be done:
-  - After having notified in the `remix-dev` channel if the bug does not involves UX or public API changes.
+  - After having notified in the `remix-dev` channel if the bug does not involve UX or public API changes.
   - After a dev meeting (e.g the regular standup) if the bug involves any UX or public API changes.
 
 ### 2) Support:

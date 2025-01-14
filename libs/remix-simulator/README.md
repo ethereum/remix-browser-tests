@@ -39,7 +39,7 @@
 * [X] eth_getCode
 * [~] eth_sign
 * [X] eth_sendTransaction
-* [_] eth_sendRawTransaction
+* [x] eth_sendRawTransaction
 * [X] eth_call
 * [~] eth_estimateGas
 * [X] eth_getBlockByHash

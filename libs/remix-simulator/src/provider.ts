@@ -6,9 +6,11 @@ import merge from 'merge'
 import { Web3Accounts } from './methods/accounts'
 import { Filters } from './methods/filters'
 import { methods as miscMethods } from './methods/misc'
-import { methods as netMethods } from './methods/net'
+import { Net } from './methods/net'
 import { Transactions } from './methods/transactions'
+import { Miner } from './methods/miner'
 import { Debug } from './methods/debug'
+import { EVM } from './methods/evm'
 import { VMContext } from './vm-context'
 import { Web3PluginBase } from 'web3'
 
@@ -30,6 +32,7 @@ export type JSONRPCResponseCallback = (err: Error, result?: JSONRPCResponsePaylo
 export type State = Record<string, string>
 
 export type ProviderOptions = {
+  chainId?: number
   fork?: string,
   nodeUrl?: string,
   blockNumber?: number | 'latest',
@@ -47,14 +50,16 @@ export class Provider {
   methods
   connected: boolean
   initialized: boolean
+  initializing: boolean
   pendingRequests: Array<any>
 
   constructor (options: ProviderOptions = {} as ProviderOptions) {
+    console.log(options)
     this.options = options
     this.connected = true
     this.vmContext = new VMContext(options['fork'], options['nodeUrl'], options['blockNumber'], options['stateDb'], options['blocks'])
 
-    this.Accounts = new Web3Accounts(this.vmContext)
+    this.Accounts = new Web3Accounts(this.vmContext, options)
     this.Transactions = new Transactions(this.vmContext)
 
     this.methods = {}
@@ -62,12 +67,15 @@ export class Provider {
     this.methods = merge(this.methods, (new Blocks(this.vmContext, options)).methods())
     this.methods = merge(this.methods, miscMethods())
     this.methods = merge(this.methods, (new Filters(this.vmContext)).methods())
-    this.methods = merge(this.methods, netMethods())
+    this.methods = merge(this.methods, (new Net(this.vmContext, options)).methods())
     this.methods = merge(this.methods, this.Transactions.methods())
     this.methods = merge(this.methods, (new Debug(this.vmContext)).methods())
+    this.methods = merge(this.methods, (new EVM(this.vmContext, this.Transactions)).methods())
+    this.methods = merge(this.methods, (new Miner(this.vmContext)).methods())
   }
 
   async init () {
+    this.initializing = true
     this.initialized = false
     this.pendingRequests = []
     await this.vmContext.init()
@@ -80,6 +88,7 @@ export class Provider {
       })
       this.pendingRequests = []
     }
+    this.initializing = false
   }
 
   _send(payload: JSONRPCRequestPayload, callback: (err: Error, result?: JSONRPCResponsePayload) => void) {

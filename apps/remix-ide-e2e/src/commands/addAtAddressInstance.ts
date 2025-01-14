@@ -19,11 +19,11 @@ function addInstance (browser: NightwatchBrowser, address: string, isValidFormat
   .waitForElementVisible('.ataddressinput')
   .click('.ataddressinput')
   .setValue('.ataddressinput', address, function () {
-    if (!isValidFormat || !isValidChecksum) browser.assert.elementPresent('button[id^="runAndDeployAtAdressButton"]:disabled')
+    if (!isValidFormat || !isValidChecksum) browser.assert.elementPresent('button[id^="runAndDeployAtAddressButton"]:disabled')
     else if (isAbi) {
       browser
         .click({
-          selector: '//*[@id="runAndDeployAtAdressButtonContainer"]',
+          selector: '//*[@id="runAndDeployAtAddressButtonContainer"]',
           locateStrategy: 'xpath'
          })
         .waitForElementPresent('[data-id="udappNotify-modal-footer-ok-react"]', 5000)
@@ -34,7 +34,7 @@ function addInstance (browser: NightwatchBrowser, address: string, isValidFormat
         })
     } else {
       browser.click({
-        selector: '//*[@id="runAndDeployAtAdressButtonContainer"]',
+        selector: '//*[@id="runAndDeployAtAddressButtonContainer"]',
         locateStrategy: 'xpath'
       })
     }
