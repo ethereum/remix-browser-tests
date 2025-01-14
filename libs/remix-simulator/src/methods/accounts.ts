@@ -1,7 +1,7 @@
 import { signTypedData, SignTypedDataVersion, TypedMessage, MessageTypes } from '@metamask/eth-sig-util'
 import { privateToAddress, toChecksumAddress, isValidPrivate, Address, toBytes, bytesToHex, Account } from '@ethereumjs/util'
 import { privateKeyToAccount } from 'web3-eth-accounts'
-import { toBigInt } from 'web3-utils'
+import { toBigInt, toHex } from 'web3-utils'
 import * as crypto from 'crypto'
 
 type AccountType = {
@@ -13,9 +13,11 @@ export class Web3Accounts {
   accounts: Record<string, AccountType>
   accountsKeys: Record<string, string>
   vmContext
+  options
 
-  constructor (vmContext) {
+  constructor (vmContext, options) {
     this.vmContext = vmContext
+    this.options = options
     // TODO: make it random and/or use remix-libs
 
     this.accounts = {}
@@ -97,6 +99,8 @@ export class Web3Accounts {
   eth_getBalance (payload, cb) {
     const address = payload.params[0]
     this.vmContext.vm().stateManager.getAccount(Address.fromString(address)).then((account) => {
+      if (!account) return cb(null, toBigInt(0).toString(10))
+      if (!account.balance) return cb(null, toBigInt(0).toString(10))
       cb(null, toBigInt(account.balance).toString(10))
     }).catch((error) => {
       cb(error)
@@ -119,7 +123,9 @@ export class Web3Accounts {
   }
 
   eth_chainId (_payload, cb) {
-    return cb(null, '0x539') // 0x539 is hex of 1337
+    if (!this.options.chainId) return cb(null, '0x539') // 0x539 is hex of 1337
+    const id = (typeof this.options.chainId === 'number') ? toHex(this.options.chainId) : this.options.chainId
+    return cb(null, id)
   }
 
   eth_signTypedData_v4 (payload, cb) {

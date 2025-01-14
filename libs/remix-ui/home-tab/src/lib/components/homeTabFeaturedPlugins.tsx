@@ -82,6 +82,11 @@ function HomeTabFeaturedPlugins({ plugin }: HomeTabFeaturedPluginsProps) {
     plugin.verticalIcons.select('solidityUnitTesting')
     _paq.push(['trackEvent', 'hometabActivate', 'userActivate', 'solidityUnitTesting'])
   }
+  const startContractVerification = async () => {
+    await plugin.appManager.activatePlugin(['contract-verification'])
+    plugin.verticalIcons.select('contract-verification')
+    _paq.push(['trackEvent', 'hometabActivate', 'userActivate', 'contract-verification'])
+  }
 
   return (
     <div className="pl-2 w-100 align-items-end remixui_featuredplugins_container" id="hTFeaturedPlugins">
@@ -116,14 +121,14 @@ function HomeTabFeaturedPlugins({ plugin }: HomeTabFeaturedPluginsProps) {
             itemClass="w-100"
           >
             <PluginButton
-              imgPath="assets/img/staticAnalysis.webp"
-              envID="staticAnalysisLogo"
-              envText="Solidity Analyzers"
+              imgPath="assets/img/contractVerification.webp"
+              envID="contractVerificationLogo"
+              envText="Contract Verification"
               description={intl.formatMessage({
-                id: 'home.codeAnalyizerPluginDesc'
+                id: 'home.contractVerificationDesc',
               })}
-              maintainedBy='Remix'
-              callback={() => startCodeAnalyzer()}
+              maintainedBy="Remix"
+              callback={() => startContractVerification()}
             />
             <PluginButton
               imgPath="assets/img/learnEthLogo.webp"
@@ -134,6 +139,16 @@ function HomeTabFeaturedPlugins({ plugin }: HomeTabFeaturedPluginsProps) {
               })}
               maintainedBy='Remix'
               callback={() => startLearnEth()}
+            />
+            <PluginButton
+              imgPath="assets/img/staticAnalysis.webp"
+              envID="staticAnalysisLogo"
+              envText="Solidity Analyzers"
+              description={intl.formatMessage({
+                id: 'home.codeAnalyizerPluginDesc'
+              })}
+              maintainedBy='Remix'
+              callback={() => startCodeAnalyzer()}
             />
             <PluginButton
               imgPath="assets/img/cookbook.webp"

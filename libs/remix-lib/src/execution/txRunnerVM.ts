@@ -75,6 +75,33 @@ export class TxRunnerVM {
     }
   }
 
+  runEmptyBlock (callback: VMExecutionCallBack) {
+    const EIP1559 = this.commonContext.hardfork() !== 'berlin' // berlin is the only pre eip1559 fork that we handle.
+    const coinbases = ['0x0e9281e9c6a0808672eaba6bd1220e144c9bb07a', '0x8945a1288dc78a6d8952a92c77aee6730b414778', '0x94d76e24f818426ae84aa404140e8d5f60e10e7e']
+    const difficulties = [69762765929000, 70762765929000, 71762765929000]
+    const difficulty = this.commonContext.consensusType() === ConsensusType.ProofOfStake ? 0 : difficulties[this.blocks.length % difficulties.length]
+    const block = Block.fromBlockData({
+      header: {
+        timestamp: new Date().getTime() / 1000 | 0,
+        number: this.blocks.length,
+        coinbase: coinbases[this.blocks.length % coinbases.length],
+        difficulty,
+        gasLimit: 0,
+        baseFeePerGas: EIP1559 ? '0x1' : undefined,
+        parentHash: this.blockParentHash
+      }
+    }, { common: this.commonContext })
+
+    this.blockParentHash = block.hash()
+    this.runBlockInVm(null, block, async (err, result) => {
+      if (!err) {
+        this.getVMObject().vm.blockchain.putBlock(block)
+        this.blocks.push(block.serialize())
+      }
+      callback(err, result)
+    })
+  }
+
   async runInVm (tx: InternalTransaction, callback: VMExecutionCallBack) {
     const { to, data, value, gasLimit, useCall, signed } = tx
     let { from } = tx
@@ -183,7 +210,7 @@ export class TxRunnerVM {
       const result: RunTxResult = results.results[0]
       callback(null, {
         result,
-        transactionHash: bytesToHex(Buffer.from(tx.hash())),
+        transactionHash: tx ? bytesToHex(Buffer.from(tx.hash())) : null,
         block,
         tx
       })
