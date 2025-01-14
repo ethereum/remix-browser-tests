@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import { NoirPluginClient } from "./services/noirPluginClient"
 import { RenderIf } from '@remix-ui/helper'
 import { IntlProvider } from 'react-intl'
 import { Container } from "./components/container"
 import { NoirAppContext } from "./contexts"
+import { appInitialState, appReducer } from "./reducers/state"
 
 const plugin = new NoirPluginClient()
 
 function App() {
-  // const [appState, dispatch] = useReducer(appReducer, appInitialState)
+  const [appState, dispatch] = useReducer(appReducer, appInitialState)
   const [locale, setLocale] = useState<{code: string; messages: any}>({
     code: 'en',
     messages: null
@@ -40,7 +41,9 @@ function App() {
   }
 
   const value = {
-    plugin
+    plugin,
+    dispatch,
+    appState
   }
 
   return (

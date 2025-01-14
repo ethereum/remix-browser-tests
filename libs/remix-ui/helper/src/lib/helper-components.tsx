@@ -1,5 +1,9 @@
 import { LayoutCompatibilityReport } from '@openzeppelin/upgrades-core/dist/storage/report'
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
+import { CompileOptionsProps } from '../types/compilerTypes'
+import { CustomTooltip } from './components/custom-tooltip'
+import { extractNameFromKey } from './remix-ui-helper'
 
 export const fileChangedToastMsg = (from: string, path: string) => (
   <div>
@@ -142,3 +146,75 @@ export function RenderIf({ condition, children }: { condition: boolean, children
 export function RenderIfNot({ condition, children }: { condition: boolean, children: JSX.Element }) {
   return condition ? null : children
 }
+
+export const CompileOptions = ({ autoCompile, hideWarnings, setCircuitAutoCompile, setCircuitHideWarnings }: CompileOptionsProps) => (
+
+  <div>
+    <div className="mt-2 custom-control custom-checkbox">
+      <input
+        className="custom-control-input"
+        type="checkbox"
+        onChange={(e) => setCircuitAutoCompile(e.target.checked)}
+        title="Auto compile"
+        checked={autoCompile}
+        id="autoCompileCircuit"
+      />
+      <label className="form-check-label custom-control-label" htmlFor="autoCompileCircuit" data-id="auto_compile_circuit_checkbox_input">
+        <FormattedMessage id="circuit.autoCompile" />
+      </label>
+    </div>
+    <div className="mt-1 mb-2 circuit_warnings_box custom-control custom-checkbox">
+      <input
+        className="custom-control-input"
+        onChange={(e) => setCircuitHideWarnings(e.target.checked)}
+        id="hideCircuitWarnings"
+        type="checkbox"
+        title="Hide warnings"
+        checked={hideWarnings}
+      />
+      <label className="form-check-label custom-control-label" htmlFor="hideCircuitWarnings" data-id="hide_circuit_warnings_checkbox_input">
+        <FormattedMessage id="solidity.hideWarnings" />
+      </label>
+    </div>
+  </div>
+)
+
+export const CompileBtn = ({ plugin, appState, id, compileAction }: { plugin: any, appState: { status, filePath }, id: string, compileAction: () => void }) => (
+  <CustomTooltip
+    placement="auto"
+    tooltipId="overlay-tooltip-compile"
+    tooltipText={
+      <div className="text-left">
+        <div>
+          <b>Ctrl+S</b> to compile {appState.filePath}
+        </div>
+      </div>
+    }
+  >
+    <button
+      className="btn btn-primary btn-block d-block w-100 text-break mb-1 mt-1"
+      onClick={() => { compileAction() }}
+      disabled={(appState.filePath === "") || (appState.status === "compiling")}
+      data-id={`compile_${id}_btn`}
+    >
+      <div className="d-flex align-items-center justify-content-center">
+        <RenderIf condition={appState.status === 'compiling'}>
+          <i className="fas fa-sync fa-spin mr-2" aria-hidden="true"></i>
+        </RenderIf>
+        <div className="text-truncate overflow-hidden text-nowrap">
+          <span>
+            <FormattedMessage id="circuit.compile" />
+          </span>
+          <span className="ml-1 text-nowrap">
+            <RenderIf condition={appState.filePath === ""}>
+              <FormattedMessage id="circuit.noFileSelected" />
+            </RenderIf>
+            <RenderIfNot condition={appState.filePath === ""}>
+              <>{extractNameFromKey(appState.filePath)}</>
+            </RenderIfNot>
+          </span>
+        </div>
+      </div>
+    </button>
+  </CustomTooltip>
+)

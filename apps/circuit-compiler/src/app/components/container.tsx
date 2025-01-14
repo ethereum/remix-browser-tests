@@ -1,17 +1,17 @@
 import { useContext } from 'react'
-import { CustomTooltip, RenderIf } from '@remix-ui/helper'
+import { CompileBtn, CustomTooltip, RenderIf } from '@remix-ui/helper'
 import { FormattedMessage } from 'react-intl'
 import { CircuitAppContext } from '../contexts'
-import { CompileOptions } from './options'
+import { CompileOptions } from '@remix-ui/helper'
 import { VersionList } from './versions'
 import { Toggler } from './toggler'
 import { Configurations } from './configurations'
-import { CircuitActions } from './actions'
 import { WitnessSection } from './witness'
 import { CompilerFeedback } from './feedback'
 import { CompilerReport, PrimeValue } from '../types'
 import { SetupExports } from './setupExports'
 import { GenerateProof } from './generateProof'
+import { compileCircuit } from '../actions'
 
 export function Container () {
   const circuitApp = useContext(CircuitAppContext)
@@ -102,6 +102,10 @@ export function Container () {
     }
   }
 
+  const handleCompileClick = () => {
+    compileCircuit(circuitApp.plugin, circuitApp.appState)
+  }
+
   return (
     <section>
       <article>
@@ -123,7 +127,9 @@ export function Container () {
             <Toggler title='circuit.advancedConfigurations' dataId=''>
               <Configurations setPrimeValue={handlePrimeChange} primeValue={circuitApp.appState.primeValue} versionValue={circuitApp.appState.version} />
             </Toggler>
-            <CircuitActions />
+            <div className="pb-2">
+              <CompileBtn id='circuit' plugin={circuitApp.plugin} appState={circuitApp.appState} compileAction={handleCompileClick} />
+            </div>
             <RenderIf condition={circuitApp.appState.status !== 'compiling'}>
               <CompilerFeedback feedback={circuitApp.appState.compilerFeedback} filePathToId={circuitApp.appState.filePathToId} openErrorLocation={handleOpenErrorLocation} hideWarnings={circuitApp.appState.hideWarnings} askGPT={askGPT} />
             </RenderIf>

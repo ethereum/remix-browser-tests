@@ -11,7 +11,7 @@ module.exports = composePlugins(withNx(), (config) => {
   let pkgNoirWasm = fs.readFileSync(path.resolve(__dirname, '../../node_modules/@noir-lang/noir_wasm/package.json'), 'utf8')
   let typeCount = 0
 
-  pkgNoirWasm = pkgNoirWasm.replace("node", "./node").replace("import", "./import").replace("require", "./require").replace(/"types"/g, match => ++typeCount === 2 ? '"./types"' : match).replace("default", "./default")
+  pkgNoirWasm = pkgNoirWasm.replace(/"node"/, '"./node"').replace(/"import"/, '"./import"').replace(/"require"/, '"./require"').replace(/"types"/g, match => ++typeCount === 2 ? '"./types"' : match).replace(/"default"/, '"./default"')
   fs.writeFileSync(path.resolve(__dirname, '../../node_modules/@noir-lang/noir_wasm/package.json'), pkgNoirWasm)
   
   console.log('pkgNoirWasm: ', pkgNoirWasm)

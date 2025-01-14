@@ -1,7 +1,9 @@
 import { useContext } from 'react'
-import { CustomTooltip, RenderIf } from '@remix-ui/helper'
+import { CompileBtn, CustomTooltip, RenderIf } from '@remix-ui/helper'
 import { FormattedMessage } from 'react-intl'
 import { NoirAppContext } from '../contexts'
+import { CompileOptions } from '@remix-ui/helper'
+import { compileNoirCircuit } from '../actions'
 
 export function Container () {
   const noirApp = useContext(NoirAppContext)
@@ -18,11 +20,6 @@ export function Container () {
       noirApp.plugin.call('notification', 'modal', { id: 'modal_noir_compiler_license', title: 'Compiler License', message })
     }
   }
-
-  //   const handleVersionSelect = (version: string) => {
-  //     circuitApp.plugin.compilerVersion = version
-  //     circuitApp.dispatch({ type: 'SET_COMPILER_VERSION', payload: version })
-  //   }
 
   //   const handleOpenErrorLocation = async (location: string, startRange: string) => {
   //     if (location) {
@@ -41,13 +38,13 @@ export function Container () {
   //     circuitApp.dispatch({ type: 'SET_PRIME_VALUE', payload: value as PrimeValue })
   //   }
 
-  //   const handleCircuitAutoCompile = (value: boolean) => {
-  //     circuitApp.dispatch({ type: 'SET_AUTO_COMPILE', payload: value })
-  //   }
+  const handleCircuitAutoCompile = (value: boolean) => {
+    noirApp.dispatch({ type: 'SET_AUTO_COMPILE', payload: value })
+  }
 
-  //   const handleCircuitHideWarnings = (value: boolean) => {
-  //     circuitApp.dispatch({ type: 'SET_HIDE_WARNINGS', payload: value })
-  //   }
+  const handleCircuitHideWarnings = (value: boolean) => {
+    noirApp.dispatch({ type: 'SET_HIDE_WARNINGS', payload: value })
+  }
 
   //   const askGPT = async (report: CompilerReport) => {
   //     if (report.labels.length > 0) {
@@ -92,6 +89,10 @@ export function Container () {
   //     }
   //   }
 
+  const handleCompileClick = () => {
+    compileNoirCircuit(noirApp.plugin, noirApp.appState)
+  }
+
   return (
     <section>
       <article>
@@ -108,13 +109,11 @@ export function Container () {
             >
               <span className="far fa-file-certificate border-0 p-0 ml-2" onClick={() => showCompilerLicense()}></span>
             </CustomTooltip>
-            {/* <VersionList setVersion={handleVersionSelect} versionList={circuitApp.appState.versionList} currentVersion={circuitApp.appState.version} />
-            <CompileOptions setCircuitAutoCompile={handleCircuitAutoCompile} setCircuitHideWarnings={handleCircuitHideWarnings} autoCompile={circuitApp.appState.autoCompile} hideWarnings={circuitApp.appState.hideWarnings} />
-            <Toggler title='circuit.advancedConfigurations' dataId=''>
-              <Configurations setPrimeValue={handlePrimeChange} primeValue={circuitApp.appState.primeValue} versionValue={circuitApp.appState.version} />
-            </Toggler>
-            <CircuitActions />
-            <RenderIf condition={circuitApp.appState.status !== 'compiling'}>
+            <CompileOptions setCircuitAutoCompile={handleCircuitAutoCompile} setCircuitHideWarnings={handleCircuitHideWarnings} autoCompile={noirApp.appState.autoCompile} hideWarnings={noirApp.appState.hideWarnings} />
+            <div className="pb-2">
+              <CompileBtn id="noir" plugin={noirApp.plugin} appState={noirApp.appState} compileAction={handleCompileClick} />
+            </div>
+            {/* <RenderIf condition={circuitApp.appState.status !== 'compiling'}>
               <CompilerFeedback feedback={circuitApp.appState.compilerFeedback} filePathToId={circuitApp.appState.filePathToId} openErrorLocation={handleOpenErrorLocation} hideWarnings={circuitApp.appState.hideWarnings} askGPT={askGPT} />
             </RenderIf> */}
           </div>
