@@ -687,6 +687,7 @@ export class Blockchain extends Plugin {
   }
 
   removeProvider(name) {
+    if (this.pinnedProviders.includes(name)) this.emit('shouldRemoveProviderFromUdapp', name, this.getProviderObjByName(name))
     this.executionContext.removeProvider(name)
     this.emit('providersChanged')
   }

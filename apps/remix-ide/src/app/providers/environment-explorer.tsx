@@ -78,6 +78,15 @@ export class EnvironmentExplorer extends ViewPlugin {
     }
   }
 
+  async deleteForkedState (provider) {
+    const providerName = await this.call('blockchain', 'getProvider')
+    if (providerName !== provider.name) {
+      await this.call('fileManager', 'remove', `.states/forked_states/${provider.displayName}.json`)
+      await this.call('blockchain', 'removeProvider', provider.name)
+      this.call('notification', 'toast', `Environment "${provider.displayName}" deleted successfully.`)
+    } else this.call('notification', 'toast', 'Cannot delete the current selected environment')
+  }
+
   renderComponent() {
     this.dispatch({
       ...this.state
@@ -86,7 +95,12 @@ export class EnvironmentExplorer extends ViewPlugin {
 
   updateComponent(state: EnvironmentExplorerState) {
     return (<>
-      <EnvironmentExplorerUI pinStateCallback={this.pinStateCallback.bind(this)} profile={profile} state={state} />
+      <EnvironmentExplorerUI
+        pinStateCallback={this.pinStateCallback.bind(this)}
+        deleteForkedState={this.deleteForkedState.bind(this)}
+        profile={profile}
+        state={state}
+      />
     </>)
   }
 }

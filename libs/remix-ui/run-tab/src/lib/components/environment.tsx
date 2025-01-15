@@ -117,16 +117,6 @@ export function EnvironmentUI(props: EnvironmentProps) {
     <div className="udapp_crow">
       <label id="selectExEnv" className="udapp_settingsLabel">
         <FormattedMessage id="udapp.environment" />
-        <CustomTooltip placement={'auto-end'} tooltipClasses="text-nowrap" tooltipId="info-recorder" tooltipText={<FormattedMessage id="udapp.tooltipText2" />}>
-          <a href="https://chainlist.org/" target="_blank">
-            <i className={'ml-2 fas fa-plug'} aria-hidden="true"></i>
-          </a>
-        </CustomTooltip>
-        <CustomTooltip placement={'auto-end'} tooltipClasses="text-wrap" tooltipId="runAndDeployAddresstooltip" tooltipText={<FormattedMessage id="udapp.environmentDocs" />}>
-          <a href="https://remix-ide.readthedocs.io/en/latest/run.html#environment" target="_blank" rel="noreferrer">
-            <i className="udapp_infoDeployAction ml-2 fas fa-info"></i>
-          </a>
-        </CustomTooltip>
         { currentProvider && currentProvider.isVM && isSaveEvmStateChecked && <CustomTooltip placement={'auto-end'} tooltipClasses="text-wrap" tooltipId="forkStatetooltip" tooltipText={<FormattedMessage id="udapp.forkStateTitle" />}>
           <i className="udapp_infoDeployAction ml-2 fas fa-code-branch" style={{ cursor: 'pointer' }} onClick={forkState} data-id="fork-state-icon"></i>
         </CustomTooltip> }
