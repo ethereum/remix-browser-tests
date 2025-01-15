@@ -21,22 +21,17 @@ export function Container () {
     }
   }
 
-  //   const handleOpenErrorLocation = async (location: string, startRange: string) => {
-  //     if (location) {
-  //       const fullPathLocation = await circuitApp.plugin.resolveReportPath(location)
+  const handleOpenErrorLocation = async (location: string, startRange: string) => {
+    if (location) {
+      const fullPathLocation = await circuitApp.plugin.resolveReportPath(location)
 
-  //       await circuitApp.plugin.call('fileManager', 'open', fullPathLocation)
-  //       // @ts-ignore
-  //       const startPosition: { lineNumber: number; column: number } = await circuitApp.plugin.call('editor', 'getPositionAt', startRange)
-  //       // @ts-ignore
-  //       await circuitApp.plugin.call('editor', 'gotoLine', startPosition.lineNumber - 1, startPosition.column)
-  //     }
-  //   }
-
-  //   const handlePrimeChange = (value: PrimeValue) => {
-  //     circuitApp.plugin.compilerPrime = value
-  //     circuitApp.dispatch({ type: 'SET_PRIME_VALUE', payload: value as PrimeValue })
-  //   }
+      await circuitApp.plugin.call('fileManager', 'open', fullPathLocation)
+      // @ts-ignore
+      const startPosition: { lineNumber: number; column: number } = await circuitApp.plugin.call('editor', 'getPositionAt', startRange)
+      // @ts-ignore
+      await circuitApp.plugin.call('editor', 'gotoLine', startPosition.lineNumber - 1, startPosition.column)
+    }
+  }
 
   const handleCircuitAutoCompile = (value: boolean) => {
     noirApp.dispatch({ type: 'SET_AUTO_COMPILE', payload: value })
@@ -46,48 +41,48 @@ export function Container () {
     noirApp.dispatch({ type: 'SET_HIDE_WARNINGS', payload: value })
   }
 
-  //   const askGPT = async (report: CompilerReport) => {
-  //     if (report.labels.length > 0) {
-  //       const location = circuitApp.appState.filePathToId[report.labels[0].file_id]
-  //       const error = report.labels[0].message
+  const askGPT = async (report: CompilerReport) => {
+    if (report.labels.length > 0) {
+      const location = circuitApp.appState.filePathToId[report.labels[0].file_id]
+      const error = report.labels[0].message
 
-  //       if (location) {
-  //         const fullPathLocation = await circuitApp.plugin.resolveReportPath(location)
-  //         const content = await circuitApp.plugin.call('fileManager', 'readFile', fullPathLocation)
-  //         const message = `
-  //           circom code: ${content}
-  //           error message: ${error}
-  //           full circom error: ${JSON.stringify(report, null, 2)}
-  //           explain why the error occurred and how to fix it.
-  //           `
-  //         await circuitApp.plugin.call('popupPanel' as any, 'showPopupPanel', true)
-  //         setTimeout(async () => {
-  //           await circuitApp.plugin.call('remixAI' as any, 'chatPipe', 'error_explaining', message)
-  //         }, 500)
-  //       } else {
-  //         const message = `
-  //           error message: ${error}
-  //           full circom error: ${JSON.stringify(report, null, 2)}
-  //           explain why the error occurred and how to fix it.
-  //           `
-  //         await circuitApp.plugin.call('popupPanel' as any, 'showPopupPanel', true)
-  //         setTimeout(async () => {
-  //           await circuitApp.plugin.call('remixAI' as any, 'chatPipe', 'error_explaining', message)
-  //         }, 500)
-  //       }
-  //     } else {
-  //       const error = report.message
-  //       const message = `
-  //       error message: ${error}
-  //       full circom error: ${JSON.stringify(report, null, 2)}
-  //       explain why the error occurred and how to fix it.
-  //       `
-  //       await circuitApp.plugin.call('popupPanel' as any, 'showPopupPanel', true)
-  //       setTimeout(async () => {
-  //         await circuitApp.plugin.call('remixAI' as any, 'chatPipe', 'error_explaining', message)
-  //       }, 500)
-  //     }
-  //   }
+      if (location) {
+        const fullPathLocation = await circuitApp.plugin.resolveReportPath(location)
+        const content = await circuitApp.plugin.call('fileManager', 'readFile', fullPathLocation)
+        const message = `
+            circom code: ${content}
+            error message: ${error}
+            full circom error: ${JSON.stringify(report, null, 2)}
+            explain why the error occurred and how to fix it.
+            `
+        await circuitApp.plugin.call('popupPanel' as any, 'showPopupPanel', true)
+        setTimeout(async () => {
+          await circuitApp.plugin.call('remixAI' as any, 'chatPipe', 'error_explaining', message)
+        }, 500)
+      } else {
+        const message = `
+            error message: ${error}
+            full circom error: ${JSON.stringify(report, null, 2)}
+            explain why the error occurred and how to fix it.
+            `
+        await circuitApp.plugin.call('popupPanel' as any, 'showPopupPanel', true)
+        setTimeout(async () => {
+          await circuitApp.plugin.call('remixAI' as any, 'chatPipe', 'error_explaining', message)
+        }, 500)
+      }
+    } else {
+      const error = report.message
+      const message = `
+        error message: ${error}
+        full circom error: ${JSON.stringify(report, null, 2)}
+        explain why the error occurred and how to fix it.
+        `
+      await circuitApp.plugin.call('popupPanel' as any, 'showPopupPanel', true)
+      setTimeout(async () => {
+        await circuitApp.plugin.call('remixAI' as any, 'chatPipe', 'error_explaining', message)
+      }, 500)
+    }
+  }
 
   const handleCompileClick = () => {
     compileNoirCircuit(noirApp.plugin, noirApp.appState)
@@ -113,9 +108,9 @@ export function Container () {
             <div className="pb-2">
               <CompileBtn id="noir" plugin={noirApp.plugin} appState={noirApp.appState} compileAction={handleCompileClick} />
             </div>
-            {/* <RenderIf condition={circuitApp.appState.status !== 'compiling'}>
-              <CompilerFeedback feedback={circuitApp.appState.compilerFeedback} filePathToId={circuitApp.appState.filePathToId} openErrorLocation={handleOpenErrorLocation} hideWarnings={circuitApp.appState.hideWarnings} askGPT={askGPT} />
-            </RenderIf> */}
+            <RenderIf condition={noirApp.appState.status !== 'compiling'}>
+              <CompilerFeedback feedback={noirApp.appState.compilerFeedback} filePathToId={noirApp.appState.filePathToId} openErrorLocation={handleOpenErrorLocation} hideWarnings={noirApp.appState.hideWarnings} askGPT={askGPT} />
+            </RenderIf>
           </div>
         </div>
       </article>

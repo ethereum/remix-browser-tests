@@ -82,7 +82,8 @@ export const getPathIcon = (path: string) => {
                     ? 'fad fa-brackets-curly' : path.endsWith('.cairo')
                       ? 'small fa-kit fa-cairo' : path.endsWith('.circom')
                         ? 'fa-kit fa-circom' : path.endsWith('.nr')
-                          ? 'fa-kit fa-noir' : 'far fa-file'
+                          ? 'fa-kit fa-noir' : path.endsWith('.toml')
+                            ? 'fad fa-cog': 'far fa-file'
 }
 
 export const isNumeric = (value) => {

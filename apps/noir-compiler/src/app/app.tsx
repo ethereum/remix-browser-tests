@@ -23,6 +23,20 @@ function App() {
       plugin.on('locale', 'localeChanged', (locale: any) => {
         setLocale(locale)
       })
+      plugin.on('fileManager', 'currentFileChanged', (filePath) => {
+        if (filePath.endsWith('.nr')) {
+          dispatch({ type: 'SET_FILE_PATH', payload: filePath })
+          plugin.parse(filePath)
+        }
+      })
+      // @ts-ignore
+      plugin.on('editor', 'contentChanged', async (path: string, content: string) => {
+        setIsContentChanged(true)
+        // check if autoCompile is enabled
+        // if (path.endsWith('.nr')) {
+        //   plugin.parse(path, content)
+        // }
+      })
       setIsPluginActivated(true)
     })
   }, [])

@@ -1,10 +1,5 @@
 import { Actions, AppState } from '../types'
 
-export interface ActionPayloadTypes {
-    SET_AUTO_COMPILE: boolean,
-    SET_HIDE_WARNINGS: boolean
-}
-
 export const appInitialState: AppState = {
   filePath: '',
   filePathToId: {},
@@ -26,6 +21,12 @@ export const appReducer = (state = appInitialState, action: Actions): AppState =
     return {
       ...state,
       hideWarnings: action.payload
+    }
+
+  case 'SET_FILE_PATH':
+    return {
+      ...state,
+      filePath: action.payload
     }
 
   default:
