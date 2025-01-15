@@ -1,7 +1,8 @@
-const { composePlugins, withNx } = require('@nrwl/webpack')
-const webpack = require('webpack')
-const TerserPlugin = require("terser-webpack-plugin")
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
+const { composePlugins, withNx } = require('@nrwl/webpack');
+const webpack = require('webpack');
+const TerserPlugin = require("terser-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const path = require('path');
 
 // Nx plugins for webpack.
 module.exports = composePlugins(withNx(), (config) => {
@@ -16,8 +17,8 @@ module.exports = composePlugins(withNx(), (config) => {
     "http": require.resolve("stream-http"),
     "https": require.resolve("https-browserify"),
     "constants": require.resolve("constants-browserify"),
-    "os": false, //require.resolve("os-browserify/browser"),
-    "timers": false, // require.resolve("timers-browserify"),
+    "os": false,
+    "timers": false,
     "zlib": require.resolve("browserify-zlib"),
     "fs": false,
     "module": false,
@@ -27,17 +28,16 @@ module.exports = composePlugins(withNx(), (config) => {
     "child_process": false,
     "buffer": require.resolve("buffer/"),
     "vm": require.resolve('vm-browserify'),
-  }
-  
+  };
 
   // add externals
   config.externals = {
     ...config.externals,
     solc: 'solc',
-  }
+  };
 
   // add public path
-  config.output.publicPath = './'
+  config.output.publicPath = './';
 
   // add copy & provide plugin
   config.plugins.push(
@@ -46,24 +46,24 @@ module.exports = composePlugins(withNx(), (config) => {
       url: ['url', 'URL'],
       process: 'process/browser',
     })
-  )
+  );
 
   // set the define plugin to load the WALLET_CONNECT_PROJECT_ID
   config.plugins.push(
     new webpack.DefinePlugin({
       WALLET_CONNECT_PROJECT_ID: JSON.stringify(process.env.WALLET_CONNECT_PROJECT_ID),
     })
-  )
+  );
 
   // source-map loader
   config.module.rules.push({
     test: /\.js$/,
     use: ["source-map-loader"],
-    enforce: "pre"
-  })
+    enforce: "pre",
+    exclude: /node_modules/,
+  });
 
-  config.ignoreWarnings = [/Failed to parse source map/] // ignore source-map-loader warnings
-
+  config.ignoreWarnings = [/Failed to parse source map/]; // ignore source-map-loader warnings
 
   // set minimizer
   config.optimization.minimizer = [
@@ -71,8 +71,8 @@ module.exports = composePlugins(withNx(), (config) => {
       parallel: true,
       terserOptions: {
         ecma: 2015,
-        compress: false,
-        mangle: false,
+        compress: true,
+        mangle: true,
         format: {
           comments: false,
         },
@@ -84,9 +84,14 @@ module.exports = composePlugins(withNx(), (config) => {
 
   config.watchOptions = {
     ignored: /node_modules/
-  }
+  };
 
-  config.experiments.syncWebAssembly = true
+  config.experiments.syncWebAssembly = true;
+
+  // Enable caching for faster builds
+  config.cache = {
+    type: 'filesystem',
+  };
 
   return config;
 });
