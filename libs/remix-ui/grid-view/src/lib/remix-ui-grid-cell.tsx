@@ -103,7 +103,7 @@ export const RemixUIGridCell = (props: RemixUIGridCellProps) => {
                     tooltipText={ props.titleTooltip ? props.titleTooltip : props.title }
                   >
                     <label
-                      className='m-0 p-0 text-uppercase align-items-left font-weight-bold text-truncate overflow-hidden whitespace-nowra'
+                      className='m-0 p-0 text-uppercase align-items-left font-weight-bold text-truncate overflow-hidden whitespace-nowrap'
                     >{ props.title }
                     </label>
                   </CustomTooltip>
@@ -113,7 +113,7 @@ export const RemixUIGridCell = (props: RemixUIGridCellProps) => {
             </div>
           </div>
           { filterCon.showPin && <button
-            className={`${pinned ? 'fa-circle-check text-dark' : 'fa-circle text-secondary'}` + ` fa-regular border-0 mb-0 remixui_grid_cell_pin`}
+            className={`${pinned ? 'fas fa-toggle-on fa-lg text-dark' : 'fas fa-toggle-off fa-lg text-secondary'}` + ` fa-regular border-0 mb-0 remixui_grid_cell_pin`}
             style={{ fontSize: 'large' }}
             data-id={`${pinned ? `${props.id}-pinned` : `${props.id}-unpinned`}`}
             onClick={async () => {
