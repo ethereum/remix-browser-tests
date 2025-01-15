@@ -6,7 +6,7 @@ import { EventEmitter } from 'events';
 import { ICompletions, IModel, IParams, InsertionParams,
   CompletionParams, GenerationParams, ModelType, AIRequestType,
   IStreamResponse, ChatHistory, downloadLatestReleaseExecutable,
-  buildSolgptPromt } from "@remix/remix-ai-core"
+  buildSolgptPrompt } from "@remix/remix-ai-core"
 import { platform } from 'os';
 
 class ServerStatusTimer {

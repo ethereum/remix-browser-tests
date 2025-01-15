@@ -6,7 +6,7 @@ import { IModel, IModelResponse, IModelRequest, InferenceModel, ICompletions,
 import { ModelType } from './types/constants'
 import { DefaultModels, InsertionParams, CompletionParams, GenerationParams } from './types/models'
 import { getCompletionPrompt, getInsertionPrompt } from './prompts/completionPrompts'
-import { buildSolgptPromt, PromptBuilder } from './prompts/promptBuilder'
+import { buildSolgptPrompt, PromptBuilder } from './prompts/promptBuilder'
 import { RemoteInferencer } from './inferencers/remote/remoteInference'
 import { ChatHistory } from './prompts/chat'
 import { downloadLatestReleaseExecutable } from './helpers/inferenceServerReleases'
@@ -14,7 +14,7 @@ import { downloadLatestReleaseExecutable } from './helpers/inferenceServerReleas
 export {
   IModel, IModelResponse, IModelRequest, InferenceModel,
   ModelType, DefaultModels, ICompletions, IParams, IRemoteModel,
-  getCompletionPrompt, getInsertionPrompt, IStreamResponse, buildSolgptPromt,
+  getCompletionPrompt, getInsertionPrompt, IStreamResponse, buildSolgptPrompt,
   RemoteInferencer, InsertionParams, CompletionParams, GenerationParams,
   ChatEntry, AIRequestType, RemoteBackendOPModel, ChatHistory, downloadLatestReleaseExecutable
 }

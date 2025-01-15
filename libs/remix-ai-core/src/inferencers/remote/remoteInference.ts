@@ -1,6 +1,6 @@
 import { ICompletions, IParams, AIRequestType, RemoteBackendOPModel, JsonStreamParser } from "../../types/types";
 import { GenerationParams, CompletionParams, InsertionParams } from "../../types/models";
-import { buildSolgptPromt } from "../../prompts/promptBuilder";
+import { buildSolgptPrompt } from "../../prompts/promptBuilder";
 import EventEmitter from "events";
 import { ChatHistory } from "../../prompts/chat";
 import axios from 'axios';
@@ -127,7 +127,7 @@ export class RemoteInferencer implements ICompletions {
   }
 
   async solidity_answer(prompt, options:IParams=GenerationParams): Promise<any> {
-    const main_prompt = buildSolgptPromt(prompt, this.model_op)
+    const main_prompt = buildSolgptPrompt(prompt, this.model_op)
     const payload = { 'prompt': main_prompt, "endpoint":"solidity_answer", ...options }
     if (options.stream_result) return this._streamInferenceRequest(payload, AIRequestType.GENERAL)
     else return this._makeRequest(payload, AIRequestType.GENERAL)
