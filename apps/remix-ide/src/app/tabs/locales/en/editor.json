@@ -28,6 +28,7 @@
   "editor.explainFunctionByAI": "```\n{content}\n```\nExplain the function {currentFunction}",
   "editor.explainFunctionByAISol": "```\n{content}\n```\nExplain the function {currentFunction}",
   "editor.ExplainPipeMessage": "```\n {content}\n```\nExplain the snipped above",
+  "editor.PastedCodeSafety": "```\n {content}\n```\n\nReply in a short manner: Does this code contain major security vulnerabilities leading to a scam or loss of funds?",
   "editor.executeFreeFunction": "Run a free function",
   "editor.executeFreeFunction2": "Run the free function \"{name}\"",
   "editor.toastText1": "This can only execute free function",

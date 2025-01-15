@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useReducer } from 'react' // eslint
 import { FormattedMessage, useIntl } from 'react-intl'
 import { isArray } from 'lodash'
 import Editor, { DiffEditor, loader, Monaco } from '@monaco-editor/react'
-import { AlertModal } from '@remix-ui/app'
+import { AppModal } from '@remix-ui/app'
 import { ConsoleLogs, QueryParams } from '@remix-project/remix-lib'
 import { reducerActions, reducerListener, initialState } from './actions/editor'
 import { solidityTokensProvider, solidityLanguageConfig } from './syntaxes/solidity'
@@ -664,11 +664,26 @@ export const EditorUI = (props: EditorUIProps) => {
       }
     })
 
-    editor.onDidPaste((e) => {
+    editor.onDidPaste(async (e) => {
       if (!pasteCodeRef.current && e && e.range && e.range.startLineNumber >= 0 && e.range.endLineNumber >= 0 && e.range.endLineNumber - e.range.startLineNumber > 10) {
-        const modalContent: AlertModal = {
+        // get the file name
+        const pastedCode = editor.getModel().getValueInRange(e.range)
+        const pastedCodePrompt = intl.formatMessage({ id: 'editor.PastedCodeSafety' }, { content:pastedCode })
+
+        const modalContent: AppModal = {
           id: 'newCodePasted',
-          title: intl.formatMessage({ id: 'editor.title1' }),
+          title: "New code pasted",
+          okLabel: 'Ask RemixAI',
+          cancelLabel: 'Close',
+          cancelFn: () => {},
+          okFn: async () => {
+            await props.plugin.call('popupPanel', 'showPopupPanel', true)
+            setTimeout(async () => {
+              props.plugin.call('remixAI', 'chatPipe', 'vulnerability_check', pastedCodePrompt)
+            }, 500)
+            // add matamo event
+            _paq.push(['trackEvent', 'ai', 'remixAI', 'vulnerability_check_pasted_code'])
+          },
           message: (
             <div>
               {' '}
@@ -699,10 +714,9 @@ export const EditorUI = (props: EditorUIProps) => {
                 </div>
               </div>
             </div>
-          ),
+          )
         }
-        props.plugin.call('notification', 'alert', modalContent)
-        pasteCodeRef.current = true
+        props.plugin.call('notification', 'modal', modalContent)
         _paq.push(['trackEvent', 'editor', 'onDidPaste', 'more_than_10_lines'])
       }
     })

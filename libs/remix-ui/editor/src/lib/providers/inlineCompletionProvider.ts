@@ -9,7 +9,7 @@ export class RemixInLineCompletionProvider implements monacoTypes.languages.Inli
   props: EditorUIProps
   monaco: any
   completionEnabled: boolean
-  task: string
+  task: string = 'code_completion'
   currentCompletion: any
   private lastRequestTime: number = 0;
   private readonly minRequestInterval: number = 200;
@@ -59,13 +59,6 @@ export class RemixInLineCompletionProvider implements monacoTypes.languages.Inli
       endLineNumber: model.getLineCount(),
       endColumn: getTextAtLine(model.getLineCount()).length + 1,
     });
-
-    if (!word.endsWith(' ') &&
-      !word.endsWith('.') &&
-      !word.endsWith('"') &&
-      !word.endsWith('(')) {
-      return;
-    }
 
     try {
       const split = word.split('\n')

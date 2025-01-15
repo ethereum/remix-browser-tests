@@ -3,7 +3,7 @@ import { ViewPlugin } from '@remixproject/engine-web'
 import { Plugin } from '@remixproject/engine';
 import { RemixAITab, ChatApi } from '@remix-ui/remix-ai'
 import React, { useCallback } from 'react';
-import { ICompletions, IModel, RemoteInferencer, IRemoteModel, IParams, GenerationParams, CodeExplainAgent } from '@remix/remix-ai-core';
+import { ICompletions, IModel, RemoteInferencer, IRemoteModel, IParams, GenerationParams, CodeExplainAgent, SecurityAgent } from '@remix/remix-ai-core';
 import { CustomRemixApi } from '@remix-api'
 import { PluginViewWrapper } from '@remix-ui/helper'
 const _paq = (window._paq = window._paq || [])
@@ -17,9 +17,8 @@ const profile = {
   displayName: 'RemixAI',
   methods: ['code_generation', 'code_completion',
     "solidity_answer", "code_explaining",
-    "code_insertion", "error_explaining",
-    "initialize", 'chatPipe', 'ProcessChatRequestBuffer',
-    'isChatRequestPending'],
+    "code_insertion", "error_explaining", "vulnerability_check",
+    "initialize", 'chatPipe', 'ProcessChatRequestBuffer', 'isChatRequestPending'],
   events: [],
   icon: 'assets/img/remix-logo-blue.png',
   description: 'RemixAI provides AI services to Remix IDE.',
@@ -38,15 +37,16 @@ export class RemixAIPlugin extends ViewPlugin {
   remoteInferencer:RemoteInferencer = null
   isInferencing: boolean = false
   chatRequestBuffer: chatRequestBufferT<any> = null
-  agent: CodeExplainAgent
+  codeExpAgent: CodeExplainAgent
+  securityAgent: SecurityAgent
   useRemoteInferencer:boolean = false
   dispatch: any
 
   constructor(inDesktop:boolean) {
     super(profile)
     this.isOnDesktop = inDesktop
-    this.agent = new CodeExplainAgent(this)
-    // user machine dont use resource for remote inferencing
+    this.codeExpAgent = new CodeExplainAgent(this)
+    // user machine dont use ressource for remote inferencing
   }
 
   onActivation(): void {
@@ -62,6 +62,8 @@ export class RemixAIPlugin extends ViewPlugin {
       this.useRemoteInferencer = true
       this.initialize()
     }
+
+    this.securityAgent = new SecurityAgent(this)
   }
 
   async initialize(model1?:IModel, model2?:IModel, remoteModel?:IRemoteModel, useRemote?:boolean){
@@ -97,11 +99,6 @@ export class RemixAIPlugin extends ViewPlugin {
   }
 
   async code_generation(prompt: string): Promise<any> {
-    if (this.isInferencing) {
-      this.call('terminal', 'log', { type: 'aitypewriterwarning', value: "RemixAI is already busy!" })
-      return
-    }
-
     if (this.isOnDesktop && !this.useRemoteInferencer) {
       return await this.call(this.remixDesktopPluginName, 'code_generation', prompt)
     } else {
@@ -118,17 +115,8 @@ export class RemixAIPlugin extends ViewPlugin {
   }
 
   async solidity_answer(prompt: string, params: IParams=GenerationParams): Promise<any> {
-    if (this.isInferencing) {
-      this.call('terminal', 'log', { type: 'aitypewriterwarning', value: "RemixAI is already busy!" })
-      return
-    }
-    if (prompt.trimStart().startsWith('gpt') || prompt.trimStart().startsWith('sol-gpt')) {
-      params.terminal_output = true
-      params.stream_result = false
-      params.return_stream_response = false
-    }
+    const newPrompt = await this.codeExpAgent.chatCommand(prompt)
 
-    const newPrompt = await this.agent.chatCommand(prompt)
     let result
     if (this.isOnDesktop && !this.useRemoteInferencer) {
       result = await this.call(this.remixDesktopPluginName, 'solidity_answer', newPrompt)
@@ -142,11 +130,6 @@ export class RemixAIPlugin extends ViewPlugin {
   }
 
   async code_explaining(prompt: string, context: string, params: IParams=GenerationParams): Promise<any> {
-    if (this.isInferencing) {
-      this.call('terminal', 'log', { type: 'aitypewriterwarning', value: "RemixAI is already busy!" })
-      return
-    }
-
     let result
     if (this.isOnDesktop && !this.useRemoteInferencer) {
       result = await this.call(this.remixDesktopPluginName, 'code_explaining', prompt, context, params)
@@ -159,11 +142,6 @@ export class RemixAIPlugin extends ViewPlugin {
   }
 
   async error_explaining(prompt: string, context: string="", params: IParams=GenerationParams): Promise<any> {
-    if (this.isInferencing) {
-      this.call('terminal', 'log', { type: 'aitypewriterwarning', value: "RemixAI is already busy!" })
-      return
-    }
-
     let result
     if (this.isOnDesktop && !this.useRemoteInferencer) {
       result = await this.call(this.remixDesktopPluginName, 'error_explaining', prompt)
@@ -172,6 +150,22 @@ export class RemixAIPlugin extends ViewPlugin {
     }
     if (result && params.terminal_output) this.call('terminal', 'log', { type: 'aitypewriterwarning', value: result })
     return result
+  }
+
+  async vulnerability_check(prompt: string, params: IParams=GenerationParams): Promise<any> {
+    let result
+    if (this.isOnDesktop && !this.useRemoteInferencer) {
+      result = await this.call(this.remixDesktopPluginName, 'vulnerability_check', prompt)
+
+    } else {
+      result = await this.remoteInferencer.vulnerability_check(prompt, params)
+    }
+    if (result && params.terminal_output) this.call('terminal', 'log', { type: 'aitypewriterwarning', value: result })
+    return result
+  }
+
+  getVulnerabilityReport(file: string): any {
+    return this.securityAgent.getReport(file)
   }
 
   async code_insertion(msg_pfx: string, msg_sfx: string): Promise<any> {
@@ -194,11 +188,12 @@ export class RemixAIPlugin extends ViewPlugin {
         if (fn === "code_explaining") ChatApi.composer.send("Explain the current code")
         else if (fn === "error_explaining") ChatApi.composer.send("Explain the error")
         else if (fn === "solidity_answer") ChatApi.composer.send("Answer the following question")
-        else console.log("chatRequestBuffer is not empty. First process the last request.")
+        else if (fn === "vulnerability_check") ChatApi.composer.send("Is there any vulnerability in the pasted code?")
+        else console.log("chatRequestBuffer function name not recognized.")
       }
     }
     else {
-      console.log("chatRequestBuffer is not empty. First process the last request.")
+      console.log("chatRequestBuffer is not empty. First process the last request.", this.chatRequestBuffer)
     }
     _paq.push(['trackEvent', 'ai', 'remixAI_chat', 'askFromTerminal'])
   }
