@@ -26,7 +26,7 @@
   "udapp.contractOptionsTitle2": "Select a compiled contract to deploy or to use with At Address.",
   "udapp.contractOptionsTitle3": "Select and compile *.sol file to deploy or access a contract.",
   "udapp.contractOptionsTitle4": "When there is a compiled .sol file, choose the  contract to deploy or to use with At Address.",
-  "udapp.checkSumWarning": "It seems you are not using a checksumed address.A checksummed address is an address that contains uppercase letters, as specified in {a}.Checksummed addresses are meant to help prevent users from sending transactions to the wrong address.",
+  "udapp.checkSumWarning": "It seems you are not using a checksummed address.A checksummed address is an address that contains uppercase letters, as specified in {a}.Checksummed addresses are meant to help prevent users from sending transactions to the wrong address.",
   "udapp.isOverSizePromptEip170": "Contract creation initialization returns data with length of more than 24576 bytes. The deployment will likely fail if the current network has activated the eip 170. More info: {a}",
   "udapp.isOverSizePromptEip3860": "Contract creation init code exceeds the allowed max code size of 49152 bytes. The deployment will likely fail if the current network has activated the eip 3860. More info: {a}",
   "udapp.thisContractMayBeAbstract": "This contract may be abstract, it may not implement an abstract parent's methods completely or it may not invoke an inherited contract's constructor correctly.",

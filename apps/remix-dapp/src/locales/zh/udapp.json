@@ -23,7 +23,7 @@
   "udapp.contractOptionsTitle2": "选择要部署或与 At Address 一起使用的已编译合约。",
   "udapp.contractOptionsTitle3": "选择并编译 *.sol 文件以部署或访问合约。",
   "udapp.contractOptionsTitle4": "当有编译的 .sol 文件时，选择 {br} 合约进行部署或与 AtAddress 一起使用。",
-  "udapp.checkSumWarning": "您似乎没有使用 checksumed address 。{br} checksumed address 是包含大写字母的地址，如 {a} 中所指定。{br} checksumed address 旨在帮助防止用户将交易发送到错误地址。",
+  "udapp.checkSumWarning": "您似乎没有使用 checksummed address 。{br} checksummed address 是包含大写字母的地址，如 {a} 中所指定。{br} checksummed address 旨在帮助防止用户将交易发送到错误地址。",
   "udapp.isOverSizePromptEip170": "合约创建初始化返回长度超过24576字节的数据。部署可能会失败。 {br}更多信息：{a}",
   "udapp.isOverSizePromptEip3860": "合约创建初始化代码超出了允许的最大代码大小 49152 字节。如果当前网络已激活 eip 3860，则部署可能会失败。更多信息：{a}",
   "udapp.thisContractMayBeAbstract": "这个合约可能是抽象的，它可能没有完全实现抽象父类的方法，或者它可能没有正确调用继承合约的构造函数。",
