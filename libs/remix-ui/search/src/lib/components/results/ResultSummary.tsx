@@ -13,10 +13,10 @@ interface ResultSummaryProps {
 
 export const ResultSummary = (props: ResultSummaryProps) => {
   const intl = useIntl()
-  const { hightLightInPath, replaceText, state } = useContext(SearchContext)
+  const { highlightInPath, replaceText, state } = useContext(SearchContext)
   const { modal } = useDialogDispatchers()
   const selectLine = async (line: SearchResultLineLine) => {
-    await hightLightInPath(props.searchResult, line)
+    await highlightInPath(props.searchResult, line)
   }
 
   const confirmReplace = async (line: SearchResultLineLine) => {

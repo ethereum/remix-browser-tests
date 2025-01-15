@@ -19,7 +19,7 @@ export interface SearchingStateInterface {
   setWholeWord: (value: boolean) => void
   setSearchResults: (value: SearchResult[]) => void
   findText: (path: string) => Promise<SearchResultLine[]>
-  hightLightInPath: (result: SearchResult, line: SearchResultLineLine) => void
+  highlightInPath: (result: SearchResult, line: SearchResultLineLine) => void
   replaceText: (result: SearchResult, line: SearchResultLineLine) => Promise<void>
   reloadFile: (file: string) => void
   toggleCaseSensitive: () => void
@@ -194,7 +194,7 @@ export const SearchProvider = ({ children = [], reducer = SearchReducer, initial
         // do nothing
       }
     },
-    hightLightInPath: async (result: SearchResult, line: SearchResultLineLine) => {
+    highlightInPath: async (result: SearchResult, line: SearchResultLineLine) => {
       await plugin.call('editor', 'discardHighlight')
       await plugin.call('editor', 'highlight', line.position, result.path)
       await plugin.call('editor', 'revealRange', line.position.start.line, line.position.start.column, line.position.end.line, line.position.end.column)
