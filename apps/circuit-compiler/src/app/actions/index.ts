@@ -1,46 +1,42 @@
 import * as snarkjs from 'snarkjs'
-import type { CircomPluginClient } from "../services/circomPluginClient"
-import { ActionPayloadTypes, AppState, ICircuitAppContext } from "../types"
+import type { CircomPluginClient } from '../services/circomPluginClient'
+import { ActionPayloadTypes, AppState, ICircuitAppContext } from '../types'
 import { GROTH16_VERIFIER, PLONK_VERIFIER } from './constant'
 import { extractNameFromKey, extractParentFromKey } from '@remix-ui/helper'
 import isElectron from 'is-electron'
 
 export const compileCircuit = async (plugin: CircomPluginClient, appState: AppState) => {
+  if (appState.status !== 'compiling') {
+    return console.log('Existing circuit compilation in progress')
+  }
+
   try {
-    if (appState.status !== "compiling") {
-      await plugin.compile(appState.filePath, { version: appState.version, prime: appState.primeValue })
-    } else {
-      console.log('Existing circuit compilation in progress')
-    }
+    await plugin.compile(appState.filePath, { version: appState.version, prime: appState.primeValue })
   } catch (e) {
-    plugin.emit('statusChanged', { key: 'error', title: e.message, type: 'error' })
-    plugin.internalEvents.emit('circuit_compiling_errored', e)
-    console.error(e)
+    handleError(plugin, 'circuit_compiling_errored', e)
   }
 }
 
 export const computeWitness = async (plugin: CircomPluginClient, appState: AppState, dispatch: ICircuitAppContext['dispatch'], status: string, witnessValues: Record<string, string>) => {
+  if (status !== 'computing') {
+    return console.log('Existing witness computation in progress')
+  }
+
   try {
-    if (status !== "computing") {
-      const input = JSON.stringify(witnessValues)
-      const witness = await plugin.computeWitness(input)
+    const input = JSON.stringify(witnessValues)
+    const witness = await plugin.computeWitness(input)
 
-      if (appState.exportWtnsJson) {
-        const wtns = await snarkjs.wtns.exportJson(witness)
-        const wtnsJson = wtns.map(wtn => wtn.toString())
-        const fileName = extractNameFromKey(appState.filePath)
-        const writePath = extractParentFromKey(appState.filePath) + `/.bin/${fileName.replace('.circom', '_js')}/${fileName.replace('.circom', '.wtn.json')}`
+    if (appState.exportWtnsJson) {
+      const wtns = await snarkjs.wtns.exportJson(witness)
+      const wtnsJson = wtns.map((wtn) => wtn.toString())
+      const fileName = extractNameFromKey(appState.filePath)
+      const writePath = extractParentFromKey(appState.filePath) + `/.bin/${fileName.replace('.circom', '_js')}/${fileName.replace('.circom', '.wtn.json')}`
 
-        await plugin.call('fileManager', 'writeFile', writePath, JSON.stringify(wtnsJson, null, 2))
-        plugin._paq.push(['trackEvent', 'circuit-compiler', 'computeWitness', 'wtns.exportJson', writePath])
-      }
-    } else {
-      console.log('Existing witness computation in progress')
+      await writeFile(plugin, writePath, JSON.stringify(wtnsJson, null, 2))
+      trackEvent(plugin, 'computeWitness', 'wtns.exportJson', writePath)
     }
   } catch (e) {
-    plugin.emit('statusChanged', { key: 'error', title: e.message, type: 'error' })
-    plugin.internalEvents.emit('circuit_computing_witness_errored', e)
-    console.error('Computing witness failed: ', e)
+    handleError(plugin, 'circuit_computing_witness_errored', e)
   }
 }
 
@@ -49,58 +45,23 @@ export const runSetupAndExport = async (plugin: CircomPluginClient, appState: Ap
     dispatch({ type: 'SET_COMPILER_STATUS', payload: 'exporting' })
     dispatch({ type: 'SET_SETUP_EXPORT_FEEDBACK', payload: null })
     plugin.emit('statusChanged', { key: 'none' })
-    const ptau_final = `https://ipfs-cluster.ethdevops.io/ipfs/${appState.ptauList.find(ptau => ptau.name === appState.ptauValue)?.ipfsHash}`
+
+    const ptauFinal = getPtauUrl(appState)
     await plugin.generateR1cs(appState.filePath, { version: appState.version, prime: appState.primeValue })
 
-    const fileName = extractNameFromKey(appState.filePath)
-    const readPath = extractParentFromKey(appState.filePath) + `/.bin/${fileName.replace('.circom', '.r1cs')}`
-    // @ts-ignore
-    const r1csBuffer = await plugin.call('fileManager', 'readFile', readPath, { encoding: null })
-    // @ts-ignore
-    const r1cs = new Uint8Array(r1csBuffer)
-    const zkey_final = { type: "mem" }
+    const r1cs = await readFileAsUint8Array(plugin, getR1csPath(appState))
+    const zkeyFinal = { type: 'mem' }
 
     if (appState.provingScheme === 'groth16') {
-      plugin._paq.push(['trackEvent', 'circuit-compiler', 'runSetupAndExport', 'provingScheme', 'groth16'])
-      await snarkjs.zKey.newZKey(r1cs, ptau_final, zkey_final, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
-      const vKey = await snarkjs.zKey.exportVerificationKey(zkey_final, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
-
-      if (appState.exportVerificationKey) {
-        await plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/groth16/zk/keys/verification_key.json`, JSON.stringify(vKey, null, 2))
-        plugin._paq.push(['trackEvent', 'circuit-compiler', 'runSetupAndExport', 'zKey.exportVerificationKey', `${extractParentFromKey(appState.filePath)}/groth16/zk/keys/verification_key.json`])
-      }
-      if (appState.exportVerificationContract) {
-        const templates = { groth16: GROTH16_VERIFIER }
-        const solidityContract = await snarkjs.zKey.exportSolidityVerifier(zkey_final, templates, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
-
-        await plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/groth16/zk/build/zk_verifier.sol`, solidityContract)
-        plugin._paq.push(['trackEvent', 'circuit-compiler', 'runSetupAndExport', 'zKey.exportSolidityVerifier', `${extractParentFromKey(appState.filePath)}/groth16/zk/build/zk_verifier.sol`])
-      }
-      dispatch({ type: 'SET_ZKEY', payload: zkey_final })
-      dispatch({ type: 'SET_VERIFICATION_KEY', payload: vKey })
+      await setupGroth16(plugin, appState, dispatch, r1cs, ptauFinal, zkeyFinal)
     } else if (appState.provingScheme === 'plonk') {
-      plugin._paq.push(['trackEvent', 'circuit-compiler', 'runSetupAndExport', 'provingScheme', 'plonk'])
-      await snarkjs.plonk.setup(r1cs, ptau_final, zkey_final, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
-      const vKey = await snarkjs.zKey.exportVerificationKey(zkey_final, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
-
-      if (appState.exportVerificationKey) {
-        await plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/plonk/zk/keys/verification_key.json`, JSON.stringify(vKey, null, 2))
-        plugin._paq.push(['trackEvent', 'circuit-compiler', 'runSetupAndExport', 'zKey.exportVerificationKey', `${extractParentFromKey(appState.filePath)}/plonk/zk/keys/verification_key.json`])
-      }
-      if (appState.exportVerificationContract) {
-        const templates = { plonk: PLONK_VERIFIER }
-        const solidityContract = await snarkjs.zKey.exportSolidityVerifier(zkey_final, templates, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
-
-        await plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/plonk/zk/build/zk_verifier.sol`, solidityContract)
-        plugin._paq.push(['trackEvent', 'circuit-compiler', 'runSetupAndExport', 'zKey.exportSolidityVerifier', `${extractParentFromKey(appState.filePath)}/plonk/zk/build/zk_verifier.sol`])
-      }
-      dispatch({ type: 'SET_ZKEY', payload: zkey_final })
-      dispatch({ type: 'SET_VERIFICATION_KEY', payload: vKey })
+      await setupPlonk(plugin, appState, dispatch, r1cs, ptauFinal, zkeyFinal)
     }
+
     dispatch({ type: 'SET_COMPILER_STATUS', payload: 'idle' })
     dispatch({ type: 'SET_SETUP_EXPORT_STATUS', payload: 'done' })
   } catch (e) {
-    plugin._paq.push(['trackEvent', 'circuit-compiler', 'runSetupAndExport', 'error', e.message])
+    trackEvent(plugin, 'runSetupAndExport', 'error', e.message)
     dispatch({ type: 'SET_COMPILER_STATUS', payload: 'errored' })
     console.error(e)
   }
@@ -111,48 +72,15 @@ export const generateProof = async (plugin: CircomPluginClient, appState: AppSta
     dispatch({ type: 'SET_COMPILER_STATUS', payload: 'proving' })
     dispatch({ type: 'SET_PROOF_FEEDBACK', payload: null })
     plugin.emit('statusChanged', { key: 'none' })
-    const fileName = extractNameFromKey(appState.filePath)
-    const r1csPath = extractParentFromKey(appState.filePath) + `/.bin/${fileName.replace('.circom', '.r1cs')}`
-    // @ts-ignore
-    const r1csBuffer = await plugin.call('fileManager', 'readFile', r1csPath, { encoding: null })
-    // @ts-ignore
-    const r1cs = new Uint8Array(r1csBuffer)
-    const wtnsPath = isElectron() ? extractParentFromKey(appState.filePath) + "/.bin/" + fileName.replace('.circom', '_js') + "/" + fileName.replace('.circom', '.wtn') : r1csPath.replace('.r1cs', '.wtn')
-    // @ts-ignore
-    const wtnsBuffer = await plugin.call('fileManager', 'readFile', wtnsPath, { encoding: null })
-    // @ts-ignore
-    const wtns = new Uint8Array(wtnsBuffer)
-    const zkey_final = appState.zKey
-    const vKey = appState.verificationKey
+
+    const r1cs = await readFileAsUint8Array(plugin, getR1csPath(appState))
+    const wtns = await readFileAsUint8Array(plugin, getWitnessPath(appState))
 
     await snarkjs.wtns.check(r1cs, wtns, zkLogger(plugin, dispatch, 'SET_PROOF_FEEDBACK'))
-    if (appState.provingScheme === 'groth16') {
-      const { proof, publicSignals } = await snarkjs.groth16.prove(zkey_final, wtns, zkLogger(plugin, dispatch, 'SET_PROOF_FEEDBACK'))
-      const verified = await snarkjs.groth16.verify(vKey, publicSignals, proof, zkLogger(plugin, dispatch, 'SET_PROOF_FEEDBACK'))
 
-      plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/groth16/zk/build/proof.json`, JSON.stringify(proof, null, 2))
-      plugin.call('terminal', 'log', { type: 'log', value: 'zk proof validity ' + verified })
-      plugin._paq.push(['trackEvent', 'circuit-compiler', 'generateProof', 'groth16.prove', verified])
-      if (appState.exportVerifierCalldata) {
-        const calldata = await snarkjs.groth16.exportSolidityCallData(proof, publicSignals)
+    const proofMethod = appState.provingScheme === 'groth16' ? proveGroth16 : provePlonk
+    await proofMethod(plugin, appState, dispatch, wtns)
 
-        plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/groth16/zk/build/verifierCalldata.json`, calldata)
-        plugin._paq.push(['trackEvent', 'circuit-compiler', 'generateProof', 'groth16.exportSolidityCallData', `${extractParentFromKey(appState.filePath)}/groth16/zk/build/verifierCalldata.json`])
-      }
-    } else if (appState.provingScheme === 'plonk') {
-      const { proof, publicSignals } = await snarkjs.plonk.prove(zkey_final, wtns, zkLogger(plugin, dispatch, 'SET_PROOF_FEEDBACK'))
-      const verified = await snarkjs.plonk.verify(vKey, publicSignals, proof, zkLogger(plugin, dispatch, 'SET_PROOF_FEEDBACK'))
-
-      plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/plonk/zk/build/proof.json`, JSON.stringify(proof, null, 2))
-      plugin.call('terminal', 'log', { type: 'log', value: 'zk proof validity ' + verified })
-      plugin._paq.push(['trackEvent', 'circuit-compiler', 'generateProof', 'plonk.prove', verified])
-      if (appState.exportVerifierCalldata) {
-        const calldata = await snarkjs.plonk.exportSolidityCallData(proof, publicSignals)
-
-        plugin.call('fileManager', 'writeFile', `${extractParentFromKey(appState.filePath)}/plonk/zk/build/verifierCalldata.json`, calldata)
-        plugin._paq.push(['trackEvent', 'circuit-compiler', 'generateProof', 'plonk.exportSolidityCallData', `${extractParentFromKey(appState.filePath)}/plonk/zk/build/verifierCalldata.json`])
-      }
-    }
     dispatch({ type: 'SET_COMPILER_STATUS', payload: 'idle' })
     dispatch({ type: 'SET_PROOF_FEEDBACK', payload: null })
   } catch (e) {
@@ -162,14 +90,97 @@ export const generateProof = async (plugin: CircomPluginClient, appState: AppSta
   }
 }
 
-function zkLogger(plugin: CircomPluginClient, dispatch: ICircuitAppContext['dispatch'], dispatchType: keyof ActionPayloadTypes) {
-  return {
-    info: (...args) => plugin.call('terminal', 'log', { type: 'log', value: args.join(' ') }),
-    debug: (...args) => plugin.call('terminal', 'log', { type: 'log', value: args.join(' ') }),
-    error: (...args) => {
-      plugin.call('terminal', 'log', { type: 'error', value: args.join(' ') })
-      dispatch({ type: dispatchType as any, payload: args.join(' ') })
-      plugin.emit('statusChanged', { key: args.length, title: `You have ${args.length} problem${args.length === 1 ? '' : 's'}`, type: 'error' })
-    }
+// Helper Functions
+
+function getR1csPath(appState: AppState) {
+  const fileName = extractNameFromKey(appState.filePath)
+  return `${extractParentFromKey(appState.filePath)}/.bin/${fileName.replace('.circom', '.r1cs')}`
+}
+
+function getWitnessPath(appState: AppState) {
+  return getR1csPath(appState).replace('.r1cs', '.wtn')
+}
+
+function getPtauUrl(appState: AppState) {
+  return `https://ipfs-cluster.ethdevops.io/ipfs/${appState.ptauList.find((ptau) => ptau.name === appState.ptauValue)?.ipfsHash}`
+}
+
+async function setupGroth16(plugin: CircomPluginClient, appState: AppState, dispatch, r1cs, ptauFinal, zkeyFinal) {
+  await snarkjs.zKey.newZKey(r1cs, ptauFinal, zkeyFinal, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
+  const vKey = await snarkjs.zKey.exportVerificationKey(zkeyFinal)
+
+  await exportVerificationFiles(plugin, appState, vKey, GROTH16_VERIFIER, zkeyFinal, 'groth16')
+  dispatch({ type: 'SET_ZKEY', payload: zkeyFinal })
+  dispatch({ type: 'SET_VERIFICATION_KEY', payload: vKey })
+}
+
+async function setupPlonk(plugin: CircomPluginClient, appState: AppState, dispatch, r1cs, ptauFinal, zkeyFinal) {
+  await snarkjs.plonk.setup(r1cs, ptauFinal, zkeyFinal, zkLogger(plugin, dispatch, 'SET_SETUP_EXPORT_FEEDBACK'))
+  const vKey = await snarkjs.zKey.exportVerificationKey(zkeyFinal)
+
+  await exportVerificationFiles(plugin, appState, vKey, PLONK_VERIFIER, zkeyFinal, 'plonk')
+  dispatch({ type: 'SET_ZKEY', payload: zkeyFinal })
+  dispatch({ type: 'SET_VERIFICATION_KEY', payload: vKey })
+}
+
+async function proveGroth16(plugin: CircomPluginClient, appState: AppState, dispatch, wtns) {
+  const { proof, publicSignals } = await snarkjs.groth16.prove(appState.zKey, wtns, zkLogger(plugin, dispatch, 'SET_PROOF_FEEDBACK'))
+  const verified = await snarkjs.groth16.verify(appState.verificationKey, publicSignals, proof)
+
+  await writeProofFiles(plugin, appState, proof, 'groth16', verified)
+}
+
+async function provePlonk(plugin: CircomPluginClient, appState: AppState, dispatch, wtns) {
+  const { proof, publicSignals } = await snarkjs.plonk.prove(appState.zKey, wtns, zkLogger(plugin, dispatch, 'SET_PROOF_FEEDBACK'))
+  const verified = await snarkjs.plonk.verify(appState.verificationKey, publicSignals, proof)
+
+  await writeProofFiles(plugin, appState, proof, 'plonk', verified)
+}
+
+async function exportVerificationFiles(plugin, appState, vKey, verifierTemplate, zkeyFinal, scheme) {
+  if (appState.exportVerificationKey) {
+    await writeFile(plugin, `${extractParentFromKey(appState.filePath)}/${scheme}/zk/keys/verification_key.json`, JSON.stringify(vKey, null, 2))
+  }
+
+  if (appState.exportVerificationContract) {
+    const solidityContract = await snarkjs.zKey.exportSolidityVerifier(zkeyFinal, verifierTemplate)
+    await writeFile(plugin, `${extractParentFromKey(appState.filePath)}/${scheme}/zk/verifier.sol`, solidityContract)
+  }
+}
+
+async function writeProofFiles(plugin, appState, proof, scheme, verified) {
+  const proofPath = `${extractParentFromKey(appState.filePath)}/${scheme}/zk/proof.json`
+  await writeFile(plugin, proofPath, JSON.stringify(proof, null, 2))
+
+  if (verified) {
+    trackEvent(plugin, 'proof_verified', proofPath, 'notification')
+  } else {
+    trackEvent(plugin, 'proof_failed', proofPath, 'notification')
+  }
+}
+
+function trackEvent(plugin, eventCategory, action, label) {
+  plugin._paq.push(['trackEvent', eventCategory, action, label])
+}
+
+async function readFileAsUint8Array(plugin: CircomPluginClient, path: string) {
+  // @ts-ignore
+  await plugin.call('fileManager', 'readFile', path)
+}
+
+async function writeFile(plugin: CircomPluginClient, path: string, content: string) {
+  // @ts-ignore
+  await plugin.call('fileManager', 'writeFile', path, content)
+}
+
+function handleError(plugin: CircomPluginClient, event: string, error: Error) {
+  console.error(error)
+  trackEvent(plugin, 'error', event, error.message)
+}
+
+function zkLogger(plugin: CircomPluginClient, dispatch, feedbackType) {
+  return (msg: string) => {
+    dispatch({ type: feedbackType, payload: msg })
+    plugin.emit('statusChanged', { key: 'none' })
   }
 }
