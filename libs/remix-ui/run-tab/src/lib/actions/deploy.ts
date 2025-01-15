@@ -22,7 +22,7 @@ const txHelper = remixLib.execution.txHelper
 const txFormat = remixLib.execution.txFormat
 
 const loadContractFromAddress = (plugin: RunTab, address, confirmCb, cb) => {
-  if (/.(.abi)$/.exec(plugin.config.get('currentFile'))) {
+  if (/\.(abi)$/.exec(plugin.config.get('currentFile'))) {
     confirmCb(() => {
       let abi
       try {

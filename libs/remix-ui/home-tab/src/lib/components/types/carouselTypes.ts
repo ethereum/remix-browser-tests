@@ -34,7 +34,7 @@ export interface CarouselProps {
   beforeChange?: (nextSlide: number, state: StateCallBack) => void; // Change callback before sliding every time. `(previousSlide, currentState) => ...`
   sliderClass?: string; // Use this to style your own track list.
   itemClass?: string; // Use this to style your own Carousel item. For example add padding-left and padding-right
-  itemAriaLabel?: string; // Use this to add your own Carousel item aria-label.if it is not defined the child aria label will be applied if the child dont have one than a default empty string will be applied
+  itemAriaLabel?: string; // Use this to add your own Carousel item aria-label.if it is not defined the child aria label will be applied if the child doesn't have one, then a default empty string will be applied
   containerClass?: string; // Use this to style the whole container. For example add padding to allow the "dots" or "arrows" to go to other places without being overflown.
   className?: string; // Use this to style the whole container with styled-components
   dotListClass?: string; // Use this to style the dot list.
