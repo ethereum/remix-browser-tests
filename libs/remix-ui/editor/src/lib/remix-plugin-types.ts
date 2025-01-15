@@ -545,7 +545,7 @@ declare interface ISettings {
 }
 
 declare interface ITerminal {
-    events: {   
+    events: {
     } & StatusEvents
     methods: {
         log(message: TerminalMessage): void
@@ -675,7 +675,7 @@ export declare class PluginClient<T extends Api = any, App extends ApiMap = Remi
      * @param from profile of plugin asking to deactivate
      * @note PluginManager will always be able to deactivate
      */
-    canDeactivate(from: Profile): boolean;
+    checkCanDeactivate(from: Profile): boolean;
     /** Make a call to another plugin */
     call<Name extends Extract<keyof App, string>, Key extends MethodKey<App[Name]>>(name: Name, key: Key, ...payload: MethodParams<App[Name], Key>): Promise<ReturnType<App[Name]['methods'][Key]>>;
     /** Listen on event from another plugin */

@@ -102,7 +102,7 @@ export class VerticalIcons extends Plugin {
       profile: profile,
       active: false,
       pinned: false,
-      canbeDeactivated: await this.call('manager', 'canDeactivate', this.profile, profile),
+      canbeDeactivated: await this.call('manager', 'checkCanDeactivate', this.profile, profile),
       timestamp: Date.now()
     }
     this.renderComponent()
