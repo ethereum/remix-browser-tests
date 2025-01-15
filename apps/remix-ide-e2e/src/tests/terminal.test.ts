@@ -209,18 +209,16 @@ module.exports = {
       .createContract('')
       .getAddressAtPosition(0, (address) => {
         addressRef = address
-      })
-      .perform((done) => {
         browser.addFile('scripts/test_filtering_event.ts', { content: test_filtering_event.replace('<ADDRESS>', addressRef) })
-        .perform(() => done())
+          .executeScriptInTerminal('remix.execute(\'scripts/test_filtering_event.ts\')')
+          .pause(1000)
+          .waitForElementContainsText('*[data-id="terminalJournal"]', '1')
+          .waitForElementContainsText('*[data-id="terminalJournal"]', 'true')
+          .executeScriptInTerminal('remix.execute(\'scripts/test_filtering_event.ts\')') // re-emit the event
+          .waitForElementContainsText('*[data-id="terminalJournal"]', '2')
+          .waitForElementContainsText('*[data-id="terminalJournal"]', 'false')
       })
-      .executeScriptInTerminal('remix.execute(\'scripts/test_filtering_event.ts\')')
-      .pause(1000)
-      .waitForElementContainsText('*[data-id="terminalJournal"]', '1')
-      .waitForElementContainsText('*[data-id="terminalJournal"]', 'true')
-      .executeScriptInTerminal('remix.execute(\'scripts/test_filtering_event.ts\')') // re-emit the event
-      .waitForElementContainsText('*[data-id="terminalJournal"]', '2')
-      .waitForElementContainsText('*[data-id="terminalJournal"]', 'false')
+
   },
 
   'Should display auto-complete menu #group4': function (browser: NightwatchBrowser) {
