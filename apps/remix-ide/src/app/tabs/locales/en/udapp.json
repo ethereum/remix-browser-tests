@@ -58,6 +58,7 @@
   "udapp.deleteVmStateDesc3": "Do you want to continue?",
   "udapp.delete": "Delete",
   "udapp.injectedTitle": "Unfortunately it's not possible to create an account using injected provider. Please create the account directly from your provider (i.e metamask or other of the same type).",
+  "udapp.createSmartAccount": "Create safe smart account",
   "udapp.createNewAccount": "Create new account",
   "udapp.web3Title": "Creating an account is possible only in Personal mode. Please go to Settings to enable it.",
   "udapp.defaultTitle": "Unfortunately it's not possible to create an account using an external wallet ({selectExEnv}).",
