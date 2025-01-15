@@ -42,3 +42,23 @@ type NavigatorUAData = {
 export interface RemixNavigator extends Navigator {
   userAgentData: NavigatorUAData
 }
+
+export interface IRemixAppManager {
+  actives: string[]
+  pluginsDirectory: string
+  event: EventEmitter
+  pluginLoader: PluginLoader
+  canActivatePlugin(from: any, to: any): Promise<boolean>
+  canDeactivatePlugin(from: any, to: any): Promise<boolean>
+  checkCanDeactivate(from: any, to: any): Promise<boolean>
+  deactivatePlugin(name: string): Promise<void>
+  canCall(from: string, to: string, method: string, message: string): Promise<boolean>
+  onPluginActivated(plugin: any): void
+  onPluginDeactivated(plugin: any): void
+  getAll(): Profile<any>[]
+  getIds(): string[]
+  isDependent(name: string): boolean
+  isRequired(name: string): boolean
+  registeredPlugins(): Promise<any[]>
+  registerContextMenuItems(): Promise<void>
+}

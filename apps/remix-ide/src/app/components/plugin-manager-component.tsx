@@ -22,7 +22,7 @@ const profile = {
   maintainedBy: "Remix"
 }
 
-export class PluginManagerComponent extends ViewPlugin {
+export default class PluginManagerComponent extends ViewPlugin {
   appManager: RemixAppManager
   engine: RemixEngine
   htmlElement: HTMLDivElement

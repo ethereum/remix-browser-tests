@@ -3,7 +3,8 @@ import { EventEmitter } from 'events'
 import { QueryParams } from '@remix-project/remix-lib'
 import { IframePlugin } from '@remixproject/engine-web'
 import { Registry } from '@remix-project/remix-lib'
-import { RemixNavigator } from './types'
+import { IRemixAppManager, RemixNavigator } from './types'
+import { Profile } from '@remixproject/plugin-utils'
 
 const _paq = (window._paq = window._paq || [])
 
@@ -170,7 +171,7 @@ export function canActivate(from, to) {
   return ['ethdoc'].includes(from.name) || isNative(from.name) || (to && from && from.canActivate && from.canActivate.includes(to.name))
 }
 
-export class RemixAppManager extends PluginManager {
+export class RemixAppManager extends PluginManager implements IRemixAppManager {
   actives = []
   pluginsDirectory: string
   event: EventEmitter
@@ -264,16 +265,16 @@ export class RemixAppManager extends PluginManager {
     _paq.push(['trackEvent', 'pluginManager', 'deactivate', plugin.name])
   }
 
-  isDependent(name) {
+  isDependent(name: string): boolean {
     return dependentModules.includes(name)
   }
 
-  isRequired(name) {
+  isRequired(name: string): boolean {
     // excluding internal use plugins
     return requiredModules.includes(name) || isInjectedProvider(name) || isVM(name) || isScriptRunner(name)
   }
 
-  async registeredPlugins() {
+  async registeredPlugins(): Promise<IframePlugin[]> {
     let plugins
     try {
       const res = await fetch(this.pluginsDirectory)
