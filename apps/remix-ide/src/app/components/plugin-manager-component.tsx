@@ -1,8 +1,11 @@
 import { ViewPlugin } from '@remixproject/engine-web'
 import React from 'react' // eslint-disable-line
-import {RemixUiPluginManager} from '@remix-ui/plugin-manager' // eslint-disable-line
+import { RemixUiPluginManager } from '@remix-ui/plugin-manager' // eslint-disable-line
 import * as packageJson from '../../../../../package.json'
 import { PluginViewWrapper } from '@remix-ui/helper'
+import { Profile } from '@remixproject/plugin-utils'
+import { RemixAppManager } from '../../remixAppManager'
+import { RemixEngine } from '../../remixEngine'
 const _paq = window._paq = window._paq || []
 
 const profile = {
@@ -19,8 +22,17 @@ const profile = {
   maintainedBy: "Remix"
 }
 
-export default class PluginManagerComponent extends ViewPlugin {
-  constructor (appManager, engine) {
+export class PluginManagerComponent extends ViewPlugin {
+  appManager: RemixAppManager
+  engine: RemixEngine
+  htmlElement: HTMLDivElement
+  filter: string
+  activePlugins: Profile[]
+  inactivePlugins: Profile[]
+  activeProfiles: string[]
+  dispatch: (state: unknown) => void | null
+  private _paq: string[] | string
+  constructor (appManager: RemixAppManager, engine: RemixEngine) {
     super(profile)
     this.appManager = appManager
     this.engine = engine
@@ -88,12 +100,11 @@ export default class PluginManagerComponent extends ViewPlugin {
   }
 
   updateComponent(state){
-    return <RemixUiPluginManager
-      pluginComponent={state}/>
+    return <RemixUiPluginManager pluginComponent={state} />
   }
 
   renderComponent () {
-    if(this.dispatch) this.dispatch({...this, activePlugins: this.activePlugins, inactivePlugins: this.inactivePlugins})
+    if (this.dispatch) this.dispatch({ ...this, activePlugins: this.activePlugins, inactivePlugins: this.inactivePlugins }) // { PluginManagerComponent, activePlugins, inactivePlugins }
   }
 
   render () {
@@ -103,7 +114,7 @@ export default class PluginManagerComponent extends ViewPlugin {
 
   }
 
-  getAndFilterPlugins = (filter) => {
+  getAndFilterPlugins = (filter: string | never = '') => {
     this.filter = typeof filter === 'string' ? filter.toLowerCase() : this.filter
     const isFiltered = (profile) => (profile.displayName + profile.name + profile.description).toLowerCase().includes(this.filter)
     const isNotRequired = (profile) => !this.appManager.isRequired(profile.name)
@@ -145,5 +156,3 @@ export default class PluginManagerComponent extends ViewPlugin {
     })
   }
 }
-
-module.exports = PluginManagerComponent
