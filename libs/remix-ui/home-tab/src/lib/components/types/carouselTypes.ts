@@ -4,7 +4,6 @@ export interface ResponsiveType {
     breakpoint: { max: number; min: number };
     items: number;
     partialVisibilityGutter?: number; // back-ward compatible, because previously there has been a typo
-    paritialVisibilityGutter?: number;
     slidesToSlide?: number;
   };
 }
@@ -49,14 +48,13 @@ export interface CarouselProps {
   // partialVisible has to be used in conjunction with the responsive props, details are in documentation.
   // it shows the next set of items partially, different from centerMode as it shows both.
   partialVisible?: boolean;
-  partialVisbile?: boolean; // old typo - deprecated (will be remove in 3.0)
   customTransition?: string;
   transitionDuration?: number;
   // if you are using customTransition, make sure to put the duration here.
   // for example, customTransition="all .5"  then put transitionDuration as 500.
   // this is needed for the resizing to work.
   focusOnSelect?: boolean;
-  additionalTransfrom?: number; // this is only used if you want to add additional transform to the current transform
+  additionalTransform?: number; // this is only used if you want to add additional transform to the current transform
   pauseOnHover?: boolean;
   shouldResetAutoplay?: boolean;
   rewind?: boolean;

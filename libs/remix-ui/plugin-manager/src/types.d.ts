@@ -145,7 +145,7 @@ export interface RemixUiPluginManagerProps {
  **/
 declare class PluginLoader {
   get currentLoader(): any
-  donotAutoReload: string[]
+  doNotAutoReload: string[]
   loaders: Record<any, any>
   current: string
   set(plugin: any, actives: any): void
