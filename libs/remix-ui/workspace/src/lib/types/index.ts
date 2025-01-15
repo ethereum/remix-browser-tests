@@ -70,7 +70,7 @@ export interface FilePanelType extends ViewPlugin {
   setWorkspace: ({ name, isLocalhost }, setEvent: boolean) => void
   createWorkspace: (name: string, workspaceTemplateName: string) => void
   renameWorkspace: (oldName: string, newName: string) => void
-  compileContractForUml: (path: string) => void
+  compileContractForUml?: (path: string) => void
   workspaceRenamed: ({ name }) => void
   workspaceCreated: ({ name }) => void
   workspaceDeleted: ({ name }) => void
@@ -81,7 +81,7 @@ export interface FilePanelType extends ViewPlugin {
   appManager: RemixAppManager
   registry?: any // registry
   pluginApi?: any
-  request: {
+  request?: {
     createWorkspace: () => void
     setWorkspace: (workspaceName: string) => void
     createNewFile: () => void
@@ -89,10 +89,10 @@ export interface FilePanelType extends ViewPlugin {
     getCurrentWorkspace: () => void
   } // api request,
   workspaces: any
-  registeredMenuItems: MenuItems // menu items
-  removedMenuItems: MenuItems
-  initialWorkspace: string
-  resetNewFile: () => void
+  registeredMenuItems?: MenuItems // menu items
+  removedMenuItems?: MenuItems
+  initialWorkspace?: string
+  resetNewFile?: () => void
   getWorkspaces: () => string[]
   expandPath: string[]
 }

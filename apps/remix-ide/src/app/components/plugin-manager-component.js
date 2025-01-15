@@ -19,7 +19,7 @@ const profile = {
   maintainedBy: "Remix"
 }
 
-class PluginManagerComponent extends ViewPlugin {
+export default class PluginManagerComponent extends ViewPlugin {
   constructor (appManager, engine) {
     super(profile)
     this.appManager = appManager

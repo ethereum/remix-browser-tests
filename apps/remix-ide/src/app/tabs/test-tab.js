@@ -22,7 +22,7 @@ const profile = {
   maintainedBy: 'Remix'
 }
 
-module.exports = class TestTab extends ViewPlugin {
+export default class TestTab extends ViewPlugin {
   constructor (fileManager, offsetToLineColumnConverter, filePanel, compileTab, appManager, contentImport) {
     super(profile)
     this.compileTab = compileTab

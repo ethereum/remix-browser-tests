@@ -28,7 +28,7 @@ const profile = {
 // - events: ['compilationFinished'],
 // - methods: ['getCompilationResult']
 
-class CompileTab extends CompilerApiMixin(ViewPlugin) { // implements ICompilerApi
+export default class CompileTab extends CompilerApiMixin(ViewPlugin) { // implements ICompilerApi
   constructor (config, fileManager) {
     super(profile)
     this.fileManager = fileManager

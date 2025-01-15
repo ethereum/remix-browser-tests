@@ -12,7 +12,7 @@ const profile: Profile = {
 interface panelState {
   active: boolean
   plugin: Plugin
-  minimized: boolean
+  minimized?: boolean
 }
 interface panels {
   tabs: panelState

@@ -16,7 +16,7 @@ const profile = {
   methods: ['highlight', 'discardHighlight', 'clearAnnotations', 'addLineText', 'discardLineTexts', 'addAnnotation', 'gotoLine', 'revealRange', 'getCursorPosition', 'open', 'addModel','addErrorMarker', 'clearErrorMarkers', 'getText', 'getPositionAt', 'openReadOnly'],
 }
 
-class Editor extends Plugin {
+export default class Editor extends Plugin {
   constructor () {
     super(profile)
 
@@ -90,7 +90,7 @@ class Editor extends Plugin {
   }
 
   render () {
-    return <div ref={(element)=>{ 
+    return <div ref={(element)=>{
       this.ref = element
       this.ref.currentContent = () => this.currentContent() // used by e2e test
       this.ref.setCurrentContent = (value) => {
@@ -102,7 +102,7 @@ class Editor extends Plugin {
       this.ref.gotoLine = (line, column) => this.gotoLine(line, column || 0)
       this.ref.getCursorPosition = () => this.getCursorPosition()
       this.ref.addDecoration = (marker, filePath, typeOfDecoration) => this.addDecoration(marker, filePath, typeOfDecoration)
-      this.ref.clearDecorationsByPlugin = (filePath, plugin, typeOfDecoration) => this.clearDecorationsByPlugin(filePath, plugin, typeOfDecoration)      
+      this.ref.clearDecorationsByPlugin = (filePath, plugin, typeOfDecoration) => this.clearDecorationsByPlugin(filePath, plugin, typeOfDecoration)
       this.ref.keepDecorationsFor = (name, typeOfDecoration) => this.keepDecorationsFor(name, typeOfDecoration)
     }} id='editorView'>
       <PluginViewWrapper plugin={this} />
@@ -249,7 +249,7 @@ class Editor extends Plugin {
    */
   async _createSession (path, content, mode, readOnly) {
     if (!this.activated) return
-    
+
     this.emit('addModel', content, mode, path, readOnly || this.readOnlySessions[path])
     return {
       path,
@@ -548,7 +548,7 @@ class Editor extends Plugin {
     decoration.from = from
 
     const { currentDecorations, registeredDecorations } = this.api.addDecoration(decoration, path, typeOfDecoration)
-    if (!this.registeredDecorations[typeOfDecoration][filePath]) this.registeredDecorations[typeOfDecoration][filePath] = []    
+    if (!this.registeredDecorations[typeOfDecoration][filePath]) this.registeredDecorations[typeOfDecoration][filePath] = []
     this.registeredDecorations[typeOfDecoration][filePath].push(...registeredDecorations)
     if (!this.currentDecorations[typeOfDecoration][filePath]) this.currentDecorations[typeOfDecoration][filePath] = []
     this.currentDecorations[typeOfDecoration][filePath].push(...currentDecorations)
@@ -601,5 +601,3 @@ class Editor extends Plugin {
     return this.api.getPositionAt(offset)
   }
 }
-
-module.exports = Editor

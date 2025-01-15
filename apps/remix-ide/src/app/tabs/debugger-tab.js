@@ -22,7 +22,7 @@ const profile = {
   maintainedBy: 'Remix'
 }
 
-export class DebuggerTab extends DebuggerApiMixin(ViewPlugin) {
+export default class DebuggerTab extends DebuggerApiMixin(ViewPlugin) {
   constructor () {
     super(profile)
     this.el = document.createElement('div')

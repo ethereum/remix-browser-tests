@@ -55,7 +55,7 @@ const profile = {
   version: packageJson.version,
   maintainedBy: 'Remix'
 }
-module.exports = class Filepanel extends ViewPlugin {
+export default class Filepanel extends ViewPlugin {
   constructor(appManager, contentImport) {
     super(profile)
     this.registry = Registry.getInstance()

@@ -10,7 +10,7 @@ const profile = {
   kind: 'other'
 }
 
-export class TabProxy extends Plugin {
+export default class TabProxy extends Plugin {
   constructor (fileManager, editor) {
     super(profile)
     this.event = new EventEmitter()

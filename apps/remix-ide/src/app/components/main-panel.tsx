@@ -15,7 +15,7 @@ const profile = {
 export class MainPanel extends AbstractPanel {
   element: HTMLDivElement
   dispatch: React.Dispatch<any> = () => {}
-  constructor(config) {
+  constructor(config = null) {
     super(profile)
     this.element = document.createElement('div')
     this.element.setAttribute('data-id', 'mainPanelPluginsContainer')

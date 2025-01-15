@@ -34,14 +34,11 @@ export class RemixAppManager extends PluginManager {
   event: EventEmitter
   pluginsDirectory: string
   pluginLoader: PluginLoader // eslint-disable-line no-use-before-define
-  permissionHandler: PermissionHandler
   getAll(): import('@remixproject/plugin-utils').Profile<any>[]
   getIds(): string[]
   isDependent(name: any): any
   isRequired(name: any): any
   registeredPlugins(): Promise<any>
-  turnPluginOn(name: string | string[])
-  turnPluginOff(name: string)
 }
 
 export class PluginManagerSettings {
@@ -67,7 +64,7 @@ export type PluginPermissions = {
   }
 }
 
-export class PluginManagerComponent extends ViewPlugin extends Plugin implements PluginBase {
+export class PluginManagerComponent extends ViewPlugin implements PluginBase {
   constructor(appManager: RemixAppManager, engine: Engine)
   appManager: RemixAppManager
   pluginSettings: PluginManagerSettings
@@ -154,14 +151,6 @@ declare class PluginLoader {
   set(plugin: any, actives: any): void
   get(): any
 }
-// eslint-disable-next-line no-redeclare
-export type PluginManagerSettings = {
-  openDialog: () => void
-  onValidation: () => void
-  clearPermission: (from: any, to: any, method: any) => void
-  settings: () => HTMLElement
-  render: () => HTMLElement
-}
 
 export interface DefaultLocalPlugin extends Profile {
   name: string
@@ -197,15 +186,6 @@ export type PluginManagerProfile = Profile & {
   version: any
   type: 'iframe' | 'ws'
   hash: string
-}
-// eslint-disable-next-line no-redeclare
-export type LocalPlugin = {
-  create: () => Profile
-  updateName: (target: string) => void
-  updateDisplayName: (displayName: string) => void
-  updateProfile: (key: string, e: Event) => void
-  updateMethods: (target: any) => void
-  form: () => HTMLElement
 }
 
 export { }

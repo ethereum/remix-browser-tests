@@ -3,7 +3,7 @@
 const EventManager = require('events')
 import FileProvider from "./fileProvider"
 
-class WorkspaceFileProvider extends FileProvider {
+export default class WorkspaceFileProvider extends FileProvider {
   constructor () {
     super('')
     this.workspacesPath = '.workspaces'
@@ -18,10 +18,10 @@ class WorkspaceFileProvider extends FileProvider {
         })
       }).catch((e) => {
         console.log(e)
-      })     
+      })
     } catch (e) {
       // we don't need to log error if this throws an error
-    }    
+    }
   }
 
   setWorkspace (workspace) {

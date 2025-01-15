@@ -26,21 +26,21 @@ import { WalkthroughService } from './walkthroughService'
 
 import { OffsetToLineColumnConverter, CompilerMetadata, CompilerArtefacts, FetchAndCompile, CompilerImports, GistHandler } from '@remix-project/core-plugin'
 
-import {Registry} from '@remix-project/remix-lib'
-import {ConfigPlugin} from './app/plugins/config'
-import {StoragePlugin} from './app/plugins/storage'
-import {Layout} from './app/panels/layout'
-import {NotificationPlugin} from './app/plugins/notification'
-import {Blockchain} from './blockchain/blockchain'
-import {MergeVMProvider, LondonVMProvider, BerlinVMProvider, ShanghaiVMProvider, CancunVMProvider} from './app/providers/vm-provider'
-import {MainnetForkVMProvider} from './app/providers/mainnet-vm-fork-provider'
-import {SepoliaForkVMProvider} from './app/providers/sepolia-vm-fork-provider'
-import {GoerliForkVMProvider} from './app/providers/goerli-vm-fork-provider'
-import {CustomForkVMProvider} from './app/providers/custom-vm-fork-provider'
-import {HardhatProvider} from './app/providers/hardhat-provider'
-import {GanacheProvider} from './app/providers/ganache-provider'
-import {FoundryProvider} from './app/providers/foundry-provider'
-import {ExternalHttpProvider} from './app/providers/external-http-provider'
+import { Registry } from '@remix-project/remix-lib'
+import { ConfigPlugin } from './app/plugins/config'
+import { StoragePlugin } from './app/plugins/storage'
+import { Layout } from './app/panels/layout'
+import { NotificationPlugin } from './app/plugins/notification'
+import { Blockchain } from './blockchain/blockchain'
+import { MergeVMProvider, LondonVMProvider, BerlinVMProvider, ShanghaiVMProvider, CancunVMProvider } from './app/providers/vm-provider'
+import { MainnetForkVMProvider } from './app/providers/mainnet-vm-fork-provider'
+import { SepoliaForkVMProvider } from './app/providers/sepolia-vm-fork-provider'
+import { GoerliForkVMProvider } from './app/providers/goerli-vm-fork-provider'
+import { CustomForkVMProvider } from './app/providers/custom-vm-fork-provider'
+import { HardhatProvider } from './app/providers/hardhat-provider'
+import { GanacheProvider } from './app/providers/ganache-provider'
+import { FoundryProvider } from './app/providers/foundry-provider'
+import { ExternalHttpProvider } from './app/providers/external-http-provider'
 import { EnvironmentExplorer } from './app/providers/environment-explorer'
 import { FileDecorator } from './app/plugins/file-decorator'
 import { CodeFormat } from './app/plugins/code-format'
@@ -58,7 +58,7 @@ import { xtermPlugin } from './app/plugins/electron/xtermPlugin'
 import { ripgrepPlugin } from './app/plugins/electron/ripgrepPlugin'
 import { compilerLoaderPlugin, compilerLoaderPluginDesktop } from './app/plugins/electron/compilerLoaderPlugin'
 import { appUpdaterPlugin } from './app/plugins/electron/appUpdaterPlugin'
-import { remixAIDesktopPlugin } from './app/plugins/electron/remixAIDesktopPlugin' 
+import { remixAIDesktopPlugin } from './app/plugins/electron/remixAIDesktopPlugin'
 import { RemixAIPlugin } from './app/plugins/remixAIPlugin'
 import { SlitherHandleDesktop } from './app/plugins/electron/slitherPlugin'
 import { SlitherHandle } from './app/files/slither-handle'
@@ -72,9 +72,9 @@ import { Matomo } from './app/plugins/matomo'
 
 import { TemplatesSelectionPlugin } from './app/plugins/templates-selection/templates-selection-plugin'
 
-const isElectron = require('is-electron')
+import isElectron from 'is-electron'
 
-const remixLib = require('@remix-project/remix-lib')
+import * as remixLib from '@remix-project/remix-lib'
 
 import { QueryParams } from '@remix-project/remix-lib'
 import { SearchPlugin } from './app/tabs/search'
@@ -82,27 +82,27 @@ import { ScriptRunnerUIPlugin } from './app/tabs/script-runner-ui'
 import { ElectronProvider } from './app/files/electronProvider'
 
 const Storage = remixLib.Storage
-const RemixDProvider = require('./app/files/remixDProvider')
-const Config = require('./config')
+import RemixDProvider from './app/files/remixDProvider'
+import Config from './config'
 
-const FileManager = require('./app/files/fileManager')
+import FileManager from './app/files/fileManager'
 import FileProvider from "./app/files/fileProvider"
 import { appPlatformTypes } from '@remix-ui/app'
 
-const DGitProvider = require('./app/files/dgitProvider')
-const WorkspaceFileProvider = require('./app/files/workspaceFileProvider')
+import DGitProvider from './app/files/dgitProvider'
+import WorkspaceFileProvider from './app/files/workspaceFileProvider'
 
-const PluginManagerComponent = require('./app/components/plugin-manager-component')
+import PluginManagerComponent from './app/components/plugin-manager-component'
 
-const CompileTab = require('./app/tabs/compile-tab')
-const SettingsTab = require('./app/tabs/settings-tab')
-const AnalysisTab = require('./app/tabs/analysis-tab')
-const { DebuggerTab } = require('./app/tabs/debugger-tab')
-const TestTab = require('./app/tabs/test-tab')
-const FilePanel = require('./app/panels/file-panel')
-const Editor = require('./app/editor/editor')
-const Terminal = require('./app/panels/terminal')
-const { TabProxy } = require('./app/panels/tab-proxy.js')
+import CompileTab from './app/tabs/compile-tab'
+import SettingsTab from './app/tabs/settings-tab'
+import AnalysisTab from './app/tabs/analysis-tab'
+import DebuggerTab from './app/tabs/debugger-tab'
+import TestTab from './app/tabs/test-tab'
+import Filepanel from './app/panels/file-panel'
+import Editor from './app/editor/editor'
+import Terminal from './app/panels/terminal'
+import TabProxy from './app/panels/tab-proxy.js'
 
 const _paq = (window._paq = window._paq || [])
 
@@ -115,16 +115,49 @@ export class platformApi {
   }
 }
 
+type Components = {
+  filesProviders: {
+    browser?: any
+    localhost?: any
+    workspace?: any
+    electron?: any
+  }
+}
+
 class AppComponent {
+  appManager: RemixAppManager
+  queryParams: QueryParams
+  private _components: Components
+  panels: any
+  workspace: any
+  engine: RemixEngine
+  matomoConfAlreadySet: any
+  matomoCurrentSetting: any
+  showMatomo: boolean
+  walkthroughService: WalkthroughService
+  platform: 'desktop' | 'web'
+  gistHandler: GistHandler
+  themeModule: ThemeModule
+  localeModule: LocaleModule
+  notification: NotificationPlugin
+  layout: Layout
+  mainview: any
+  menuicons: VerticalIcons
+  sidePanel: SidePanel
+  hiddenPanel: HiddenPanel
+  pinnedPanel: PinnedPanel
+  popupPanel: PopupPanel
+  statusBar: StatusBar
+  settings: SettingsTab
   constructor() {
     const PlatFormAPi = new platformApi()
     Registry.getInstance().put({
       api: PlatFormAPi,
       name: 'platform'
     })
-    this.appManager = new RemixAppManager({})
+    this.appManager = new RemixAppManager()
     this.queryParams = new QueryParams()
-    this._components = {}
+    this._components = {} as Components
     // setup storage
     const configStorage = new Storage('config-v0.8:')
 
@@ -161,7 +194,6 @@ class AppComponent {
       name: 'fileproviders'
     })
 
-
   }
 
   async run() {
@@ -184,7 +216,7 @@ class AppComponent {
     this.matomoConfAlreadySet = Registry.getInstance().get('config').api.exists('settings/matomo-analytics')
     this.matomoCurrentSetting = Registry.getInstance().get('config').api.get('settings/matomo-analytics')
 
-    let electronTracking = window.electronAPI ? await window.electronAPI.canTrackMatomo() : false
+    const electronTracking = (window as any).electronAPI ? await (window as any).electronAPI.canTrackMatomo() : false
 
     const lastMatomoCheck = window.localStorage.getItem('matomo-analytics-consent')
     const sixMonthsAgo = new Date();
@@ -193,11 +225,11 @@ class AppComponent {
     const e2eforceMatomoToShow = window.localStorage.getItem('showMatomo') && window.localStorage.getItem('showMatomo') === 'true'
     const contextShouldShowMatomo = matomoDomains[window.location.hostname] || e2eforceMatomoToShow || electronTracking
     const shouldRenewConsent = this.matomoCurrentSetting === false && (!lastMatomoCheck || new Date(Number(lastMatomoCheck)) < sixMonthsAgo) // it is set to false for more than 6 months.
-    this.showMatomo = contextShouldShowMatomo && (!this.matomoConfAlreadySet || shouldRenewConsent)        
+    this.showMatomo = contextShouldShowMatomo && (!this.matomoConfAlreadySet || shouldRenewConsent)
 
     if (this.showMatomo && shouldRenewConsent) {
       _paq.push(['trackEvent', 'Matomo', 'refreshMatomoPermissions']);
-    }    
+    }
 
     this.walkthroughService = new WalkthroughService(appManager)
 
@@ -387,7 +419,7 @@ class AppComponent {
       ganacheProvider,
       foundryProvider,
       externalHttpProvider,
-      environmentExplorer,  
+      environmentExplorer,
       this.walkthroughService,
       search,
       solidityumlgen,
@@ -456,10 +488,10 @@ class AppComponent {
     this.popupPanel = new PopupPanel()
 
     const pluginManagerComponent = new PluginManagerComponent(appManager, this.engine)
-    const filePanel = new FilePanel(appManager, contentImport)
+    const filePanel = new Filepanel(appManager, contentImport)
     this.statusBar = new StatusBar(filePanel, this.menuicons)
     const landingPage = new LandingPage(appManager, this.menuicons, fileManager, filePanel, contentImport)
-    this.settings = new SettingsTab(Registry.getInstance().get('config').api, editor, appManager)
+    this.settings = new SettingsTab(Registry.getInstance().get('config').api, editor)//, appManager)
 
     this.engine.register([this.menuicons, landingPage, this.hiddenPanel, this.sidePanel, this.statusBar, filePanel, pluginManagerComponent, this.settings, this.pinnedPanel, this.popupPanel])
 
@@ -514,7 +546,7 @@ class AppComponent {
 
   async activate() {
     const queryParams = new QueryParams()
-    const params = queryParams.get()
+    const params: any = queryParams.get()
 
     try {
       this.engine.register(await this.appManager.registeredPlugins())
@@ -610,10 +642,11 @@ class AppComponent {
             }
 
             if (params.call) {
-              const callDetails = params.call.split('//')
+              const callDetails: any = params.call.split('//')
               if (callDetails.length > 1) {
                 this.appManager.call('notification', 'toast', `initiating ${callDetails[0]} and calling "${callDetails[1]}" ...`)
                 // @todo(remove the timeout when activatePlugin is on 0.3.0)
+                //@ts-ignore
                 await this.appManager.call(...callDetails).catch(console.error)
               }
             }
@@ -629,6 +662,7 @@ class AppComponent {
 
                   // @todo(remove the timeout when activatePlugin is on 0.3.0)
                   try {
+                    //@ts-ignore
                     await this.appManager.call(...callDetails)
                   } catch (e) {
                     console.error(e)

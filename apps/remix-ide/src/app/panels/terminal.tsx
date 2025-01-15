@@ -24,7 +24,7 @@ const profile = {
   version: packageJson.version
 }
 
-class Terminal extends Plugin {
+export default class Terminal extends Plugin {
   fileImport: CompilerImports
   event: any
   globalRegistry: Registry
@@ -163,4 +163,3 @@ class Terminal extends Plugin {
   }
 }
 
-module.exports = Terminal

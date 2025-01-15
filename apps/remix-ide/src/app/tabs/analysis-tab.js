@@ -22,7 +22,7 @@ const profile = {
   maintainedBy: 'Remix'
 }
 
-class AnalysisTab extends ViewPlugin {
+export default class AnalysisTab extends ViewPlugin {
   constructor () {
     super(profile)
     this.event = new EventManager()

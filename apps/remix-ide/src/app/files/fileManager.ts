@@ -40,7 +40,7 @@ const errorMsg = {
 const createError = (err) => {
   return new Error(`${errorMsg[err.code]} ${err.message || ''}`)
 }
-class FileManager extends Plugin {
+export default class FileManager extends Plugin {
   mode: string
   openedFiles: any
   editor: any

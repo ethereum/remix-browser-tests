@@ -27,7 +27,7 @@ const profile = {
   maintainedBy: 'Remix'
 }
 
-module.exports = class SettingsTab extends ViewPlugin {
+export default class SettingsTab extends ViewPlugin {
   config: any = {}
   editor: any
   private _deps: {

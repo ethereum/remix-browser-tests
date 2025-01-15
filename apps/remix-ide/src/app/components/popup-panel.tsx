@@ -24,7 +24,7 @@ export class PopupPanel extends AbstractPanel {
   dispatch: React.Dispatch<any> = () => { }
   appStateDispatch: React.Dispatch<AppAction> = () => { }
 
-  constructor(config) {
+  constructor(config = null) {
     super(profile)
     this.event = new EventEmitter()
   }

@@ -1,7 +1,7 @@
 'use strict'
 import FileProvider from "./fileProvider"
 
-module.exports = class RemixDProvider extends FileProvider {
+export default class RemixDProvider extends FileProvider {
   constructor (appManager) {
     super('localhost')
     this._appManager = appManager

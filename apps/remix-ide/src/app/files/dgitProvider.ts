@@ -28,7 +28,7 @@ const profile: LibraryProfile = {
     , 'getGitHubUser', 'remotebranches', 'remotecommits', 'repositories', 'getCommitChanges', 'compareBranches'],
   kind: 'file-system'
 }
-class DGitProvider extends Plugin<any, CustomRemixApi> {
+export default class DGitProvider extends Plugin<any, CustomRemixApi> {
   constructor() {
     super(profile)
   }
