@@ -127,8 +127,12 @@ export const setupEvents = (plugin: RunTab) => {
       if (activatedPlugin && activatedPlugin.name.startsWith('injected')) {
         plugin.on(activatedPlugin.name, 'accountsChanged', (accounts: Array<string>) => {
           const accountsMap = {}
-          accounts.map(account => { accountsMap[account] = shortenAddress(account, '0')})
-          dispatch(fetchAccountsListSuccess(accountsMap))
+          if (accounts.length > 0) {
+            accounts.map(account => { accountsMap[account] = shortenAddress(account, '0')})
+            dispatch(fetchAccountsListSuccess(accountsMap))
+          } else {
+            setExecutionContext(plugin, dispatch, { context: plugin.blockchain.defaultPinnedProviders[0] })
+          }
         })
       } else if (activatedPlugin && activatedPlugin.name === 'walletconnect') {
         plugin.on('walletconnect', 'accountsChanged', async (accounts: Array<string>) => {

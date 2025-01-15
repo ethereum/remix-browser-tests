@@ -56,7 +56,7 @@ const _getProviderDropdownValue = (plugin: RunTab): string => {
   return plugin.blockchain.getProvider()
 }
 
-export const setExecutionContext = (plugin: RunTab, dispatch: React.Dispatch<any>, executionContext: { context: string, fork: string }) => {
+export const setExecutionContext = (plugin: RunTab, dispatch: React.Dispatch<any>, executionContext: { context: string, fork?: string }) => {
   plugin.blockchain.changeExecutionContext(executionContext, null, (alertMsg) => {
     plugin.call('notification', 'toast', alertMsg)
   }, () => { setFinalContext(plugin, dispatch) })

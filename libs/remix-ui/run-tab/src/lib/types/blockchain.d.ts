@@ -25,6 +25,7 @@ export class Blockchain extends Plugin<any, any> {
     };
   setupProviders(): void;
   providers: any;
+  defaultPinnedProviders: string[]
   getCurrentProvider(): any;
   /** Return the list of accounts */
   getAccounts(cb?: any): any;
